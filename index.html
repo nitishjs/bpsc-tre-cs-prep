@@ -1,0 +1,673 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>BPSC TRE 4.0 — Computer Science Prep</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F6F2E8;
+    --paper-2:#EFE9DA;
+    --ink:#1C2740;
+    --ink-soft:#4A5468;
+    --maroon:#8B2331;
+    --maroon-dark:#6E1B27;
+    --green:#2E6B44;
+    --green-bg:#E4EFE6;
+    --red:#B0392C;
+    --red-bg:#F5E4E0;
+    --line:#D8CFB8;
+    --amber:#9C6B14;
+    --shadow: 0 2px 10px rgba(28,39,64,0.08);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:
+      linear-gradient(var(--paper), var(--paper));
+    background-color:var(--paper);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    min-height:100vh;
+    background-image:
+      radial-gradient(circle at 1px 1px, rgba(28,39,64,0.05) 1px, transparent 0);
+    background-size: 22px 22px;
+  }
+  .wrap{max-width:900px;margin:0 auto;padding:28px 20px 80px}
+  @media(max-width:640px){
+    .wrap{padding:16px 12px 60px}
+    .card{padding:16px}
+    .qcard{padding:16px}
+  }
+  h1,h2,h3{font-family:'Source Serif 4',serif;font-weight:700;letter-spacing:-0.01em;margin:0}
+  .mono{font-family:'IBM Plex Mono',monospace}
+  .topbar{
+    display:flex;align-items:center;justify-content:space-between;gap:10px;
+    border-bottom:2px solid var(--ink);
+    padding-bottom:14px;margin-bottom:26px;
+  }
+  @media(max-width:480px){
+    .brand h1{font-size:17px;line-height:1.25}
+    .brand .eyebrow{font-size:10px}
+    .seal{width:42px;height:42px;font-size:9.5px;border-width:2px}
+    .topbar{margin-bottom:18px}
+  }
+  .brand{display:flex;flex-direction:column;gap:2px}
+  .brand .eyebrow{
+    font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--maroon);font-weight:600;
+  }
+  .brand h1{font-size:22px;color:var(--ink)}
+  .seal{
+    width:52px;height:52px;border-radius:50%;
+    border:2.5px solid var(--maroon);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'IBM Plex Mono',monospace;font-weight:700;color:var(--maroon);
+    font-size:11px;text-align:center;line-height:1.1;
+    flex-shrink:0;
+  }
+  .card{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:6px;
+    box-shadow:var(--shadow);
+    padding:22px;
+    margin-bottom:18px;
+  }
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;
+    font-family:'Inter',sans-serif;font-weight:600;font-size:14.5px;
+    padding:12px 20px;border-radius:5px;border:1.5px solid var(--ink);
+    background:var(--ink);color:#fff;cursor:pointer;
+    transition:transform .08s ease, box-shadow .15s ease;
+  }
+  .btn:hover{transform:translateY(-1px);box-shadow:0 4px 10px rgba(28,39,64,.18)}
+  .btn:active{transform:translateY(0)}
+  .btn.secondary{background:#fff;color:var(--ink)}
+  .btn.maroon{background:var(--maroon);border-color:var(--maroon)}
+  .btn.maroon:hover{box-shadow:0 4px 10px rgba(139,35,49,.28)}
+  .btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+  .btn.block{width:100%}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media(max-width:640px){.grid2{grid-template-columns:1fr}}
+  .mode-card{
+    border:1.5px solid var(--line);border-radius:6px;padding:20px;
+    cursor:pointer;background:#fff;transition:border-color .15s, box-shadow .15s;
+  }
+  .mode-card:hover{border-color:var(--maroon);box-shadow:var(--shadow)}
+  .mode-card .tag{
+    font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--maroon);font-weight:600;margin-bottom:8px;display:block;
+  }
+  .mode-card h3{font-size:19px;margin-bottom:6px}
+  .mode-card p{color:var(--ink-soft);font-size:13.5px;line-height:1.5;margin:0}
+  select,input[type=text]{
+    font-family:'Inter',sans-serif;font-size:14px;padding:9px 12px;
+    border:1.5px solid var(--line);border-radius:5px;background:#fff;color:var(--ink);
+  }
+  .set-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+  .set-pill{
+    font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:600;
+    padding:8px 14px;border-radius:20px;border:1.5px solid var(--line);
+    cursor:pointer;background:#fff;color:var(--ink-soft);
+  }
+  .set-pill.active{border-color:var(--maroon);color:var(--maroon);background:var(--red-bg)}
+  .set-pill.disabled{opacity:.4;cursor:not-allowed;text-decoration:line-through}
+  .muted{color:var(--ink-soft);font-size:13.5px;line-height:1.6}
+  .hr{border:none;border-top:1px solid var(--line);margin:18px 0}
+
+  /* quiz header */
+  .quiz-top{
+    display:flex;align-items:center;justify-content:space-between;gap:16px;
+    position:sticky;top:0;background:var(--paper);padding:14px 0 10px;z-index:5;
+    border-bottom:1.5px solid var(--line);margin-bottom:18px;
+  }
+  .timer{
+    font-family:'IBM Plex Mono',monospace;font-size:20px;font-weight:600;
+    background:var(--ink);color:#fff;padding:8px 16px;border-radius:5px;
+    letter-spacing:.03em;flex-shrink:0;
+  }
+  @media(max-width:480px){
+    .quiz-top{padding:10px 0 8px}
+    .timer{font-size:16px;padding:6px 12px}
+    .qtext{font-size:15.5px}
+    .qcard{padding:16px 14px}
+    .option{padding:12px;gap:10px}
+    .option-text{font-size:13.5px}
+    .bubble{width:26px;height:26px;font-size:12px}
+  }
+  .timer.low{background:var(--maroon);animation:pulse 1s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.65}}
+  .progress-bar{height:6px;background:var(--paper-2);border-radius:3px;overflow:hidden;margin-top:8px}
+  .progress-fill{height:100%;background:var(--maroon);transition:width .2s}
+
+  .qcard{background:#fff;border:1px solid var(--line);border-radius:6px;padding:24px;box-shadow:var(--shadow)}
+  .qmeta{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px}
+  .qnum{font-family:'IBM Plex Mono',monospace;color:var(--maroon);font-weight:700;font-size:14px}
+  .qtopic{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink-soft);background:var(--paper-2);padding:3px 9px;border-radius:12px}
+  .qtext{font-size:17px;line-height:1.55;margin-bottom:20px;font-weight:500}
+  .option{
+    display:flex;align-items:center;gap:14px;padding:13px 14px;border:1.5px solid var(--line);
+    border-radius:6px;margin-bottom:10px;cursor:pointer;background:#fff;transition:.12s;
+  }
+  .option:hover{border-color:var(--ink-soft)}
+  .option.selected{border-color:var(--maroon);background:var(--red-bg)}
+  .bubble{
+    width:28px;height:28px;border-radius:50%;border:2px solid var(--ink-soft);
+    display:flex;align-items:center;justify-content:center;flex-shrink:0;
+    font-family:'IBM Plex Mono',monospace;font-weight:700;font-size:12.5px;color:var(--ink-soft);
+  }
+  .option.selected .bubble{border-color:var(--maroon);background:var(--maroon);color:#fff}
+  .option-text{font-size:14.5px;line-height:1.4}
+  .option.none .option-text{font-style:italic;color:var(--ink-soft)}
+
+  .navrow{display:flex;justify-content:space-between;margin-top:18px;gap:10px}
+  @media(max-width:480px){
+    .navrow{flex-direction:column}
+    .navrow .btn{width:100%}
+  }
+  .palette{display:grid;grid-template-columns:repeat(10,1fr);gap:6px;margin-top:14px}
+  @media(max-width:640px){.palette{grid-template-columns:repeat(8,1fr)}}
+  @media(max-width:400px){.palette{grid-template-columns:repeat(6,1fr);gap:5px}}
+  .pnode{
+    aspect-ratio:1;border-radius:4px;border:1.5px solid var(--line);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;color:var(--ink-soft);
+    cursor:pointer;background:#fff;min-height:30px;
+  }
+  .pnode.answered{background:var(--green);border-color:var(--green);color:#fff}
+  .pnode.current{outline:2px solid var(--maroon);outline-offset:1px}
+  .pnode.none-ans{background:var(--amber);border-color:var(--amber);color:#fff}
+
+  /* results */
+  .score-hero{
+    background:var(--ink);color:#fff;border-radius:8px;padding:28px 24px;text-align:center;margin-bottom:20px;
+  }
+  .score-hero .big{font-family:'Source Serif 4',serif;font-size:52px;font-weight:700;line-height:1}
+  @media(max-width:480px){
+    .score-hero{padding:22px 16px}
+    .score-hero .big{font-size:40px}
+  }
+  .score-hero .lbl{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#C9CEDA;margin-top:6px}
+  .score-hero .verdict{margin-top:14px;font-size:15px;color:#E9E6D8}
+  .stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px}
+  @media(max-width:640px){.stat-row{grid-template-columns:1fr}}
+  .stat{background:#fff;border:1px solid var(--line);border-radius:6px;padding:16px;text-align:center}
+  .stat .num{font-family:'Source Serif 4',serif;font-size:26px;font-weight:700}
+  .stat .lbl{font-size:12px;color:var(--ink-soft);margin-top:2px}
+  .topicbar-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+  .topicbar-label{width:190px;font-size:12.5px;color:var(--ink-soft);flex-shrink:0}
+  .topicbar-track{flex:1;height:16px;background:var(--paper-2);border-radius:8px;overflow:hidden}
+  .topicbar-fill{height:100%;border-radius:8px}
+  .topicbar-pct{width:42px;text-align:right;font-family:'IBM Plex Mono',monospace;font-size:12px;flex-shrink:0}
+  @media(max-width:480px){
+    .topicbar-row{flex-wrap:wrap}
+    .topicbar-label{width:100%;font-size:12px}
+    .topicbar-track{height:12px}
+    .history-row{flex-direction:column;align-items:flex-start;gap:4px}
+  }
+
+  .review-q{border:1px solid var(--line);border-radius:6px;padding:18px;margin-bottom:14px;background:#fff}
+  .review-q .qtext{font-size:15.5px;margin-bottom:14px}
+  .rowbadge{
+    display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:10.5px;font-weight:700;
+    padding:3px 9px;border-radius:10px;text-transform:uppercase;letter-spacing:.05em;
+  }
+  .rowbadge.correct{background:var(--green-bg);color:var(--green)}
+  .rowbadge.wrong{background:var(--red-bg);color:var(--red)}
+  .rowbadge.skipped{background:var(--paper-2);color:var(--ink-soft)}
+  .review-opt{display:flex;gap:10px;align-items:center;padding:9px 12px;border-radius:5px;margin-bottom:6px;font-size:14px;border:1px solid transparent}
+  .review-opt.correct-opt{background:var(--green-bg);border-color:var(--green)}
+  .review-opt.wrong-opt{background:var(--red-bg);border-color:var(--red)}
+  .review-explain{margin-top:10px;font-size:13.5px;color:var(--ink-soft);background:var(--paper);padding:10px 12px;border-radius:5px;border-left:3px solid var(--maroon)}
+  .tabs{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+  .tab{
+    font-family:'IBM Plex Mono',monospace;font-size:12.5px;font-weight:600;padding:8px 14px;
+    border-radius:5px;border:1.5px solid var(--line);cursor:pointer;background:#fff;color:var(--ink-soft);
+  }
+  .tab.active{background:var(--ink);border-color:var(--ink);color:#fff}
+  .hidden{display:none !important}
+  a{color:var(--maroon)}
+  .footer-note{text-align:center;color:var(--ink-soft);font-size:12px;margin-top:30px}
+  .loading{text-align:center;padding:60px 20px;color:var(--ink-soft);font-family:'IBM Plex Mono',monospace}
+  .weakbox{background:var(--red-bg);border:1px solid var(--red);border-radius:6px;padding:16px}
+  .weakbox h3{color:var(--red);font-size:15px;margin-bottom:8px}
+  .weakbox ul{margin:0;padding-left:18px;font-size:13.5px;color:var(--ink)}
+  .badgebar{display:flex;gap:8px;margin-top:6px;flex-wrap:wrap}
+  .history-row{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border:1px solid var(--line);border-radius:5px;margin-bottom:8px;font-size:13.5px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="topbar">
+    <div class="brand">
+      <span class="eyebrow">BPSC TRE 4.0 · Computer Science</span>
+      <h1 id="titleLink" style="cursor:pointer">Teacher Recruitment Exam — Practice Portal</h1>
+    </div>
+    <div class="seal">BPSC<br>TRE</div>
+  </div>
+  <div id="app"><div class="loading">Loading question bank…</div></div>
+  <div class="footer-note">Built for Nitish Kumar's TRE 4.0 preparation · Bihar Computer Science Teacher, General Category</div>
+</div>
+
+<script type="module">
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
+const SUPABASE_URL = 'https://llptkwjlikvfztxsotmk.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxscHRrd2psaWt2Znp0eHNvdG1rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODYyOTI4MzQsImV4cCI6MjEwMTg2ODgzNH0.D6t8f_vOq426mrTVxPufRUqe_6LWLf-doldXJNqGEXg';
+const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+const AVAILABLE_SETS = [1, 2, 3, 4, 5]; // all 5 sets complete
+const FULL_TEST_MINUTES = 150;
+const SECTION_MINUTES = { 1: 25, 2: 35, 3: 70 }; // Language, GS, CS
+const PART_NAMES = { 1: 'Part I — Language', 2: 'Part II — General Studies', 3: 'Part III — Computer Science' };
+
+const app = document.getElementById('app');
+document.getElementById('titleLink').onclick = () => renderHome();
+
+let state = {}; // current quiz state
+
+function fmtTime(sec){
+  const m = Math.floor(sec/60), s = sec%60;
+  return String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+}
+
+async function renderHome(){
+  stopTimer();
+  const { data: attempts } = await sb.from('attempts').select('*').not('submitted_at','is',null).order('started_at',{ascending:false}).limit(5);
+  app.innerHTML = `
+    <div class="card">
+      <h2 style="font-size:20px;margin-bottom:4px">Choose your practice mode</h2>
+      <p class="muted">All 5 sets are fully loaded (150 Qs each · 750 questions total).</p>
+      <div class="grid2" style="margin-top:16px">
+        <div class="mode-card" id="sectionModeCard">
+          <span class="tag">Section-wise</span>
+          <h3>Practice by Section</h3>
+          <p>Drill Language, General Studies, or Computer Science on their own, with a proportional timer and instant topic-wise feedback.</p>
+        </div>
+        <div class="mode-card" id="fullModeCard">
+          <span class="tag">Full-length · ${FULL_TEST_MINUTES} min</span>
+          <h3>Full Mock Test</h3>
+          <p>All 150 questions, exact ${FULL_TEST_MINUTES}-minute exam timer, auto-submit on time-up, merit score computed on Part II + III (120).</p>
+        </div>
+      </div>
+    </div>
+    <div class="card" id="historyCard">
+      <h2 style="font-size:16px;margin-bottom:10px">Recent attempts</h2>
+      <div id="historyList" class="muted">Loading…</div>
+    </div>
+  `;
+  document.getElementById('sectionModeCard').onclick = renderSectionPicker;
+  document.getElementById('fullModeCard').onclick = renderFullPicker;
+
+  const historyList = document.getElementById('historyList');
+  if (!attempts || attempts.length === 0){
+    historyList.innerHTML = `<span class="muted">No attempts yet — take a test to see your history here.</span>`;
+  } else {
+    historyList.innerHTML = attempts.map(a => {
+      const label = a.mode === 'full' ? `Full Test · Set ${a.set_number}` : `${PART_NAMES[a.part]?.split('—')[1]?.trim() || 'Section'} · Set ${a.set_number}`;
+      const meritStr = a.merit_total ? `${a.merit_score}/${a.merit_total}` : '—';
+      const date = new Date(a.started_at).toLocaleDateString('en-IN', {day:'2-digit',month:'short'});
+      return `<div class="history-row"><span>${label} <span class="muted">· ${date}</span></span><span class="mono" style="font-weight:600">${meritStr}</span></div>`;
+    }).join('');
+  }
+}
+
+function setPills(containerId, onPick){
+  const c = document.getElementById(containerId);
+  c.innerHTML = [1,2,3,4,5].map(n => {
+    const avail = AVAILABLE_SETS.includes(n);
+    return `<span class="set-pill ${avail ? '' : 'disabled'}" data-n="${n}">Set ${n}${avail ? '' : ' (soon)'}</span>`;
+  }).join('');
+  c.querySelectorAll('.set-pill').forEach(el => {
+    el.onclick = () => {
+      const n = parseInt(el.dataset.n);
+      if (!AVAILABLE_SETS.includes(n)) return;
+      c.querySelectorAll('.set-pill').forEach(x=>x.classList.remove('active'));
+      el.classList.add('active');
+      onPick(n);
+    };
+  });
+}
+
+function renderSectionPicker(){
+  let chosenSet = null, chosenPart = null;
+  app.innerHTML = `
+    <div class="card">
+      <h2 style="font-size:19px;margin-bottom:14px">Section-wise Practice</h2>
+      <p class="muted" style="margin-bottom:6px">1 · Pick a set</p>
+      <div class="set-row" id="setPills"></div>
+      <p class="muted" style="margin:18px 0 6px">2 · Pick a section</p>
+      <div class="grid2" id="partPills" style="grid-template-columns:repeat(3,1fr)"></div>
+      <div class="hr"></div>
+      <button class="btn maroon block" id="startBtn" disabled>Select a set and section to begin</button>
+    </div>
+    <button class="btn secondary" id="backBtn">← Back</button>
+  `;
+  document.getElementById('backBtn').onclick = renderHome;
+  setPills('setPills', (n) => { chosenSet = n; tryEnable(); });
+
+  const partWrap = document.getElementById('partPills');
+  const parts = [
+    {n:1, label:'Language', sub:'30 Qs · Qualifying'},
+    {n:2, label:'General Studies', sub:'40 Qs · Merit'},
+    {n:3, label:'Computer Science', sub:'80 Qs · Merit'},
+  ];
+  partWrap.innerHTML = parts.map(p => `
+    <div class="mode-card" data-p="${p.n}" style="padding:14px">
+      <h3 style="font-size:15.5px">${p.label}</h3>
+      <p style="font-size:12.5px">${p.sub}</p>
+    </div>`).join('');
+  partWrap.querySelectorAll('.mode-card').forEach(el => {
+    el.onclick = () => {
+      chosenPart = parseInt(el.dataset.p);
+      partWrap.querySelectorAll('.mode-card').forEach(x=>x.style.borderColor='var(--line)');
+      el.style.borderColor='var(--maroon)';
+      tryEnable();
+    };
+  });
+  const startBtn = document.getElementById('startBtn');
+  function tryEnable(){
+    if (chosenSet && chosenPart){
+      startBtn.disabled = false;
+      startBtn.textContent = `Start ${parts.find(p=>p.n===chosenPart).label} · Set ${chosenSet} (${SECTION_MINUTES[chosenPart]} min)`;
+      startBtn.onclick = () => startQuiz({ mode:'section', setNumber:chosenSet, part:chosenPart });
+    }
+  }
+}
+
+function renderFullPicker(){
+  let chosenSet = null;
+  app.innerHTML = `
+    <div class="card">
+      <h2 style="font-size:19px;margin-bottom:6px">Full-Length Mock Test</h2>
+      <p class="muted">150 questions · 3 parts · ${FULL_TEST_MINUTES}-minute countdown · auto-submits at time-up. Merit is scored on Part II + III (120 marks); Part I is qualifying only.</p>
+      <p class="muted" style="margin:18px 0 6px">Pick a set</p>
+      <div class="set-row" id="setPills"></div>
+      <div class="hr"></div>
+      <button class="btn maroon block" id="startBtn" disabled>Select a set to begin</button>
+    </div>
+    <button class="btn secondary" id="backBtn">← Back</button>
+  `;
+  document.getElementById('backBtn').onclick = renderHome;
+  const startBtn = document.getElementById('startBtn');
+  setPills('setPills', (n) => {
+    chosenSet = n;
+    startBtn.disabled = false;
+    startBtn.textContent = `Start Full Test · Set ${n}`;
+    startBtn.onclick = () => startQuiz({ mode:'full', setNumber:n, part:null });
+  });
+}
+
+let timerInterval = null;
+function stopTimer(){ if (timerInterval){ clearInterval(timerInterval); timerInterval = null; } }
+
+async function startQuiz({ mode, setNumber, part }){
+  app.innerHTML = `<div class="loading">Preparing your paper…</div>`;
+  let q = sb.from('questions').select('*').eq('set_number', setNumber).order('part').order('q_no');
+  if (mode === 'section') q = q.eq('part', part);
+  const { data: questions, error } = await q;
+  if (error || !questions || questions.length === 0){
+    app.innerHTML = `<div class="card">Could not load questions. <button class="btn secondary" onclick="location.reload()">Retry</button></div>`;
+    return;
+  }
+
+  const durationSec = mode === 'full' ? FULL_TEST_MINUTES * 60 : SECTION_MINUTES[part] * 60;
+
+  const { data: attemptRow } = await sb.from('attempts').insert({
+    mode, set_number: setNumber, part: mode==='section' ? part : null, duration_seconds: durationSec
+  }).select().single();
+
+  state = {
+    mode, setNumber, part, questions,
+    answers: {}, // question.id -> 'A'|'B'|'C'|'D'|'E'
+    idx: 0,
+    remaining: durationSec,
+    attemptId: attemptRow ? attemptRow.id : null,
+  };
+
+  renderQuiz();
+  stopTimer();
+  timerInterval = setInterval(() => {
+    state.remaining--;
+    updateTimerDisplay();
+    if (state.remaining <= 0){
+      stopTimer();
+      submitQuiz();
+    }
+  }, 1000);
+}
+
+function updateTimerDisplay(){
+  const el = document.getElementById('timerDisplay');
+  if (!el) return;
+  el.textContent = fmtTime(Math.max(0,state.remaining));
+  el.classList.toggle('low', state.remaining <= 60);
+}
+
+function currentPartLabel(){
+  if (state.mode === 'section') return PART_NAMES[state.part];
+  const q = state.questions[state.idx];
+  return PART_NAMES[q.part];
+}
+
+function renderQuiz(){
+  const q = state.questions[state.idx];
+  const total = state.questions.length;
+  const answeredCount = Object.keys(state.answers).length;
+
+  app.innerHTML = `
+    <div class="quiz-top">
+      <div>
+        <div class="mono" style="font-size:12px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.06em">${currentPartLabel()}</div>
+        <div style="font-size:13px;color:var(--ink-soft)">${answeredCount}/${total} answered</div>
+      </div>
+      <div id="timerDisplay" class="timer">${fmtTime(state.remaining)}</div>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" style="width:${(answeredCount/total*100)}%"></div></div>
+    <div class="qcard" style="margin-top:18px">
+      <div class="qmeta">
+        <span class="qnum">Q${state.idx+1} / ${total}</span>
+        <span class="qtopic">${q.topic}</span>
+      </div>
+      <div class="qtext">${escapeHtml(q.question)}</div>
+      <div id="optionsWrap"></div>
+      <div class="navrow">
+        <button class="btn secondary" id="prevBtn" ${state.idx===0?'disabled':''}>← Previous</button>
+        ${state.idx === total-1
+          ? `<button class="btn maroon" id="submitBtn">Submit Test</button>`
+          : `<button class="btn" id="nextBtn">Next →</button>`}
+      </div>
+    </div>
+    <div class="card" style="margin-top:18px">
+      <div style="font-size:12.5px;color:var(--ink-soft);font-family:'IBM Plex Mono',monospace;margin-bottom:8px">QUESTION PALETTE — green = answered, amber = marked none, click to jump</div>
+      <div class="palette" id="palette"></div>
+      <div class="navrow" style="margin-top:16px">
+        <button class="btn secondary" id="submitBtn2">Submit ${state.mode==='full' ? 'Full Test' : 'Section'}</button>
+      </div>
+    </div>
+  `;
+  updateTimerDisplay();
+
+  const opts = [
+    {k:'A', v:q.option_a}, {k:'B', v:q.option_b}, {k:'C', v:q.option_c}, {k:'D', v:q.option_d},
+    {k:'E', v:'None of the above / I don\\'t want to answer this'}
+  ];
+  const optWrap = document.getElementById('optionsWrap');
+  optWrap.innerHTML = opts.map(o => `
+    <div class="option ${state.answers[q.id]===o.k ? 'selected' : ''} ${o.k==='E' ? 'none' : ''}" data-k="${o.k}">
+      <div class="bubble">${o.k}</div>
+      <div class="option-text">${escapeHtml(o.v)}</div>
+    </div>
+  `).join('');
+  optWrap.querySelectorAll('.option').forEach(el => {
+    el.onclick = () => {
+      state.answers[q.id] = el.dataset.k;
+      renderQuiz();
+    };
+  });
+
+  const prevBtn = document.getElementById('prevBtn');
+  if (prevBtn) prevBtn.onclick = () => { state.idx--; renderQuiz(); };
+  const nextBtn = document.getElementById('nextBtn');
+  if (nextBtn) nextBtn.onclick = () => { state.idx++; renderQuiz(); };
+  const submitBtn = document.getElementById('submitBtn');
+  if (submitBtn) submitBtn.onclick = confirmSubmit;
+  document.getElementById('submitBtn2').onclick = confirmSubmit;
+
+  const palette = document.getElementById('palette');
+  palette.innerHTML = state.questions.map((qq, i) => {
+    const ans = state.answers[qq.id];
+    const cls = ans === 'E' ? 'none-ans' : (ans ? 'answered' : '');
+    return `<div class="pnode ${cls} ${i===state.idx?'current':''}" data-i="${i}">${i+1}</div>`;
+  }).join('');
+  palette.querySelectorAll('.pnode').forEach(el => {
+    el.onclick = () => { state.idx = parseInt(el.dataset.i); renderQuiz(); };
+  });
+}
+
+function confirmSubmit(){
+  const total = state.questions.length;
+  const answered = Object.keys(state.answers).length;
+  const unanswered = total - answered;
+  const msg = unanswered > 0
+    ? `You have ${unanswered} unanswered question(s). Submit anyway?`
+    : `Submit your test now? You won't be able to change answers after this.`;
+  if (confirm(msg)) submitQuiz();
+}
+
+async function submitQuiz(){
+  stopTimer();
+  const q = state.questions;
+  let languageCorrect=0, languageTotal=0, meritCorrect=0, meritTotal=0;
+  const topicStats = {}; // topic -> {correct, total}
+
+  const answerRows = q.map(qq => {
+    const sel = state.answers[qq.id] || null;
+    const isCorrect = sel === qq.correct_option;
+    if (qq.part === 1){ languageTotal++; if (isCorrect) languageCorrect++; }
+    else { meritTotal++; if (isCorrect) meritCorrect++; }
+    if (!topicStats[qq.topic]) topicStats[qq.topic] = {correct:0, total:0};
+    topicStats[qq.topic].total++;
+    if (isCorrect) topicStats[qq.topic].correct++;
+    return { attempt_id: state.attemptId, question_id: qq.id, selected_option: sel, is_correct: isCorrect };
+  });
+
+  state.result = { languageCorrect, languageTotal, meritCorrect, meritTotal, topicStats };
+
+  if (state.attemptId){
+    try {
+      await sb.from('attempts').update({
+        submitted_at: new Date().toISOString(),
+        merit_score: meritTotal>0 ? meritCorrect : null,
+        merit_total: meritTotal>0 ? meritTotal : null,
+        language_score: languageTotal>0 ? languageCorrect : null,
+        language_total: languageTotal>0 ? languageTotal : null,
+      }).eq('id', state.attemptId);
+      if (answerRows.length) await sb.from('attempt_answers').insert(answerRows);
+    } catch(e){ console.error('Save failed (showing results anyway):', e); }
+  }
+
+  renderResults();
+}
+
+function renderResults(){
+  const { meritCorrect, meritTotal, languageCorrect, languageTotal, topicStats } = state.result;
+  const meritPct = meritTotal ? Math.round(meritCorrect/meritTotal*100) : null;
+  let verdict = '';
+  if (meritTotal > 0){
+    if (meritPct >= 82) verdict = 'Comfortably above the projected TRE 4.0 cut-off range (~82–87%). Keep this consistency.';
+    else if (meritPct >= 70) verdict = 'Close to the danger zone — projected cut-off is ~82–87%. Push weak topics below.';
+    else verdict = 'Below the safe target. Revisit weak topics below before your next attempt.';
+  }
+
+  const sortedTopics = Object.entries(topicStats).sort((a,b) => (a[1].correct/a[1].total) - (b[1].correct/b[1].total));
+  const weak = sortedTopics.filter(([,s]) => (s.correct/s.total) < 0.6);
+
+  app.innerHTML = `
+    ${meritTotal > 0 ? `
+    <div class="score-hero">
+      <div class="big">${meritCorrect}<span style="font-size:26px;color:#B7BEC9">/${meritTotal}</span></div>
+      <div class="lbl">Merit Score (Part II + III)</div>
+      <div class="verdict">${verdict}</div>
+    </div>` : ''}
+    <div class="stat-row">
+      ${languageTotal > 0 ? `<div class="stat"><div class="num">${languageCorrect}/${languageTotal}</div><div class="lbl">Language (Qualifying)</div></div>` : ''}
+      ${meritTotal > 0 ? `<div class="stat"><div class="num">${meritPct}%</div><div class="lbl">Merit Accuracy</div></div>` : ''}
+      <div class="stat"><div class="num">${Object.keys(state.answers).length}/${state.questions.length}</div><div class="lbl">Attempted</div></div>
+    </div>
+
+    <div class="card">
+      <h2 style="font-size:16px;margin-bottom:14px">Topic-wise accuracy</h2>
+      ${sortedTopics.map(([topic, s]) => {
+        const pct = Math.round(s.correct/s.total*100);
+        const color = pct >= 75 ? 'var(--green)' : pct >= 50 ? 'var(--amber)' : 'var(--red)';
+        return `<div class="topicbar-row">
+          <div class="topicbar-label">${topic}</div>
+          <div class="topicbar-track"><div class="topicbar-fill" style="width:${pct}%;background:${color}"></div></div>
+          <div class="topicbar-pct">${pct}%</div>
+        </div>`;
+      }).join('')}
+    </div>
+
+    ${weak.length ? `
+    <div class="card weakbox">
+      <h3>Weak areas (below 60%)</h3>
+      <ul>${weak.map(([t,s]) => `<li>${t} — ${Math.round(s.correct/s.total*100)}% (${s.correct}/${s.total}). Ask Claude: "Give me a theory PDF on ${t}"</li>`).join('')}</ul>
+    </div>` : ''}
+
+    <div class="card">
+      <h2 style="font-size:16px;margin-bottom:14px">Full Review — every question, correct answer & explanation</h2>
+      <div id="reviewList"></div>
+    </div>
+
+    <div class="navrow">
+      <button class="btn secondary" id="retakeBtn">↺ Retake this test</button>
+      <button class="btn maroon" id="homeBtn">Back to Home</button>
+    </div>
+  `;
+
+  const reviewList = document.getElementById('reviewList');
+  reviewList.innerHTML = state.questions.map((qq, i) => {
+    const sel = state.answers[qq.id];
+    const isCorrect = sel === qq.correct_option;
+    const status = !sel ? 'skipped' : (isCorrect ? 'correct' : 'wrong');
+    const opts = [
+      {k:'A', v:qq.option_a}, {k:'B', v:qq.option_b}, {k:'C', v:qq.option_c}, {k:'D', v:qq.option_d},
+      {k:'E', v:'None of the above'}
+    ];
+    return `
+      <div class="review-q">
+        <div class="qmeta">
+          <span class="qnum">Q${i+1}</span>
+          <span class="rowbadge ${status}">${status}</span>
+        </div>
+        <div class="qtext">${escapeHtml(qq.question)}</div>
+        ${opts.map(o => {
+          let cls = '';
+          if (o.k === qq.correct_option) cls = 'correct-opt';
+          else if (o.k === sel && sel !== qq.correct_option) cls = 'wrong-opt';
+          const marker = o.k === qq.correct_option ? ' ✓' : (o.k === sel ? ' ✗ (your pick)' : '');
+          return `<div class="review-opt ${cls}"><div class="bubble" style="width:22px;height:22px;font-size:11px">${o.k}</div><span>${escapeHtml(o.v)}${marker}</span></div>`;
+        }).join('')}
+        <div class="review-explain"><strong>Why:</strong> ${escapeHtml(qq.explanation)}</div>
+      </div>
+    `;
+  }).join('');
+
+  document.getElementById('homeBtn').onclick = renderHome;
+  document.getElementById('retakeBtn').onclick = () => startQuiz({ mode: state.mode, setNumber: state.setNumber, part: state.part });
+}
+
+function escapeHtml(str){
+  const d = document.createElement('div');
+  d.textContent = str;
+  return d.innerHTML;
+}
+
+renderHome();
+</script>
+</body>
+</html>
