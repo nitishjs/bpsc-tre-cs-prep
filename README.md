@@ -6,6 +6,7 @@ A self-contained practice exam app for the **Bihar BPSC TRE 4.0 Computer Science
 
 ## What's included
 
+- **Email + password sign-in** (Supabase Auth) — every user's attempt history is private to their own account.
 - **750 questions** across **5 independent full-length sets** (Set 1–5), each set structured exactly like the real exam:
   - Part I — Language: 30 Qs (10 English + 20 Hindi), qualifying only
   - Part II — General Studies: 40 Qs (Math & Reasoning, Science, Current Affairs & Polity, History, Indian & Bihar Geography)
