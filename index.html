@@ -21,6 +21,12 @@
     --line:#D8CFB8;
     --amber:#9C6B14;
     --shadow: 0 2px 10px rgba(28,39,64,0.08);
+    --violet:#6D4AFF;
+    --teal:#0FA3A3;
+    --sunset:#FF6B4A;
+    --gold:#E8A93B;
+    --grad-hero: linear-gradient(120deg, #1C2740 0%, #3A2E6E 45%, #8B2331 100%);
+    --grad-btn: linear-gradient(120deg, #8B2331 0%, #B33A2E 55%, #E8A93B 130%);
   }
   *{box-sizing:border-box}
   html,body{margin:0;padding:0}
@@ -88,19 +94,75 @@
   .btn.secondary{background:#fff;color:var(--ink)}
   .btn.maroon{background:var(--maroon);border-color:var(--maroon)}
   .btn.maroon:hover{box-shadow:0 4px 10px rgba(139,35,49,.28)}
+  .btn.gradient{background:var(--grad-btn);border:none;color:#fff;box-shadow:0 4px 14px rgba(139,35,49,.35)}
+  .btn.gradient:hover{box-shadow:0 6px 20px rgba(139,35,49,.45);transform:translateY(-2px)}
+  .btn.gradient:disabled{background:var(--grad-btn);opacity:.55}
+
+  /* Auth hero + card */
+  .auth-hero{
+    background:var(--grad-hero);
+    border-radius:14px;
+    padding:44px 24px 100px;
+    text-align:center;
+    position:relative;
+    overflow:hidden;
+    margin-bottom:-70px;
+    box-shadow:0 10px 30px rgba(28,39,64,.25);
+  }
+  .auth-hero::before{
+    content:'';position:absolute;top:-60px;right:-60px;width:220px;height:220px;border-radius:50%;
+    background:radial-gradient(circle, rgba(232,169,59,.35) 0%, transparent 70%);
+  }
+  .auth-hero::after{
+    content:'';position:absolute;bottom:-80px;left:-40px;width:260px;height:260px;border-radius:50%;
+    background:radial-gradient(circle, rgba(15,163,163,.30) 0%, transparent 70%);
+  }
+  .auth-hero-inner{position:relative;z-index:1}
+  .auth-seal{
+    width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,.12);
+    border:2px solid rgba(255,255,255,.5);display:flex;align-items:center;justify-content:center;
+    margin:0 auto 16px;color:#fff;font-family:'IBM Plex Mono',monospace;font-weight:700;font-size:13px;line-height:1.15;
+  }
+  .auth-title{font-family:'Source Serif 4',serif;color:#fff;font-size:30px;font-weight:700;margin-bottom:6px}
+  .auth-subtitle{color:#E9E6D8;font-size:14.5px;margin-bottom:20px}
+  .auth-badges{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+  .auth-badge{
+    font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;padding:6px 12px;border-radius:14px;
+    color:#fff;border:1px solid rgba(255,255,255,.35);
+  }
+  .auth-badge.b1{background:rgba(232,169,59,.25)}
+  .auth-badge.b2{background:rgba(15,163,163,.25)}
+  .auth-badge.b3{background:rgba(255,107,74,.25)}
+  .auth-card{
+    position:relative;z-index:2;max-width:420px;margin:0 auto;
+    box-shadow:0 14px 34px rgba(28,39,64,.18);border-top:4px solid var(--gold);
+  }
+  .auth-tabs{margin-bottom:0}
+  .auth-tab{flex:1;text-align:center;padding:10px 14px}
+  .auth-tab.active{background:var(--grad-hero);border-color:transparent}
+  @media(max-width:480px){
+    .auth-hero{padding:34px 16px 90px;margin-bottom:-64px}
+    .auth-title{font-size:24px}
+  }
   .btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
   .btn.block{width:100%}
   .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
   @media(max-width:640px){.grid2{grid-template-columns:1fr}}
   .mode-card{
-    border:1.5px solid var(--line);border-radius:6px;padding:20px;
-    cursor:pointer;background:#fff;transition:border-color .15s, box-shadow .15s;
+    border:1.5px solid var(--line);border-radius:8px;padding:20px;
+    cursor:pointer;background:#fff;transition:border-color .15s, box-shadow .15s, transform .15s;
+    position:relative;overflow:hidden;
   }
-  .mode-card:hover{border-color:var(--maroon);box-shadow:var(--shadow)}
+  .mode-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:var(--line)}
+  .mode-card.c-teal::before{background:linear-gradient(90deg, var(--teal), var(--violet))}
+  .mode-card.c-sunset::before{background:linear-gradient(90deg, var(--sunset), var(--gold))}
+  .mode-card:hover{border-color:var(--maroon);box-shadow:var(--shadow);transform:translateY(-2px)}
   .mode-card .tag{
     font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.1em;
     text-transform:uppercase;color:var(--maroon);font-weight:600;margin-bottom:8px;display:block;
   }
+  .mode-card.c-teal .tag{color:var(--teal)}
+  .mode-card.c-sunset .tag{color:var(--sunset)}
   .mode-card h3{font-size:19px;margin-bottom:6px}
   .mode-card p{color:var(--ink-soft);font-size:13.5px;line-height:1.5;margin:0}
   select,input[type=text]{
@@ -253,41 +315,197 @@
 </div>
 
 <script type="module">
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+const app = document.getElementById('app');
+document.getElementById('titleLink').onclick = () => renderHome();
 
 const SUPABASE_URL = 'https://llptkwjlikvfztxsotmk.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxscHRrd2psaWt2Znp0eHNvdG1rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODYyOTI4MzQsImV4cCI6MjEwMTg2ODgzNH0.D6t8f_vOq426mrTVxPufRUqe_6LWLf-doldXJNqGEXg';
-const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
-
 const AVAILABLE_SETS = [1, 2, 3, 4, 5]; // all 5 sets complete
 const FULL_TEST_MINUTES = 150;
 const SECTION_MINUTES = { 1: 25, 2: 35, 3: 70 }; // Language, GS, CS
 const PART_NAMES = { 1: 'Part I — Language', 2: 'Part II — General Studies', 3: 'Part III — Computer Science' };
 
-const app = document.getElementById('app');
-document.getElementById('titleLink').onclick = () => renderHome();
-
+let sb = null;
 let state = {}; // current quiz state
+
+function showFatalError(context, err){
+  console.error(context, err);
+  app.innerHTML = `
+    <div class="card" style="text-align:center">
+      <h2 style="font-size:18px;margin-bottom:8px">Couldn't load the app</h2>
+      <p class="muted" style="margin-bottom:16px">${context}. This is usually a temporary network hiccup.</p>
+      <button class="btn maroon" onclick="location.reload()">Retry</button>
+    </div>
+  `;
+}
+
+let currentUser = null; // { id, email }
+
+async function boot(){
+  try {
+    const mod = await import('https://esm.sh/@supabase/supabase-js@2');
+    sb = mod.createClient(SUPABASE_URL, SUPABASE_KEY);
+  } catch (err) {
+    showFatalError('Failed to load the Supabase client library from the CDN', err);
+    return;
+  }
+
+  try {
+    // Supabase auto-detects a magic-link token in the URL (#access_token=...) and
+    // establishes a session before this resolves.
+    const { data: { session } } = await sb.auth.getSession();
+    if (session && session.user) {
+      currentUser = { id: session.user.id, email: session.user.email };
+    }
+    // Clean the magic-link tokens out of the URL bar once consumed.
+    if (window.location.hash.includes('access_token')) {
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+  } catch (err) {
+    console.error('Session check failed:', err);
+  }
+
+  sb.auth.onAuthStateChange((_event, session) => {
+    currentUser = session && session.user ? { id: session.user.id, email: session.user.email } : null;
+  });
+
+  try {
+    currentUser ? renderHome() : renderLogin();
+  } catch (err) {
+    showFatalError('Failed to render the app', err);
+  }
+}
+boot();
+
+function renderLogin(msg, startOnSignup){
+  app.innerHTML = `
+    <div class="auth-hero">
+      <div class="auth-hero-inner">
+        <div class="auth-seal">BPSC<br>TRE</div>
+        <h1 class="auth-title">BPSC TRE 4.0</h1>
+        <p class="auth-subtitle">Computer Science Practice Portal</p>
+        <div class="auth-badges">
+          <span class="auth-badge b1">750 Questions</span>
+          <span class="auth-badge b2">5 Full Mock Sets</span>
+          <span class="auth-badge b3">Timed & Scored</span>
+        </div>
+      </div>
+    </div>
+    <div class="card auth-card">
+      <div class="tabs auth-tabs">
+        <div class="tab auth-tab ${startOnSignup ? '' : 'active'}" id="tabSignin">Sign In</div>
+        <div class="tab auth-tab ${startOnSignup ? 'active' : ''}" id="tabSignup">Create Account</div>
+      </div>
+      ${msg ? `<p style="color:var(--maroon);font-size:13.5px;margin:14px 0 0;font-weight:600">${msg}</p>` : ''}
+      <div style="margin-top:16px">
+        <label class="muted" style="display:block;margin-bottom:6px;font-size:13px">Email address</label>
+        <input type="text" id="emailInput" placeholder="you@example.com" style="width:100%;margin-bottom:14px" autocomplete="email">
+        <label class="muted" style="display:block;margin-bottom:6px;font-size:13px">Password</label>
+        <input type="password" id="passInput" placeholder="At least 6 characters" style="width:100%;margin-bottom:6px" autocomplete="current-password">
+        <p class="muted" id="passHint" style="font-size:12px;margin-bottom:14px;${startOnSignup ? '' : 'visibility:hidden'}">Minimum 6 characters. You'll use this to sign back in next time.</p>
+        <button class="btn gradient block" id="submitAuthBtn">${startOnSignup ? 'Create account & start practicing' : 'Sign in'}</button>
+      </div>
+    </div>
+  `;
+  let isSignup = !!startOnSignup;
+  const emailInput = document.getElementById('emailInput');
+  const passInput = document.getElementById('passInput');
+  const passHint = document.getElementById('passHint');
+  const submitBtn = document.getElementById('submitAuthBtn');
+  const tabSignin = document.getElementById('tabSignin');
+  const tabSignup = document.getElementById('tabSignup');
+
+  function setMode(signup){
+    isSignup = signup;
+    tabSignin.classList.toggle('active', !signup);
+    tabSignup.classList.toggle('active', signup);
+    submitBtn.textContent = signup ? 'Create account & start practicing' : 'Sign in';
+    passHint.style.visibility = signup ? 'visible' : 'hidden';
+    passInput.setAttribute('autocomplete', signup ? 'new-password' : 'current-password');
+  }
+  tabSignin.onclick = () => setMode(false);
+  tabSignup.onclick = () => setMode(true);
+
+  async function submit(){
+    const email = emailInput.value.trim();
+    const password = passInput.value;
+    if (!email || !email.includes('@') || !email.includes('.')) {
+      renderLogin('Please enter a valid email address.', isSignup);
+      return;
+    }
+    if (!password || password.length < 6) {
+      renderLogin('Password must be at least 6 characters.', isSignup);
+      return;
+    }
+    submitBtn.disabled = true;
+    submitBtn.textContent = isSignup ? 'Creating account…' : 'Signing in…';
+    try {
+      if (isSignup) {
+        const { data, error } = await sb.auth.signUp({ email, password });
+        if (error) throw error;
+        if (data.session) {
+          currentUser = { id: data.user.id, email: data.user.email };
+          renderHome();
+        } else {
+          renderLogin('Account created! Check your email to confirm it, then sign in below.', false);
+        }
+      } else {
+        const { data, error } = await sb.auth.signInWithPassword({ email, password });
+        if (error) throw error;
+        currentUser = { id: data.user.id, email: data.user.email };
+        renderHome();
+      }
+    } catch (err) {
+      const friendly = /invalid login credentials/i.test(err.message || '')
+        ? 'Incorrect email or password.'
+        : (err.message || 'Something went wrong, please try again.');
+      renderLogin(friendly, isSignup);
+    }
+  }
+  submitBtn.onclick = submit;
+  passInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') submit(); });
+}
+
+function requireAuth(){
+  if (!currentUser){
+    renderLogin('Please sign in first.');
+    return false;
+  }
+  return true;
+}
+
+async function signOut(){
+  try { await sb.auth.signOut(); } catch(e){ console.error(e); }
+  currentUser = null;
+  renderLogin();
+}
+
+
 
 function fmtTime(sec){
   const m = Math.floor(sec/60), s = sec%60;
   return String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
 }
 
-async function renderHome(){
+function renderHome(){
+  if (!requireAuth()) return;
   stopTimer();
-  const { data: attempts } = await sb.from('attempts').select('*').not('submitted_at','is',null).order('started_at',{ascending:false}).limit(5);
+  // Render the mode cards and buttons IMMEDIATELY — never block the UI on a network call.
   app.innerHTML = `
     <div class="card">
-      <h2 style="font-size:20px;margin-bottom:4px">Choose your practice mode</h2>
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap;margin-bottom:4px">
+        <h2 style="font-size:20px">Choose your practice mode</h2>
+        <button class="btn secondary" id="signOutBtn" style="font-size:12.5px;padding:8px 14px">Sign out</button>
+      </div>
+      <p class="muted" style="margin-bottom:2px">Signed in as <strong>${escapeHtml(currentUser.email)}</strong></p>
       <p class="muted">All 5 sets are fully loaded (150 Qs each · 750 questions total).</p>
       <div class="grid2" style="margin-top:16px">
-        <div class="mode-card" id="sectionModeCard">
+        <div class="mode-card c-teal" id="sectionModeCard">
           <span class="tag">Section-wise</span>
           <h3>Practice by Section</h3>
           <p>Drill Language, General Studies, or Computer Science on their own, with a proportional timer and instant topic-wise feedback.</p>
         </div>
-        <div class="mode-card" id="fullModeCard">
+        <div class="mode-card c-sunset" id="fullModeCard">
           <span class="tag">Full-length · ${FULL_TEST_MINUTES} min</span>
           <h3>Full Mock Test</h3>
           <p>All 150 questions, exact ${FULL_TEST_MINUTES}-minute exam timer, auto-submit on time-up, merit score computed on Part II + III (120).</p>
@@ -301,8 +519,25 @@ async function renderHome(){
   `;
   document.getElementById('sectionModeCard').onclick = renderSectionPicker;
   document.getElementById('fullModeCard').onclick = renderFullPicker;
+  document.getElementById('signOutBtn').onclick = signOut;
 
+  // Load history separately, after the UI is already interactive. Never let this block or break the home screen.
+  loadHistory();
+}
+
+async function loadHistory(){
   const historyList = document.getElementById('historyList');
+  if (!historyList) return; // user already navigated away
+  let attempts = null;
+  try {
+    const res = await sb.from('attempts').select('*').not('submitted_at','is',null).order('started_at',{ascending:false}).limit(5);
+    attempts = res.data;
+    if (res.error) throw res.error;
+  } catch (e) {
+    console.error('History load failed:', e);
+    historyList.innerHTML = `<span class="muted">Couldn't load history right now — you can still start a test.</span>`;
+    return;
+  }
   if (!attempts || attempts.length === 0){
     historyList.innerHTML = `<span class="muted">No attempts yet — take a test to see your history here.</span>`;
   } else {
@@ -405,6 +640,7 @@ let timerInterval = null;
 function stopTimer(){ if (timerInterval){ clearInterval(timerInterval); timerInterval = null; } }
 
 async function startQuiz({ mode, setNumber, part }){
+  if (!requireAuth()) return;
   app.innerHTML = `<div class="loading">Preparing your paper…</div>`;
   let q = sb.from('questions').select('*').eq('set_number', setNumber).order('part').order('q_no');
   if (mode === 'section') q = q.eq('part', part);
@@ -417,7 +653,7 @@ async function startQuiz({ mode, setNumber, part }){
   const durationSec = mode === 'full' ? FULL_TEST_MINUTES * 60 : SECTION_MINUTES[part] * 60;
 
   const { data: attemptRow } = await sb.from('attempts').insert({
-    mode, set_number: setNumber, part: mode==='section' ? part : null, duration_seconds: durationSec
+    mode, set_number: setNumber, part: mode==='section' ? part : null, duration_seconds: durationSec, user_id: currentUser.id
   }).select().single();
 
   state = {
@@ -493,7 +729,7 @@ function renderQuiz(){
 
   const opts = [
     {k:'A', v:q.option_a}, {k:'B', v:q.option_b}, {k:'C', v:q.option_c}, {k:'D', v:q.option_d},
-    {k:'E', v:'None of the above / I don\\'t want to answer this'}
+    {k:'E', v:"None of the above / I don't want to answer this"}
   ];
   const optWrap = document.getElementById('optionsWrap');
   optWrap.innerHTML = opts.map(o => `
@@ -667,7 +903,6 @@ function escapeHtml(str){
   return d.innerHTML;
 }
 
-renderHome();
 </script>
 </body>
 </html>
