@@ -356,6 +356,7 @@ async function boot(){
     const { data: { session } } = await sb.auth.getSession();
     if (session && session.user) {
       currentUser = { id: session.user.id, email: session.user.email };
+      await attachProfileName();
     }
     // Clean the magic-link tokens out of the URL bar once consumed.
     if (window.location.hash.includes('access_token')) {
@@ -366,7 +367,9 @@ async function boot(){
   }
 
   sb.auth.onAuthStateChange((_event, session) => {
-    currentUser = session && session.user ? { id: session.user.id, email: session.user.email } : null;
+    // Sign-in is already handled explicitly at each call site (with profile name attached).
+    // Only react here to sign-out / session loss, to avoid a race that could wipe currentUser.name.
+    if (!session) currentUser = null;
   });
 
   try {
@@ -377,7 +380,18 @@ async function boot(){
 }
 boot();
 
-function renderLogin(msg, startOnSignup){
+async function attachProfileName(){
+  if (!currentUser) return;
+  try {
+    const { data } = await sb.from('profiles').select('full_name').eq('id', currentUser.id).single();
+    if (data && data.full_name) currentUser.name = data.full_name;
+  } catch (e) {
+    // Non-fatal — just fall back to showing the email.
+    console.error('Profile fetch failed:', e);
+  }
+}
+
+function renderLogin(msg, startOnSignup, msgType){
   app.innerHTML = `
     <div class="auth-hero">
       <div class="auth-hero-inner">
@@ -387,7 +401,7 @@ function renderLogin(msg, startOnSignup){
         <div class="auth-badges">
           <span class="auth-badge b1">750 Questions</span>
           <span class="auth-badge b2">5 Full Mock Sets</span>
-          <span class="auth-badge b3">Timed & Scored</span>
+          <span class="auth-badge b3">Live Leaderboard</span>
         </div>
       </div>
     </div>
@@ -396,8 +410,15 @@ function renderLogin(msg, startOnSignup){
         <div class="tab auth-tab ${startOnSignup ? '' : 'active'}" id="tabSignin">Sign In</div>
         <div class="tab auth-tab ${startOnSignup ? 'active' : ''}" id="tabSignup">Create Account</div>
       </div>
-      ${msg ? `<p style="color:var(--maroon);font-size:13.5px;margin:14px 0 0;font-weight:600">${msg}</p>` : ''}
+      ${msg ? `<p style="color:${msgType==='ok' ? 'var(--teal)' : 'var(--maroon)'};font-size:13.5px;margin:14px 0 0;font-weight:600">${msg}</p>` : ''}
+      <div id="resendWrap" class="hidden" style="margin-top:8px">
+        <button class="btn secondary" id="resendBtn" style="font-size:12.5px;padding:8px 14px">Resend confirmation email</button>
+      </div>
       <div style="margin-top:16px">
+        <div id="nameFieldWrap" class="${startOnSignup ? '' : 'hidden'}">
+          <label class="muted" style="display:block;margin-bottom:6px;font-size:13px">Your name</label>
+          <input type="text" id="nameInput" placeholder="e.g. Nitish Kumar" style="width:100%;margin-bottom:14px" autocomplete="name">
+        </div>
         <label class="muted" style="display:block;margin-bottom:6px;font-size:13px">Email address</label>
         <input type="text" id="emailInput" placeholder="you@example.com" style="width:100%;margin-bottom:14px" autocomplete="email">
         <label class="muted" style="display:block;margin-bottom:6px;font-size:13px">Password</label>
@@ -408,12 +429,17 @@ function renderLogin(msg, startOnSignup){
     </div>
   `;
   let isSignup = !!startOnSignup;
+  let lastEmailForResend = '';
+  const nameFieldWrap = document.getElementById('nameFieldWrap');
+  const nameInput = document.getElementById('nameInput');
   const emailInput = document.getElementById('emailInput');
   const passInput = document.getElementById('passInput');
   const passHint = document.getElementById('passHint');
   const submitBtn = document.getElementById('submitAuthBtn');
   const tabSignin = document.getElementById('tabSignin');
   const tabSignup = document.getElementById('tabSignup');
+  const resendWrap = document.getElementById('resendWrap');
+  const resendBtn = document.getElementById('resendBtn');
 
   function setMode(signup){
     isSignup = signup;
@@ -421,14 +447,33 @@ function renderLogin(msg, startOnSignup){
     tabSignup.classList.toggle('active', signup);
     submitBtn.textContent = signup ? 'Create account & start practicing' : 'Sign in';
     passHint.style.visibility = signup ? 'visible' : 'hidden';
+    nameFieldWrap.classList.toggle('hidden', !signup);
     passInput.setAttribute('autocomplete', signup ? 'new-password' : 'current-password');
   }
   tabSignin.onclick = () => setMode(false);
   tabSignup.onclick = () => setMode(true);
 
+  resendBtn.onclick = async () => {
+    if (!lastEmailForResend) return;
+    resendBtn.disabled = true;
+    resendBtn.textContent = 'Sending…';
+    try {
+      const { error } = await sb.auth.resend({ type: 'signup', email: lastEmailForResend });
+      if (error) throw error;
+      renderLogin("Confirmation email re-sent. Check spam/junk if it doesn't arrive in a minute.", false, "ok");
+    } catch (err) {
+      renderLogin(`Couldn't resend: ${err.message || 'try again shortly.'}`, false);
+    }
+  };
+
   async function submit(){
+    const name = nameInput ? nameInput.value.trim() : '';
     const email = emailInput.value.trim();
     const password = passInput.value;
+    if (isSignup && !name) {
+      renderLogin('Please enter your name.', true);
+      return;
+    }
     if (!email || !email.includes('@') || !email.includes('.')) {
       renderLogin('Please enter a valid email address.', isSignup);
       return;
@@ -441,27 +486,55 @@ function renderLogin(msg, startOnSignup){
     submitBtn.textContent = isSignup ? 'Creating account…' : 'Signing in…';
     try {
       if (isSignup) {
-        const { data, error } = await sb.auth.signUp({ email, password });
+        const { data, error } = await sb.auth.signUp({ email, password, options: { data: { full_name: name } } });
         if (error) throw error;
         if (data.session) {
-          currentUser = { id: data.user.id, email: data.user.email };
+          currentUser = { id: data.user.id, email: data.user.email, name };
           renderHome();
         } else {
-          renderLogin('Account created! Check your email to confirm it, then sign in below.', false);
+          renderLogin('Account created! If your project requires it, check your email to confirm — otherwise just switch to Sign In and log in now.', false, 'ok');
         }
       } else {
         const { data, error } = await sb.auth.signInWithPassword({ email, password });
         if (error) throw error;
         currentUser = { id: data.user.id, email: data.user.email };
+        await attachProfileName();
         renderHome();
       }
     } catch (err) {
-      const friendly = /invalid login credentials/i.test(err.message || '')
+      const raw = err.message || '';
+      if (/email not confirmed/i.test(raw)) {
+        lastEmailForResend = email;
+        resendWrap.classList.remove('hidden');
+        renderLoginKeepMsg("Your email isn't confirmed yet. Check your inbox (and spam folder) for the link — or resend it below.", isSignup, lastEmailForResend);
+        return;
+      }
+      const friendly = /invalid login credentials/i.test(raw)
         ? 'Incorrect email or password.'
-        : (err.message || 'Something went wrong, please try again.');
+        : /already registered|already exists/i.test(raw)
+          ? 'That email already has an account — try Sign In instead.'
+          : (raw || 'Something went wrong, please try again.');
       renderLogin(friendly, isSignup);
     }
   }
+
+  function renderLoginKeepMsg(msg2, signup2, emailForResend){
+    renderLogin(msg2, signup2);
+    document.getElementById('resendWrap').classList.remove('hidden');
+    lastEmailForResend = emailForResend;
+    document.getElementById('resendBtn').onclick = async () => {
+      const rb = document.getElementById('resendBtn');
+      rb.disabled = true; rb.textContent = 'Sending…';
+      try {
+        const { error } = await sb.auth.resend({ type: 'signup', email: emailForResend });
+        if (error) throw error;
+        renderLogin("Confirmation email re-sent. Check spam/junk if it doesn't arrive in a minute.", false, "ok");
+      } catch (err) {
+        renderLogin(`Couldn't resend: ${err.message || 'try again shortly.'}`, false);
+      }
+    };
+  }
+
   submitBtn.onclick = submit;
   passInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') submit(); });
 }
@@ -497,7 +570,7 @@ function renderHome(){
         <h2 style="font-size:20px">Choose your practice mode</h2>
         <button class="btn secondary" id="signOutBtn" style="font-size:12.5px;padding:8px 14px">Sign out</button>
       </div>
-      <p class="muted" style="margin-bottom:2px">Signed in as <strong>${escapeHtml(currentUser.email)}</strong></p>
+      <p class="muted" style="margin-bottom:2px">Welcome, <strong>${escapeHtml(currentUser.name || currentUser.email)}</strong>${currentUser.name ? ` <span class="muted">(${escapeHtml(currentUser.email)})</span>` : ''}</p>
       <p class="muted">All 5 sets are fully loaded (150 Qs each · 750 questions total).</p>
       <div class="grid2" style="margin-top:16px">
         <div class="mode-card c-teal" id="sectionModeCard">
@@ -516,13 +589,19 @@ function renderHome(){
       <h2 style="font-size:16px;margin-bottom:10px">Recent attempts</h2>
       <div id="historyList" class="muted">Loading…</div>
     </div>
+    <div class="card" id="leaderboardCard">
+      <h2 style="font-size:16px;margin-bottom:2px">🏆 Leaderboard — Full Mock Tests</h2>
+      <p class="muted" style="margin-bottom:10px;font-size:12.5px">Best merit score % across all participants</p>
+      <div id="leaderboardList" class="muted">Loading…</div>
+    </div>
   `;
   document.getElementById('sectionModeCard').onclick = renderSectionPicker;
   document.getElementById('fullModeCard').onclick = renderFullPicker;
   document.getElementById('signOutBtn').onclick = signOut;
 
-  // Load history separately, after the UI is already interactive. Never let this block or break the home screen.
+  // Load history and leaderboard separately, after the UI is already interactive.
   loadHistory();
+  loadLeaderboard();
 }
 
 async function loadHistory(){
@@ -548,6 +627,31 @@ async function loadHistory(){
       return `<div class="history-row"><span>${label} <span class="muted">· ${date}</span></span><span class="mono" style="font-weight:600">${meritStr}</span></div>`;
     }).join('');
   }
+}
+
+async function loadLeaderboard(){
+  const list = document.getElementById('leaderboardList');
+  if (!list) return; // user already navigated away
+  let rows = null;
+  try {
+    const res = await sb.from('leaderboard').select('*').limit(10);
+    rows = res.data;
+    if (res.error) throw res.error;
+  } catch (e) {
+    console.error('Leaderboard load failed:', e);
+    list.innerHTML = `<span class="muted">Leaderboard isn't available right now.</span>`;
+    return;
+  }
+  if (!rows || rows.length === 0){
+    list.innerHTML = `<span class="muted">No full-test scores yet — be the first to set the bar!</span>`;
+    return;
+  }
+  const medals = ['🥇','🥈','🥉'];
+  list.innerHTML = rows.map((r, i) => {
+    const date = new Date(r.submitted_at).toLocaleDateString('en-IN', {day:'2-digit',month:'short'});
+    const rankLabel = medals[i] || `#${i+1}`;
+    return `<div class="history-row"><span>${rankLabel} ${escapeHtml(r.display_name)} <span class="muted">· Set ${r.set_number} · ${date}</span></span><span class="mono" style="font-weight:600">${r.merit_pct}%</span></div>`;
+  }).join('');
 }
 
 function setPills(containerId, onPick){

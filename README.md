@@ -7,6 +7,7 @@ A self-contained practice exam app for the **Bihar BPSC TRE 4.0 Computer Science
 ## What's included
 
 - **Email + password sign-in** (Supabase Auth) — every user's attempt history is private to their own account.
+- **Live leaderboard** — best full-mock-test score % across all signed-up participants, shown by name on the home screen.
 - **750 questions** across **5 independent full-length sets** (Set 1–5), each set structured exactly like the real exam:
   - Part I — Language: 30 Qs (10 English + 20 Hindi), qualifying only
   - Part II — General Studies: 40 Qs (Math & Reasoning, Science, Current Affairs & Polity, History, Indian & Bihar Geography)
@@ -47,6 +48,7 @@ directly in a browser, or serve it from any static host.
    const SUPABASE_KEY = 'YOUR-ANON-KEY';
    ```
 4. Deploy `index.html` anywhere that serves static files — Vercel, Netlify, GitHub Pages, or just open it locally. No build command needed.
+5. **Recommended for multi-participant use:** in your Supabase dashboard, go to **Authentication → Providers → Email** and turn **"Confirm email" OFF**. Supabase's built-in mailer (used for confirmation emails on the free tier) is rate-limited and unreliable for real signups — disabling confirmation makes `signUp()` log people in instantly with no email dependency at all. The app already handles the confirmed-email case gracefully (with a resend button) if you'd rather leave it on.
 
 ### Deploying to Vercel (what this project uses)
 

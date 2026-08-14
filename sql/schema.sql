@@ -71,7 +71,7 @@ create policy "users insert own attempt_answers" on attempt_answers
     exists (select 1 from attempts a where a.id = attempt_answers.attempt_id and a.user_id = auth.uid())
   );
 
--- Simple profile table (optional, not yet used by the UI beyond email display)
+-- Profile table: name shown on the greeting and leaderboard, filled in at signup.
 create table if not exists profiles (
   id uuid primary key references auth.users(id) on delete cascade,
   full_name text,
@@ -81,3 +81,43 @@ alter table profiles enable row level security;
 create policy "users read own profile" on profiles for select using (auth.uid() = id);
 create policy "users insert own profile" on profiles for insert with check (auth.uid() = id);
 create policy "users update own profile" on profiles for update using (auth.uid() = id);
+
+-- Auto-create a profile row the moment someone signs up (even before email
+-- confirmation), capturing full_name from signUp's options.data.
+create or replace function public.handle_new_user()
+returns trigger
+language plpgsql
+security definer
+set search_path = public
+as $$
+begin
+  insert into public.profiles (id, full_name)
+  values (new.id, new.raw_user_meta_data->>'full_name')
+  on conflict (id) do nothing;
+  return new;
+end;
+$$;
+
+drop trigger if exists on_auth_user_created on auth.users;
+create trigger on_auth_user_created
+  after insert on auth.users
+  for each row execute function public.handle_new_user();
+
+-- Public leaderboard: best full-test merit % per participant, name + score only
+-- (no email, no user_id exposed). Intentionally bypasses per-user RLS on
+-- attempts, since a leaderboard is meant to be visible to every signed-in user.
+create or replace view public.leaderboard as
+select
+  coalesce(nullif(p.full_name, ''), 'Participant') as display_name,
+  a.set_number,
+  a.merit_score,
+  a.merit_total,
+  round(a.merit_score::numeric / nullif(a.merit_total,0) * 100, 1) as merit_pct,
+  a.submitted_at
+from attempts a
+join profiles p on p.id = a.user_id
+where a.mode = 'full' and a.submitted_at is not null and a.merit_total > 0
+order by merit_pct desc, a.submitted_at asc
+limit 50;
+
+grant select on public.leaderboard to authenticated;
