@@ -311,7 +311,7 @@
     <div class="seal">BPSC<br>TRE</div>
   </div>
   <div id="app"><div class="loading">Loading question bank…</div></div>
-  <div class="footer-note">Built for Nitish Kumar's TRE 4.0 preparation · Bihar Computer Science Teacher, General Category</div>
+  <div class="footer-note">BPSC TRE 4.0 · Computer Science Teacher Recruitment Exam Practice Portal</div>
 </div>
 
 <script type="module">
@@ -320,7 +320,7 @@ document.getElementById('titleLink').onclick = () => renderHome();
 
 const SUPABASE_URL = 'https://llptkwjlikvfztxsotmk.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxscHRrd2psaWt2Znp0eHNvdG1rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODYyOTI4MzQsImV4cCI6MjEwMTg2ODgzNH0.D6t8f_vOq426mrTVxPufRUqe_6LWLf-doldXJNqGEXg';
-const AVAILABLE_SETS = [1, 2, 3, 4, 5]; // all 5 sets complete
+const AVAILABLE_SETS = [1, 2, 3, 4, 5]; // add new numbers here as more sets are loaded into the database
 const FULL_TEST_MINUTES = 150;
 const SECTION_MINUTES = { 1: 25, 2: 35, 3: 70 }; // Language, GS, CS
 const PART_NAMES = { 1: 'Part I — Language', 2: 'Part II — General Studies', 3: 'Part III — Computer Science' };
@@ -399,8 +399,8 @@ function renderLogin(msg, startOnSignup, msgType){
         <h1 class="auth-title">BPSC TRE 4.0</h1>
         <p class="auth-subtitle">Computer Science Practice Portal</p>
         <div class="auth-badges">
-          <span class="auth-badge b1">750 Questions</span>
-          <span class="auth-badge b2">5 Full Mock Sets</span>
+          <span class="auth-badge b1">Full-Length Mock Tests</span>
+          <span class="auth-badge b2">Exam-Pattern Timing</span>
           <span class="auth-badge b3">Live Leaderboard</span>
         </div>
       </div>
@@ -417,7 +417,7 @@ function renderLogin(msg, startOnSignup, msgType){
       <div style="margin-top:16px">
         <div id="nameFieldWrap" class="${startOnSignup ? '' : 'hidden'}">
           <label class="muted" style="display:block;margin-bottom:6px;font-size:13px">Your name</label>
-          <input type="text" id="nameInput" placeholder="e.g. Nitish Kumar" style="width:100%;margin-bottom:14px" autocomplete="name">
+          <input type="text" id="nameInput" placeholder="e.g. Priya Sharma" style="width:100%;margin-bottom:14px" autocomplete="name">
         </div>
         <label class="muted" style="display:block;margin-bottom:6px;font-size:13px">Email address</label>
         <input type="text" id="emailInput" placeholder="you@example.com" style="width:100%;margin-bottom:14px" autocomplete="email">
@@ -571,7 +571,7 @@ function renderHome(){
         <button class="btn secondary" id="signOutBtn" style="font-size:12.5px;padding:8px 14px">Sign out</button>
       </div>
       <p class="muted" style="margin-bottom:2px">Welcome, <strong>${escapeHtml(currentUser.name || currentUser.email)}</strong>${currentUser.name ? ` <span class="muted">(${escapeHtml(currentUser.email)})</span>` : ''}</p>
-      <p class="muted">All 5 sets are fully loaded (150 Qs each · 750 questions total).</p>
+      <p class="muted">Choose a full mock test for the real exam experience, or drill a single section.</p>
       <div class="grid2" style="margin-top:16px">
         <div class="mode-card c-teal" id="sectionModeCard">
           <span class="tag">Section-wise</span>
@@ -656,14 +656,10 @@ async function loadLeaderboard(){
 
 function setPills(containerId, onPick){
   const c = document.getElementById(containerId);
-  c.innerHTML = [1,2,3,4,5].map(n => {
-    const avail = AVAILABLE_SETS.includes(n);
-    return `<span class="set-pill ${avail ? '' : 'disabled'}" data-n="${n}">Set ${n}${avail ? '' : ' (soon)'}</span>`;
-  }).join('');
+  c.innerHTML = AVAILABLE_SETS.map(n => `<span class="set-pill" data-n="${n}">Set ${n}</span>`).join('');
   c.querySelectorAll('.set-pill').forEach(el => {
     el.onclick = () => {
       const n = parseInt(el.dataset.n);
-      if (!AVAILABLE_SETS.includes(n)) return;
       c.querySelectorAll('.set-pill').forEach(x=>x.classList.remove('active'));
       el.classList.add('active');
       onPick(n);
@@ -955,7 +951,7 @@ function renderResults(){
     ${weak.length ? `
     <div class="card weakbox">
       <h3>Weak areas (below 60%)</h3>
-      <ul>${weak.map(([t,s]) => `<li>${t} — ${Math.round(s.correct/s.total*100)}% (${s.correct}/${s.total}). Ask Claude: "Give me a theory PDF on ${t}"</li>`).join('')}</ul>
+      <ul>${weak.map(([t,s]) => `<li>${t} — ${Math.round(s.correct/s.total*100)}% (${s.correct}/${s.total})</li>`).join('')}</ul>
     </div>` : ''}
 
     <div class="card">
