@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>BPSC TRE 4.0 — Computer Science Prep</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -67,13 +69,9 @@
   }
   .brand h1{font-size:22px;color:var(--ink)}
   .seal{
-    width:52px;height:52px;border-radius:50%;
-    border:2.5px solid var(--maroon);
-    display:flex;align-items:center;justify-content:center;
-    font-family:'IBM Plex Mono',monospace;font-weight:700;color:var(--maroon);
-    font-size:11px;text-align:center;line-height:1.1;
-    flex-shrink:0;
+    width:52px;height:52px;flex-shrink:0;
   }
+  .seal img{width:100%;height:100%;display:block}
   .card{
     background:#fff;
     border:1px solid var(--line);
@@ -119,10 +117,10 @@
   }
   .auth-hero-inner{position:relative;z-index:1}
   .auth-seal{
-    width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,.12);
-    border:2px solid rgba(255,255,255,.5);display:flex;align-items:center;justify-content:center;
-    margin:0 auto 16px;color:#fff;font-family:'IBM Plex Mono',monospace;font-weight:700;font-size:13px;line-height:1.15;
+    width:88px;height:88px;margin:0 auto 16px;
+    filter:drop-shadow(0 6px 16px rgba(0,0,0,.35));
   }
+  .auth-seal img{width:100%;height:100%;display:block}
   .auth-title{font-family:'Source Serif 4',serif;color:#fff;font-size:30px;font-weight:700;margin-bottom:6px}
   .auth-subtitle{color:#E9E6D8;font-size:14.5px;margin-bottom:20px}
   .auth-badges{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
@@ -308,7 +306,7 @@
       <span class="eyebrow">BPSC TRE 4.0 · Computer Science</span>
       <h1 id="titleLink" style="cursor:pointer">Teacher Recruitment Exam — Practice Portal</h1>
     </div>
-    <div class="seal">BPSC<br>TRE</div>
+    <div class="seal"><img src="/favicon.svg" alt="BPSC TRE logo"></div>
   </div>
   <div id="app"><div class="loading">Loading question bank…</div></div>
   <div class="footer-note">BPSC TRE 4.0 · Computer Science Teacher Recruitment Exam Practice Portal</div>
@@ -395,7 +393,7 @@ function renderLogin(msg, startOnSignup, msgType){
   app.innerHTML = `
     <div class="auth-hero">
       <div class="auth-hero-inner">
-        <div class="auth-seal">BPSC<br>TRE</div>
+        <div class="auth-seal"><img src="/favicon.svg" alt="BPSC TRE logo"></div>
         <h1 class="auth-title">BPSC TRE 4.0</h1>
         <p class="auth-subtitle">Computer Science Practice Portal</p>
         <div class="auth-badges">

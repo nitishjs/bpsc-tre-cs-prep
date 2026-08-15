@@ -4,6 +4,13 @@ A self-contained practice exam app for the **Bihar BPSC TRE 4.0 Computer Science
 
 **Live app:** https://bpsc-tre-cs-prep-big-bang1.vercel.app
 
+## Logo
+
+The app's logo lives in `assets/logo/` — a circular seal mark (mortarboard + `</>` for "computer science teacher exam") and a full wordmark lockup, both as SVG (scalable) and PNG (512px / 1024px).
+
+- `logo-icon.svg` / `logo-icon-512.png` / `logo-icon-1024.png` — the icon mark alone, used as the app's favicon (`favicon.svg` at the repo root).
+- `logo-wordmark.svg` / `logo-wordmark.png` — icon + "BPSC TRE 4.0 / Computer Science / Practice Portal" lockup, for headers or print use.
+
 ## What's included
 
 - **Email + password sign-in** (Supabase Auth) — every user's attempt history is private to their own account.
