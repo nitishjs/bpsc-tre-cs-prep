@@ -1,62 +1,18 @@
-<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#16203A"/>
-      <stop offset="42%" stop-color="#3D2E7A"/>
-      <stop offset="100%" stop-color="#8B2331"/>
-    </linearGradient>
-    <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#F5D98C"/>
-      <stop offset="50%" stop-color="#E8A93B"/>
-      <stop offset="100%" stop-color="#C9861F"/>
-    </linearGradient>
-    <radialGradient id="glow1" cx="30%" cy="20%" r="60%">
-      <stop offset="0%" stop-color="#E8A93B" stop-opacity="0.35"/>
-      <stop offset="100%" stop-color="#E8A93B" stop-opacity="0"/>
-    </radialGradient>
-    <radialGradient id="glow2" cx="75%" cy="85%" r="55%">
-      <stop offset="0%" stop-color="#0FA3A3" stop-opacity="0.30"/>
-      <stop offset="100%" stop-color="#0FA3A3" stop-opacity="0"/>
-    </radialGradient>
-    <filter id="softShadow" x="-30%" y="-30%" width="160%" height="160%">
-      <feDropShadow dx="0" dy="6" stdDeviation="10" flood-color="#000000" flood-opacity="0.28"/>
-    </filter>
-  </defs>
-
-  <!-- Outer badge -->
-  <circle cx="256" cy="256" r="248" fill="url(#bgGrad)" filter="url(#softShadow)"/>
-  <circle cx="256" cy="256" r="248" fill="url(#glow1)"/>
-  <circle cx="256" cy="256" r="248" fill="url(#glow2)"/>
-
-  <!-- Gold ring -->
-  <circle cx="256" cy="256" r="236" fill="none" stroke="url(#ringGrad)" stroke-width="7"/>
-  <circle cx="256" cy="256" r="216" fill="none" stroke="url(#ringGrad)" stroke-width="2" stroke-opacity="0.55"/>
-
-  <!-- Decorative studs around the ring -->
-  <g fill="url(#ringGrad)">
-    <circle cx="256" cy="20" r="6"/>
-    <circle cx="256" cy="492" r="6"/>
-    <circle cx="20" cy="256" r="6"/>
-    <circle cx="492" cy="256" r="6"/>
-    <circle cx="93" cy="93" r="4.5"/>
-    <circle cx="419" cy="93" r="4.5"/>
-    <circle cx="93" cy="419" r="4.5"/>
-    <circle cx="419" cy="419" r="4.5"/>
-  </g>
-
-  <!-- Mortarboard (graduation cap) -->
-  <g transform="translate(256,196)">
-    <!-- cap base (rounded trapezoid) -->
-    <path d="M -58 18 Q 0 44 58 18 L 46 40 Q 0 62 -46 40 Z" fill="#F6F2E8"/>
-    <!-- flat top (diamond) -->
-    <polygon points="0,-46 96,4 0,54 -96,4" fill="url(#ringGrad)"/>
-    <polygon points="0,-46 96,4 0,54 -96,4" fill="none" stroke="#8B2331" stroke-width="2" stroke-opacity="0.25"/>
-    <!-- button + tassel -->
-    <circle cx="0" cy="4" r="7" fill="#8B2331"/>
-    <path d="M 0 4 C 34 22, 40 46, 30 78" fill="none" stroke="#F6F2E8" stroke-width="5" stroke-linecap="round"/>
-    <circle cx="29" cy="86" r="9" fill="#F6F2E8"/>
-  </g>
-
-  <!-- Code brackets: computer science -->
-  <text x="256" y="372" text-anchor="middle" font-family="'IBM Plex Mono','Courier New',monospace" font-weight="700" font-size="86" fill="#F6F2E8" letter-spacing="1">&lt;/&gt;</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
+  <!-- Background circle -->
+  <circle cx="60" cy="60" r="58" fill="#1C2740" stroke="#E8A93B" stroke-width="3"/>
+  <!-- Inner ring -->
+  <circle cx="60" cy="60" r="50" fill="none" stroke="#8B2331" stroke-width="2"/>
+  <!-- Mortarboard cap top -->
+  <polygon points="60,18 95,36 60,54 25,36" fill="#E8A93B"/>
+  <!-- Cap button -->
+  <circle cx="60" cy="18" r="3" fill="#1C2740"/>
+  <!-- Tassel string -->
+  <line x1="95" y1="36" x2="95" y2="56" stroke="#E8A93B" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- Tassel end -->
+  <circle cx="95" cy="59" r="4" fill="#8B2331"/>
+  <!-- CS text -->
+  <text x="60" y="80" font-family="Arial Black, Arial" font-weight="900" font-size="22" fill="#F6F2E8" text-anchor="middle">CS</text>
+  <!-- Bottom label -->
+  <text x="60" y="98" font-family="Arial" font-weight="700" font-size="10" fill="#E8A93B" text-anchor="middle" letter-spacing="1">BPSC TRE</text>
 </svg>
