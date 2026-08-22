@@ -1,856 +1,833 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
-<meta name="theme-color" content="#8B2331">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="BPSC Prep">
-<title>BPSC Prep — Prelims &amp; Mains</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>BPSC TRE 4.0 — CS Practice Portal</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
-  --P:#8B2331;--Pd:#6b1a24;--Pl:#a8303f;
-  --gold:#d4a017;--goldf:#f0c040;
-  --bg:#f5f0eb;--card:#fff;--text:#1a1a1a;--muted:#6b6b6b;--border:#ddd5cc;
-  --ok:#1e8449;--okl:#d5f5e3;--no:#c0392b;--nol:#fde8e8;
-  --warn:#d68910;--warnl:#fef9e7;--info:#2471a3;--infl:#d6eaf8;
+  --paper:#F6F2E8;--paper-2:#EFE9DA;--ink:#1C2740;--ink-soft:#4A5468;
+  --maroon:#8B2331;--maroon-dark:#6E1B27;--green:#2E6B44;--green-bg:#E4EFE6;
+  --red:#B0392C;--red-bg:#F5E4E0;--line:#D8CFB8;--amber:#9C6B14;
+  --shadow:0 2px 10px rgba(28,39,64,0.08);--violet:#6D4AFF;--teal:#0FA3A3;
+  --sunset:#FF6B4A;--gold:#E8A93B;
+  --grad-hero:linear-gradient(120deg,#1C2740 0%,#3A2E6E 45%,#8B2331 100%);
+  --grad-btn:linear-gradient(120deg,#8B2331 0%,#B33A2E 55%,#E8A93B 130%);
 }
-*{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
-.scr{display:none;min-height:100vh;flex-direction:column;}
-.scr.on{display:flex;}
-
-/* HEADER */
-.hdr{background:linear-gradient(135deg,var(--Pd) 0%,var(--P) 60%,var(--Pl) 100%);color:#fff;padding:14px 16px;display:flex;align-items:center;gap:10px;box-shadow:0 2px 12px rgba(0,0,0,.25);position:sticky;top:0;z-index:100;}
-.hdr-ico{width:34px;height:34px;background:var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:15px;color:var(--Pd);flex-shrink:0;}
-.hdr-t{font-size:17px;font-weight:700;}
-.hdr-s{font-size:11px;opacity:.8;margin-top:1px;}
-.back{background:rgba(255,255,255,.15);border:none;color:#fff;padding:6px 12px;border-radius:20px;cursor:pointer;font-size:13px;margin-left:auto;transition:background .2s;}
-.back:hover{background:rgba(255,255,255,.25);}
-
-/* HOME HERO */
-.hero{background:linear-gradient(160deg,var(--Pd) 0%,var(--P) 50%,#b5323f 100%);color:#fff;text-align:center;padding:48px 24px 56px;position:relative;overflow:hidden;}
-.hero::before{content:'';position:absolute;top:-40px;right:-40px;width:200px;height:200px;border:2px solid rgba(255,255,255,.1);border-radius:50%;}
-.hero::after{content:'';position:absolute;bottom:-60px;left:-40px;width:250px;height:250px;border:2px solid rgba(255,255,255,.07);border-radius:50%;}
-.badge{display:inline-block;background:var(--gold);color:var(--Pd);font-size:11px;font-weight:700;padding:4px 14px;border-radius:20px;margin-bottom:14px;letter-spacing:1px;text-transform:uppercase;}
-.htitle{font-size:28px;font-weight:800;line-height:1.2;margin-bottom:6px;}
-.hsub{font-size:15px;opacity:.85;margin-bottom:3px;}
-.htag{font-size:12px;opacity:.6;font-style:italic;}
-
-/* HOME CARDS */
-.home-cards{padding:22px 14px;display:flex;flex-direction:column;gap:14px;max-width:500px;margin:0 auto;width:100%;}
-.sec-card{background:var(--card);border-radius:20px;overflow:hidden;box-shadow:0 4px 20px rgba(139,35,49,.12);cursor:pointer;transition:transform .2s,box-shadow .2s;border:2px solid transparent;}
-.sec-card:hover{transform:translateY(-3px);box-shadow:0 8px 30px rgba(139,35,49,.2);}
-.sec-card:active{transform:translateY(-1px);}
-.cbanner{padding:22px 18px 18px;display:flex;align-items:center;gap:14px;}
-.cico{width:54px;height:54px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;background:rgba(255,255,255,.2);}
-.cinfo{flex:1;}
-.cname{font-size:21px;font-weight:800;margin-bottom:3px;}
-.cdesc{font-size:13px;opacity:.85;}
-.pre-card .cbanner{background:linear-gradient(135deg,#1a5276,#2471a3);color:#fff;}
-.main-card .cbanner{background:linear-gradient(135deg,var(--Pd),var(--P));color:#fff;}
-.cmeta{padding:12px 18px;display:flex;gap:16px;border-top:1px solid var(--border);}
-.mi{text-align:center;flex:1;}
-.mv{font-size:17px;font-weight:700;color:var(--P);}
-.mk{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-top:2px;}
-.cfoot{padding:10px 18px;background:var(--bg);display:flex;align-items:center;justify-content:space-between;}
-.tags{display:flex;gap:5px;flex-wrap:wrap;}
-.tag{font-size:11px;padding:3px 8px;border-radius:20px;font-weight:600;}
-.tb{background:#d6eaf8;color:#1a5276;}
-.tr{background:#fde8e8;color:#922b21;}
-.tg{background:#d5f5e3;color:#1a5e3a;}
-.tgo{background:#fef9e7;color:#9a7d0a;}
-.carr{font-size:20px;color:var(--muted);}
-
-/* MAINS PAPERS */
-.papers{padding:14px;display:flex;flex-direction:column;gap:12px;max-width:600px;margin:0 auto;width:100%;}
-.pcrd{background:var(--card);border-radius:14px;padding:16px 18px;box-shadow:0 2px 8px rgba(0,0,0,.08);cursor:pointer;border-left:5px solid var(--P);transition:transform .15s,box-shadow .15s;display:flex;align-items:center;gap:12px;}
-.pcrd:hover{transform:translateX(4px);box-shadow:0 4px 20px rgba(139,35,49,.15);}
-.pnum{width:42px;height:42px;border-radius:10px;background:var(--P);color:#fff;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:800;flex-shrink:0;}
-.pinfo{flex:1;}
-.ptitle{font-size:15px;font-weight:700;margin-bottom:2px;}
-.ptopics{font-size:12px;color:var(--muted);}
-.pmeta{text-align:right;}
-.pqs{font-size:17px;font-weight:700;color:var(--P);}
-.ptime{font-size:11px;color:var(--muted);}
-.pcrd:nth-child(1){border-color:#1a5276;} .pcrd:nth-child(1) .pnum{background:#1a5276;}
-.pcrd:nth-child(2){border-color:#186a3b;} .pcrd:nth-child(2) .pnum{background:#186a3b;}
-.pcrd:nth-child(3){border-color:#7d3c98;} .pcrd:nth-child(3) .pnum{background:#7d3c98;}
-.pcrd:nth-child(4){border-color:#d35400;} .pcrd:nth-child(4) .pnum{background:#d35400;}
-.pcrd:nth-child(5){border-color:#8B2331;} .pcrd:nth-child(5) .pnum{background:#8B2331;}
-
-/* LOADING */
-.ld-body{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;padding:40px;text-align:center;}
-.spin{width:60px;height:60px;border:4px solid rgba(139,35,49,.15);border-top:4px solid var(--P);border-radius:50%;animation:spin 1s linear infinite;margin-bottom:22px;}
-@keyframes spin{to{transform:rotate(360deg)}}
-.ld-title{font-size:19px;font-weight:700;color:var(--P);margin-bottom:7px;}
-.ld-sub{font-size:13px;color:var(--muted);}
-.ld-bar-wrap{width:220px;height:7px;background:rgba(139,35,49,.12);border-radius:4px;margin-top:18px;overflow:hidden;}
-.ld-bar{height:100%;background:var(--P);border-radius:4px;width:0%;transition:width .4s ease;}
-.ld-cnt{margin-top:10px;font-size:13px;color:var(--muted);}
-
-/* EXAM HEADER */
-.ex-hdr{background:linear-gradient(135deg,var(--Pd),var(--P));color:#fff;padding:9px 14px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.25);}
-.ex-title{font-size:13px;font-weight:700;}
-.ex-sub{font-size:11px;opacity:.8;}
-.timer{background:rgba(255,255,255,.15);padding:6px 13px;border-radius:20px;font-size:17px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:1px;transition:background .3s;}
-.timer.urg{background:rgba(255,50,50,.45);animation:pulse 1s infinite;}
+*{box-sizing:border-box}html,body{margin:0;padding:0}
+body{background-color:var(--paper);color:var(--ink);font-family:'Inter',sans-serif;min-height:100vh;
+  background-image:radial-gradient(circle at 1px 1px,rgba(28,39,64,0.05) 1px,transparent 0);background-size:22px 22px;}
+.wrap{max-width:900px;margin:0 auto;padding:28px 20px 80px}
+@media(max-width:640px){.wrap{padding:16px 12px 60px}.card{padding:16px}.qcard{padding:16px}}
+h1,h2,h3{font-family:'Source Serif 4',serif;font-weight:700;letter-spacing:-0.01em;margin:0}
+.mono{font-family:'IBM Plex Mono',monospace}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:10px;border-bottom:2px solid var(--ink);padding-bottom:14px;margin-bottom:26px;}
+@media(max-width:480px){.brand h1{font-size:17px;line-height:1.25}.brand .eyebrow{font-size:10px}.topbar{margin-bottom:18px}}
+.brand{display:flex;flex-direction:column;gap:2px}
+.brand .eyebrow{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--maroon);font-weight:600;}
+.brand h1{font-size:22px;color:var(--ink)}
+.seal{width:52px;height:52px;flex-shrink:0;}.seal img{width:100%;height:100%;display:block}
+.card{background:#fff;border:1px solid var(--line);border-radius:6px;box-shadow:var(--shadow);padding:22px;margin-bottom:18px;}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:'Inter',sans-serif;font-weight:600;font-size:14.5px;padding:12px 20px;border-radius:5px;border:1.5px solid var(--ink);background:var(--ink);color:#fff;cursor:pointer;transition:transform .08s,box-shadow .15s;}
+.btn:hover{transform:translateY(-1px);box-shadow:0 4px 10px rgba(28,39,64,.18)}.btn:active{transform:translateY(0)}
+.btn.secondary{background:#fff;color:var(--ink)}.btn.maroon{background:var(--maroon);border-color:var(--maroon)}
+.btn.maroon:hover{box-shadow:0 4px 10px rgba(139,35,49,.28)}
+.btn.gradient{background:var(--grad-btn);border:none;color:#fff;box-shadow:0 4px 14px rgba(139,35,49,.35)}
+.btn.gradient:hover{box-shadow:0 6px 20px rgba(139,35,49,.45);transform:translateY(-2px)}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}.btn.block{width:100%}
+/* Auth */
+.auth-hero{background:var(--grad-hero);border-radius:14px;padding:44px 24px 100px;text-align:center;position:relative;overflow:hidden;margin-bottom:-70px;box-shadow:0 10px 30px rgba(28,39,64,.25);}
+.auth-hero::before{content:'';position:absolute;top:-60px;right:-60px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(232,169,59,.35) 0%,transparent 70%);}
+.auth-hero::after{content:'';position:absolute;bottom:-80px;left:-40px;width:260px;height:260px;border-radius:50%;background:radial-gradient(circle,rgba(15,163,163,.30) 0%,transparent 70%);}
+.auth-hero-inner{position:relative;z-index:1}
+.auth-seal{width:88px;height:88px;margin:0 auto 16px;filter:drop-shadow(0 6px 16px rgba(0,0,0,.35));}
+.auth-seal img{width:100%;height:100%;display:block}
+.auth-title{font-family:'Source Serif 4',serif;color:#fff;font-size:30px;font-weight:700;margin-bottom:6px}
+.auth-subtitle{color:#E9E6D8;font-size:14.5px;margin-bottom:20px}
+.auth-badges{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.auth-badge{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;padding:6px 12px;border-radius:14px;color:#fff;border:1px solid rgba(255,255,255,.35);}
+.auth-badge.b1{background:rgba(232,169,59,.25)}.auth-badge.b2{background:rgba(15,163,163,.25)}.auth-badge.b3{background:rgba(255,107,74,.25)}
+.auth-card{position:relative;z-index:2;max-width:420px;margin:0 auto;box-shadow:0 14px 34px rgba(28,39,64,.18);border-top:4px solid var(--gold);}
+.auth-tab{flex:1;text-align:center;padding:10px 14px}
+.auth-tab.active{background:var(--grad-hero);border-color:transparent;color:#fff}
+@media(max-width:480px){.auth-hero{padding:34px 16px 90px;margin-bottom:-64px}.auth-title{font-size:24px}}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:640px){.grid2{grid-template-columns:1fr}}
+.mode-card{border:1.5px solid var(--line);border-radius:8px;padding:20px;cursor:pointer;background:#fff;transition:border-color .15s,box-shadow .15s,transform .15s;position:relative;overflow:hidden;}
+.mode-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:var(--line)}
+.mode-card.c-blue::before{background:linear-gradient(90deg,#1a5276,#2471a3)}
+.mode-card.c-teal::before{background:linear-gradient(90deg,var(--teal),var(--violet))}
+.mode-card.c-sunset::before{background:linear-gradient(90deg,var(--sunset),var(--gold))}
+.mode-card.c-maroon::before{background:linear-gradient(90deg,var(--maroon),#b33a2e)}
+.mode-card:hover{border-color:var(--maroon);box-shadow:var(--shadow);transform:translateY(-2px)}
+.mode-card .tag{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;margin-bottom:8px;display:block;color:var(--maroon);}
+.mode-card.c-teal .tag{color:var(--teal)}.mode-card.c-sunset .tag{color:var(--sunset)}.mode-card.c-blue .tag{color:#1a5276}
+.mode-card h3{font-size:19px;margin-bottom:6px}.mode-card p{color:var(--ink-soft);font-size:13.5px;line-height:1.5;margin:0}
+input[type=text],input[type=password]{font-family:'Inter',sans-serif;font-size:14px;padding:9px 12px;border:1.5px solid var(--line);border-radius:5px;background:#fff;color:var(--ink);}
+.set-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+.set-pill{font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:600;padding:8px 14px;border-radius:20px;border:1.5px solid var(--line);cursor:pointer;background:#fff;color:var(--ink-soft);}
+.set-pill.active{border-color:var(--maroon);color:var(--maroon);background:var(--red-bg)}
+.muted{color:var(--ink-soft);font-size:13.5px;line-height:1.6}
+.hr{border:none;border-top:1px solid var(--line);margin:18px 0}
+.quiz-top{display:flex;align-items:center;justify-content:space-between;gap:16px;position:sticky;top:0;background:var(--paper);padding:14px 0 10px;z-index:5;border-bottom:1.5px solid var(--line);margin-bottom:18px;}
+.timer{font-family:'IBM Plex Mono',monospace;font-size:20px;font-weight:600;background:var(--ink);color:#fff;padding:8px 16px;border-radius:5px;letter-spacing:.03em;flex-shrink:0;}
+@media(max-width:480px){.quiz-top{padding:10px 0 8px}.timer{font-size:16px;padding:6px 12px}.qtext{font-size:15.5px}.qcard{padding:16px 14px}.option{padding:12px;gap:10px}.option-text{font-size:13.5px}.bubble{width:26px;height:26px;font-size:12px}}
+.timer.low{background:var(--maroon);animation:pulse 1s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.65}}
-.ex-prog{height:4px;background:rgba(255,255,255,.2);}
-.ex-prog-f{height:100%;background:var(--goldf);transition:width .3s;}
-
-/* EXAM BODY */
-.ex-body{display:flex;flex:1;max-width:960px;margin:0 auto;width:100%;}
-.qarea{flex:1;padding:18px 14px;overflow-y:auto;}
-.qctr{font-size:11px;color:var(--muted);font-weight:600;margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px;}
-.qpart{display:inline-block;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;margin-bottom:11px;}
-.pt1{background:#d6eaf8;color:#1a5276;}
-.pt2{background:#d5f5e3;color:#186a3b;}
-.pt3{background:#fde8e8;color:#922b21;}
-.qtext{font-size:16px;font-weight:500;line-height:1.65;margin-bottom:18px;}
-.opts{display:flex;flex-direction:column;gap:9px;margin-bottom:22px;}
-.opt{display:flex;align-items:flex-start;gap:11px;padding:13px 15px;border-radius:11px;border:2px solid var(--border);background:#fff;cursor:pointer;text-align:left;width:100%;transition:all .15s;font-size:15px;}
-.opt:hover{border-color:var(--P);background:#fdf5f5;}
-.opt.sel{border-color:var(--P);background:#fdf5f5;}
-.opt.ok{border-color:var(--ok);background:var(--okl);}
-.opt.no{border-color:var(--no);background:var(--nol);}
-.olbl{width:25px;height:25px;border-radius:50%;background:var(--bg);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;flex-shrink:0;transition:all .15s;}
-.opt.sel .olbl{background:var(--P);border-color:var(--P);color:#fff;}
-.opt.ok .olbl{background:var(--ok);border-color:var(--ok);color:#fff;}
-.opt.no .olbl{background:var(--no);border-color:var(--no);color:#fff;}
-.otxt{flex:1;line-height:1.5;padding-top:2px;}
-.qnav{display:flex;gap:8px;justify-content:space-between;padding-bottom:18px;}
-.nbtn{flex:1;padding:11px;border-radius:9px;border:none;cursor:pointer;font-size:13px;font-weight:600;transition:all .15s;}
-.nbtn.prev{background:#fff;border:2px solid var(--border);color:var(--text);}
-.nbtn.prev:hover{border-color:var(--P);}
-.nbtn.next{background:var(--P);color:#fff;}
-.nbtn.next:hover{background:var(--Pd);}
-.nbtn.mark{background:var(--warnl);color:var(--warn);border:2px solid var(--goldf);flex:.7;}
-
-/* NAVIGATOR PANEL */
-.qnav-panel{width:190px;padding:14px 11px;background:#fff;border-left:1px solid var(--border);overflow-y:auto;display:none;}
-@media(min-width:700px){.qnav-panel{display:block;}}
-.np-title{font-size:12px;font-weight:700;color:var(--muted);margin-bottom:10px;text-transform:uppercase;}
-.np-legend{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px;}
-.leg{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--muted);}
-.leg-dot{width:10px;height:10px;border-radius:50%;}
-.qdots{display:flex;flex-wrap:wrap;gap:4px;}
-.qdot{width:29px;height:29px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;cursor:pointer;background:var(--bg);color:var(--text);border:1px solid var(--border);transition:all .1s;}
-.qdot.done{background:var(--ok);color:#fff;border-color:var(--ok);}
-.qdot.mrk{background:var(--warn);color:#fff;border-color:var(--warn);}
-.qdot.cur{border:2px solid var(--P);}
-.sub-btn{width:100%;margin-top:14px;padding:12px;background:var(--P);color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;transition:background .15s;}
-.sub-btn:hover{background:var(--Pd);}
-
-/* MOBILE NAV */
-.mob-nav-btn{position:fixed;bottom:76px;right:14px;width:46px;height:46px;border-radius:50%;background:var(--P);color:#fff;border:none;font-size:19px;cursor:pointer;box-shadow:0 4px 20px rgba(139,35,49,.3);z-index:50;display:flex;align-items:center;justify-content:center;}
-@media(min-width:700px){.mob-nav-btn{display:none;}}
-.nov{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;display:none;align-items:flex-end;}
-.nov.open{display:flex;}
-.npanel{background:#fff;width:100%;border-radius:20px 20px 0 0;padding:18px;max-height:70vh;overflow-y:auto;}
-.nph{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
-.cls-panel{background:var(--bg);border:none;width:30px;height:30px;border-radius:50%;font-size:16px;cursor:pointer;}
-
-/* RESULTS */
-.res-body{padding:18px 14px;max-width:600px;margin:0 auto;width:100%;}
-.score-hero{background:linear-gradient(135deg,var(--Pd),var(--P));color:#fff;text-align:center;padding:28px 18px;border-radius:18px;margin-bottom:18px;}
-.slbl{font-size:12px;opacity:.8;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;}
-.snum{font-size:58px;font-weight:900;line-height:1;}
-.stotal{font-size:19px;opacity:.7;margin-bottom:10px;}
-.spct{font-size:14px;background:rgba(255,255,255,.2);display:inline-block;padding:5px 18px;border-radius:20px;}
-.smsg{margin-top:10px;font-size:14px;opacity:.88;font-style:italic;}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:18px;}
-.scard{background:#fff;border-radius:12px;padding:12px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.07);}
-.sv{font-size:22px;font-weight:800;}
-.sk{font-size:11px;color:var(--muted);margin-top:2px;text-transform:uppercase;}
-.cv .sv{color:var(--ok);}
-.wv .sv{color:var(--no);}
-.sec-title{font-size:15px;font-weight:700;color:var(--P);margin-bottom:10px;padding-bottom:7px;border-bottom:2px solid var(--border);}
-.rev-list{display:flex;flex-direction:column;gap:12px;margin-bottom:18px;}
-.ritem{background:#fff;border-radius:12px;padding:14px;box-shadow:0 2px 8px rgba(0,0,0,.06);border-left:4px solid var(--border);}
-.ritem.ok-i{border-left-color:var(--ok);}
-.ritem.no-i{border-left-color:var(--no);}
-.ritem.sk-i{border-left-color:var(--muted);}
-.rnum{font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;margin-bottom:5px;}
-.rq{font-size:14px;font-weight:500;margin-bottom:9px;line-height:1.5;}
-.rans{font-size:12px;margin-bottom:3px;}
-.rans span{font-weight:600;}
-.rexpl{margin-top:7px;padding:9px;border-radius:7px;background:var(--bg);font-size:12px;color:var(--muted);line-height:1.5;}
-.ok-t{color:var(--ok);}
-.no-t{color:var(--no);}
-.acts{display:flex;flex-direction:column;gap:8px;margin-top:18px;}
-.abtn{padding:13px;border-radius:10px;border:none;font-size:14px;font-weight:700;cursor:pointer;transition:all .15s;}
-.abtn.pri{background:var(--P);color:#fff;}
-.abtn.pri:hover{background:var(--Pd);}
-.abtn.sec{background:#fff;color:var(--P);border:2px solid var(--P);}
-.abtn.sec:hover{background:#fdf5f5;}
-
-/* INFO */
-.ibanner{background:var(--infl);border:1px solid #aed6f1;padding:11px 14px;border-radius:9px;margin-bottom:14px;font-size:13px;color:#1a5276;line-height:1.5;}
-.syl-item{background:#fff;border-radius:11px;padding:13px;box-shadow:0 2px 8px rgba(0,0,0,.06);display:flex;justify-content:space-between;align-items:center;margin-bottom:9px;}
-.syl-num{font-weight:700;color:var(--P);}
-.footer{text-align:center;padding:14px;font-size:12px;color:var(--muted);border-top:1px solid var(--border);margin-top:auto;}
+.progress-bar{height:6px;background:var(--paper-2);border-radius:3px;overflow:hidden;margin-top:8px}
+.progress-fill{height:100%;background:var(--maroon);transition:width .2s}
+.qcard{background:#fff;border:1px solid var(--line);border-radius:6px;padding:24px;box-shadow:var(--shadow)}
+.qmeta{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px}
+.qnum{font-family:'IBM Plex Mono',monospace;color:var(--maroon);font-weight:700;font-size:14px}
+.qtopic{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink-soft);background:var(--paper-2);padding:3px 9px;border-radius:12px}
+.qtext{font-size:17px;line-height:1.55;margin-bottom:20px;font-weight:500}
+.option{display:flex;align-items:center;gap:14px;padding:13px 14px;border:1.5px solid var(--line);border-radius:6px;margin-bottom:10px;cursor:pointer;background:#fff;transition:.12s;}
+.option:hover{border-color:var(--ink-soft)}.option.selected{border-color:var(--maroon);background:var(--red-bg)}
+.bubble{width:28px;height:28px;border-radius:50%;border:2px solid var(--ink-soft);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'IBM Plex Mono',monospace;font-weight:700;font-size:12.5px;color:var(--ink-soft);}
+.option.selected .bubble{border-color:var(--maroon);background:var(--maroon);color:#fff}
+.option-text{font-size:14.5px;line-height:1.4}
+.navrow{display:flex;justify-content:space-between;margin-top:18px;gap:10px}
+@media(max-width:480px){.navrow{flex-direction:column}.navrow .btn{width:100%}}
+.palette{display:grid;grid-template-columns:repeat(10,1fr);gap:6px;margin-top:14px}
+@media(max-width:640px){.palette{grid-template-columns:repeat(8,1fr)}}
+@media(max-width:400px){.palette{grid-template-columns:repeat(6,1fr);gap:5px}}
+.pnode{aspect-ratio:1;border-radius:4px;border:1.5px solid var(--line);display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;color:var(--ink-soft);cursor:pointer;background:#fff;min-height:30px;}
+.pnode.answered{background:var(--green);border-color:var(--green);color:#fff}
+.pnode.current{outline:2px solid var(--maroon);outline-offset:1px}
+.score-hero{background:var(--ink);color:#fff;border-radius:8px;padding:28px 24px;text-align:center;margin-bottom:20px;}
+.score-hero .big{font-family:'Source Serif 4',serif;font-size:52px;font-weight:700;line-height:1}
+@media(max-width:480px){.score-hero{padding:22px 16px}.score-hero .big{font-size:40px}}
+.score-hero .lbl{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#C9CEDA;margin-top:6px}
+.score-hero .verdict{margin-top:14px;font-size:15px;color:#E9E6D8}
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px}
+@media(max-width:640px){.stat-row{grid-template-columns:1fr}}
+.stat{background:#fff;border:1px solid var(--line);border-radius:6px;padding:16px;text-align:center}
+.stat .num{font-family:'Source Serif 4',serif;font-size:26px;font-weight:700}.stat .lbl{font-size:12px;color:var(--ink-soft);margin-top:2px}
+.topicbar-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.topicbar-label{width:190px;font-size:12.5px;color:var(--ink-soft);flex-shrink:0}
+.topicbar-track{flex:1;height:16px;background:var(--paper-2);border-radius:8px;overflow:hidden}
+.topicbar-fill{height:100%;border-radius:8px}
+.topicbar-pct{width:42px;text-align:right;font-family:'IBM Plex Mono',monospace;font-size:12px;flex-shrink:0}
+@media(max-width:480px){.topicbar-row{flex-wrap:wrap}.topicbar-label{width:100%;font-size:12px}.topicbar-track{height:12px}.history-row{flex-direction:column;align-items:flex-start;gap:4px}}
+.review-q{border:1px solid var(--line);border-radius:6px;padding:18px;margin-bottom:14px;background:#fff}
+.review-q .qtext{font-size:15.5px;margin-bottom:14px}
+.rowbadge{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:10.5px;font-weight:700;padding:3px 9px;border-radius:10px;text-transform:uppercase;letter-spacing:.05em;}
+.rowbadge.correct{background:var(--green-bg);color:var(--green)}.rowbadge.wrong{background:var(--red-bg);color:var(--red)}.rowbadge.skipped{background:var(--paper-2);color:var(--ink-soft)}
+.review-opt{display:flex;gap:10px;align-items:center;padding:9px 12px;border-radius:5px;margin-bottom:6px;font-size:14px;border:1px solid transparent}
+.review-opt.correct-opt{background:var(--green-bg);border-color:var(--green)}.review-opt.wrong-opt{background:var(--red-bg);border-color:var(--red)}
+.review-explain{margin-top:10px;font-size:13.5px;color:var(--ink-soft);background:var(--paper);padding:10px 12px;border-radius:5px;border-left:3px solid var(--maroon)}
+.tabs{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.tab{font-family:'IBM Plex Mono',monospace;font-size:12.5px;font-weight:600;padding:8px 14px;border-radius:5px;border:1.5px solid var(--line);cursor:pointer;background:#fff;color:var(--ink-soft);}
+.tab.active{background:var(--ink);border-color:var(--ink);color:#fff}
+.hidden{display:none!important}
+.loading{text-align:center;padding:60px 20px;color:var(--ink-soft);font-family:'IBM Plex Mono',monospace}
+.weakbox{background:var(--red-bg);border:1px solid var(--red);border-radius:6px;padding:16px}
+.weakbox h3{color:var(--red);font-size:15px;margin-bottom:8px}
+.weakbox ul{margin:0;padding-left:18px;font-size:13.5px;color:var(--ink)}
+.history-row{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border:1px solid var(--line);border-radius:5px;margin-bottom:8px;font-size:13.5px}
+.footer-note{text-align:center;color:var(--ink-soft);font-size:12px;margin-top:30px}
+.syl-row{background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:14px;display:flex;justify-content:space-between;align-items:center;margin-bottom:9px;}
 </style>
 </head>
 <body>
-
-<!-- HOME -->
-<div id="s-home" class="scr on">
-  <div class="hero">
-    <div class="badge">BPSC · TRE 4.0 Prep Portal</div>
-    <div class="htitle">Prelims &amp; Mains<br>Practice Hub</div>
-    <div class="hsub">Computer Science Teacher Exam — Bihar</div>
-    <div class="htag">Practice like the exam, score above the cut-off</div>
+<div class="wrap">
+  <div class="topbar">
+    <div class="brand">
+      <span class="eyebrow">BPSC TRE 4.0 · Computer Science</span>
+      <h1 id="titleLink" style="cursor:pointer">Practice Portal — Prelims &amp; Mains</h1>
+    </div>
+    <div class="seal"><img src="/favicon.svg" alt="BPSC TRE logo"></div>
   </div>
-  <div class="home-cards">
-    <div class="sec-card pre-card" onclick="openPre()">
-      <div class="cbanner">
-        <div class="cico">📋</div>
-        <div class="cinfo">
-          <div class="cname">Prelims</div>
-          <div class="cdesc">BPSC CSE Style · GK + GS Paper</div>
+  <div id="app"><div class="loading">Loading…</div></div>
+  <div class="footer-note">BPSC TRE 4.0 · Computer Science Teacher Recruitment Exam · Bihar</div>
+</div>
+<script type="module">
+const app=document.getElementById('app');
+document.getElementById('titleLink').onclick=()=>{if(currentUser)renderHome();};
+
+const SUPABASE_URL='https://llptkwjlikvfztxsotmk.supabase.co';
+const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxscHRrd2psaWt2Znp0eHNvdG1rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODYyOTI4MzQsImV4cCI6MjEwMTg2ODgzNH0.D6t8f_vOq426mrTVxPufRUqe_6LWLf-doldXJNqGEXg';
+const AVAILABLE_SETS=[1,2,3,4,5];
+const FULL_TEST_MINUTES=150;
+const SECTION_MINUTES={1:25,2:35,3:70};
+const PART_NAMES={1:'Part I — Language',2:'Part II — General Studies',3:'Part III — Computer Science'};
+
+let sb=null,state={},currentUser=null;
+
+function showFatalError(ctx,err){
+  console.error(ctx,err);
+  app.innerHTML=`<div class="card" style="text-align:center"><h2 style="font-size:18px;margin-bottom:8px">Couldn't load the app</h2><p class="muted" style="margin-bottom:16px">${ctx}. Usually a temporary network hiccup.</p><button class="btn maroon" onclick="location.reload()">Retry</button></div>`;
+}
+
+async function boot(){
+  try{const mod=await import('https://esm.sh/@supabase/supabase-js@2');sb=mod.createClient(SUPABASE_URL,SUPABASE_KEY);}
+  catch(err){showFatalError('Failed to load Supabase client from CDN',err);return;}
+  try{
+    const{data:{session}}=await sb.auth.getSession();
+    if(session&&session.user){currentUser={id:session.user.id,email:session.user.email};await attachProfileName();}
+    if(window.location.hash.includes('access_token'))window.history.replaceState({},document.title,window.location.pathname);
+  }catch(err){console.error('Session check failed:',err);}
+  sb.auth.onAuthStateChange((_,session)=>{if(!session)currentUser=null;});
+  try{currentUser?renderHome():renderLogin();}catch(err){showFatalError('Failed to render app',err);}
+}
+boot();
+
+async function attachProfileName(){
+  if(!currentUser)return;
+  try{const{data}=await sb.from('profiles').select('full_name').eq('id',currentUser.id).single();if(data&&data.full_name)currentUser.name=data.full_name;}
+  catch(e){console.error('Profile fetch failed:',e);}
+}
+
+/* ══════════════════════════════════════════
+   AUTH
+══════════════════════════════════════════ */
+function renderLogin(msg,startOnSignup,msgType){
+  app.innerHTML=`
+    <div class="auth-hero"><div class="auth-hero-inner">
+      <div class="auth-seal"><img src="/favicon.svg" alt="BPSC TRE logo"></div>
+      <h1 class="auth-title">BPSC TRE 4.0</h1>
+      <p class="auth-subtitle">Computer Science Practice Portal</p>
+      <div class="auth-badges">
+        <span class="auth-badge b1">Prelims — GK+GS</span>
+        <span class="auth-badge b2">Mains — 5 Full Sets</span>
+        <span class="auth-badge b3">Live Leaderboard</span>
+      </div>
+    </div></div>
+    <div class="card auth-card">
+      <div class="tabs" style="margin-bottom:0">
+        <div class="tab auth-tab ${startOnSignup?'':'active'}" id="tabSI">Sign In</div>
+        <div class="tab auth-tab ${startOnSignup?'active':''}" id="tabSU">Create Account</div>
+      </div>
+      ${msg?`<p style="color:${msgType==='ok'?'var(--teal)':'var(--maroon)'};font-size:13.5px;margin:14px 0 0;font-weight:600">${msg}</p>`:''}
+      <div id="resendWrap" class="hidden" style="margin-top:8px">
+        <button class="btn secondary" id="resendBtn" style="font-size:12.5px;padding:8px 14px">Resend confirmation email</button>
+      </div>
+      <div style="margin-top:16px">
+        <div id="nameWrap" class="${startOnSignup?'':'hidden'}">
+          <label class="muted" style="display:block;margin-bottom:6px;font-size:13px">Your name</label>
+          <input type="text" id="nameInput" placeholder="e.g. Nitish Kumar" style="width:100%;margin-bottom:14px" autocomplete="name">
+        </div>
+        <label class="muted" style="display:block;margin-bottom:6px;font-size:13px">Email address</label>
+        <input type="text" id="emailInput" placeholder="you@example.com" style="width:100%;margin-bottom:14px" autocomplete="email">
+        <label class="muted" style="display:block;margin-bottom:6px;font-size:13px">Password</label>
+        <input type="password" id="passInput" placeholder="At least 6 characters" style="width:100%;margin-bottom:6px" autocomplete="current-password">
+        <p class="muted" id="passHint" style="font-size:12px;margin-bottom:14px;${startOnSignup?'':'visibility:hidden'}">Minimum 6 characters.</p>
+        <button class="btn gradient block" id="submitAuthBtn">${startOnSignup?'Create account & start practicing':'Sign in'}</button>
+      </div>
+    </div>`;
+  let isSignup=!!startOnSignup,lastEmail='';
+  const nameWrap=document.getElementById('nameWrap'),nameInput=document.getElementById('nameInput'),
+    emailInput=document.getElementById('emailInput'),passInput=document.getElementById('passInput'),
+    passHint=document.getElementById('passHint'),submitBtn=document.getElementById('submitAuthBtn'),
+    tabSI=document.getElementById('tabSI'),tabSU=document.getElementById('tabSU');
+  function setMode(su){
+    isSignup=su;tabSI.classList.toggle('active',!su);tabSU.classList.toggle('active',su);
+    submitBtn.textContent=su?'Create account & start practicing':'Sign in';
+    passHint.style.visibility=su?'visible':'hidden';
+    nameWrap.classList.toggle('hidden',!su);
+    passInput.setAttribute('autocomplete',su?'new-password':'current-password');
+  }
+  tabSI.onclick=()=>setMode(false);tabSU.onclick=()=>setMode(true);
+  async function submit(){
+    const name=nameInput?nameInput.value.trim():'',email=emailInput.value.trim(),password=passInput.value;
+    if(isSignup&&!name){renderLogin('Please enter your name.',true);return;}
+    if(!email||!email.includes('@')||!email.includes('.')){renderLogin('Please enter a valid email.',isSignup);return;}
+    if(!password||password.length<6){renderLogin('Password must be at least 6 characters.',isSignup);return;}
+    submitBtn.disabled=true;submitBtn.textContent=isSignup?'Creating account…':'Signing in…';
+    try{
+      if(isSignup){
+        const{data,error}=await sb.auth.signUp({email,password,options:{data:{full_name:name}}});
+        if(error)throw error;
+        if(data.session){currentUser={id:data.user.id,email:data.user.email,name};renderHome();}
+        else renderLogin('Account created! Switch to Sign In and log in.',false,'ok');
+      }else{
+        const{data,error}=await sb.auth.signInWithPassword({email,password});
+        if(error)throw error;
+        currentUser={id:data.user.id,email:data.user.email};await attachProfileName();renderHome();
+      }
+    }catch(err){
+      const raw=err.message||'';
+      if(/email not confirmed/i.test(raw)){lastEmail=email;document.getElementById('resendWrap').classList.remove('hidden');renderLogin('Email not confirmed. Check inbox or resend below.',isSignup);return;}
+      const friendly=/invalid login credentials/i.test(raw)?'Incorrect email or password.':/already registered|already exists/i.test(raw)?'That email already has an account — try Sign In.':(raw||'Something went wrong.');
+      renderLogin(friendly,isSignup);
+    }
+  }
+  document.getElementById('resendBtn').onclick=async()=>{
+    const rb=document.getElementById('resendBtn');rb.disabled=true;rb.textContent='Sending…';
+    try{const{error}=await sb.auth.resend({type:'signup',email:lastEmail});if(error)throw error;renderLogin('Confirmation email re-sent!',false,'ok');}
+    catch(err){renderLogin('Couldn\'t resend: '+err.message,false);}
+  };
+  submitBtn.onclick=submit;passInput.addEventListener('keydown',(e)=>{if(e.key==='Enter')submit();});
+}
+function requireAuth(){if(!currentUser){renderLogin('Please sign in first.');return false;}return true;}
+async function signOut(){try{await sb.auth.signOut();}catch(e){console.error(e);}currentUser=null;renderLogin();}
+
+/* ══════════════════════════════════════════
+   NEW HOME LANDING — Prelims | Mains
+══════════════════════════════════════════ */
+function renderHome(){
+  if(!requireAuth())return;
+  stopTimer();stopPTimer();
+  app.innerHTML=`
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap;margin-bottom:10px">
+        <div>
+          <h2 style="font-size:20px;margin-bottom:4px">Welcome back, ${escapeHtml(currentUser.name||currentUser.email)} 👋</h2>
+          ${currentUser.name?`<p class="muted" style="font-size:12px">${escapeHtml(currentUser.email)}</p>`:''}
+        </div>
+        <button class="btn secondary" id="signOutBtn" style="font-size:12.5px;padding:8px 14px">Sign out</button>
+      </div>
+      <p class="muted" style="margin-bottom:18px">Choose your exam section to begin:</p>
+      <div class="grid2">
+        <div class="mode-card c-blue" id="prelimsCard">
+          <span class="tag">Prelims · BPSC CSE Style</span>
+          <h3>📋 Prelims</h3>
+          <p>150 GK + General Studies questions · 120 minutes · Bihar &amp; India focus · No negative marking</p>
+        </div>
+        <div class="mode-card c-maroon" id="mainsCard">
+          <span class="tag">Mains · TRE CS Pattern</span>
+          <h3>📘 Mains</h3>
+          <p>5 full sets · 150 Qs each · Lang + GS + CS · 150 min · Merit on Part II+III · Leaderboard</p>
         </div>
       </div>
-      <div class="cmeta">
-        <div class="mi"><div class="mv">150</div><div class="mk">Questions</div></div>
-        <div class="mi"><div class="mv">120</div><div class="mk">Minutes</div></div>
-        <div class="mi"><div class="mv">150</div><div class="mk">Marks</div></div>
+    </div>`;
+  document.getElementById('signOutBtn').onclick=signOut;
+  document.getElementById('prelimsCard').onclick=renderPrelimsInfo;
+  document.getElementById('mainsCard').onclick=renderMainsHome;
+}
+
+/* ══════════════════════════════════════════
+   MAINS HOME (old renderHome)
+══════════════════════════════════════════ */
+function renderMainsHome(){
+  if(!requireAuth())return;stopTimer();
+  app.innerHTML=`
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:14px">
+        <h2 style="font-size:20px">📘 Mains — CS Practice</h2>
+        <button class="btn secondary" id="backHomeBtn" style="font-size:12.5px;padding:8px 14px">← Main Menu</button>
       </div>
-      <div class="cfoot">
-        <div class="tags">
-          <span class="tag tb">GK · GS</span>
-          <span class="tag tg">Bihar Focus</span>
-          <span class="tag tgo">No −ve Marks</span>
+      <p class="muted">Full mock test for the real exam, or drill a single section.</p>
+      <div class="grid2" style="margin-top:16px">
+        <div class="mode-card c-teal" id="sectionModeCard">
+          <span class="tag">Section-wise</span>
+          <h3>Practice by Section</h3>
+          <p>Drill Language, GS, or CS with proportional timer and topic-wise feedback.</p>
         </div>
-        <span class="carr">›</span>
-      </div>
-    </div>
-
-    <div class="sec-card main-card" onclick="show('s-mains')">
-      <div class="cbanner">
-        <div class="cico">📘</div>
-        <div class="cinfo">
-          <div class="cname">Mains</div>
-          <div class="cdesc">BPSC TRE CS Papers · 5 Full Sets</div>
+        <div class="mode-card c-sunset" id="fullModeCard">
+          <span class="tag">Full-length · ${FULL_TEST_MINUTES} min</span>
+          <h3>Full Mock Test</h3>
+          <p>All 150 questions, exact ${FULL_TEST_MINUTES}-minute timer, auto-submit. Merit = Part II+III (120).</p>
         </div>
       </div>
-      <div class="cmeta">
-        <div class="mi"><div class="mv">5</div><div class="mk">Papers</div></div>
-        <div class="mi"><div class="mv">150</div><div class="mk">Qs / Paper</div></div>
-        <div class="mi"><div class="mv">120</div><div class="mk">Min / Paper</div></div>
-      </div>
-      <div class="cfoot">
-        <div class="tags">
-          <span class="tag tr">Lang · GS · CS</span>
-          <span class="tag tgo">AI Generated</span>
-        </div>
-        <span class="carr">›</span>
+    </div>
+    <div class="card">
+      <h2 style="font-size:16px;margin-bottom:10px">Recent attempts</h2>
+      <div id="historyList" class="muted">Loading…</div>
+    </div>
+    <div class="card">
+      <h2 style="font-size:16px;margin-bottom:2px">🏆 Leaderboard — Full Mock Tests</h2>
+      <p class="muted" style="margin-bottom:10px;font-size:12.5px">Best merit score % across all participants</p>
+      <div id="leaderboardList" class="muted">Loading…</div>
+    </div>`;
+  document.getElementById('backHomeBtn').onclick=renderHome;
+  document.getElementById('sectionModeCard').onclick=renderSectionPicker;
+  document.getElementById('fullModeCard').onclick=renderFullPicker;
+  loadHistory();loadLeaderboard();
+}
+
+async function loadHistory(){
+  const el=document.getElementById('historyList');if(!el)return;
+  try{
+    const res=await sb.from('attempts').select('*').not('submitted_at','is',null).order('started_at',{ascending:false}).limit(5);
+    if(res.error)throw res.error;
+    if(!res.data||res.data.length===0){el.innerHTML='<span class="muted">No attempts yet — take a test!</span>';return;}
+    el.innerHTML=res.data.map(a=>{
+      const label=a.mode==='full'?`Full Test · Set ${a.set_number}`:`${PART_NAMES[a.part]?.split('—')[1]?.trim()||'Section'} · Set ${a.set_number}`;
+      const ms=a.merit_total?`${a.merit_score}/${a.merit_total}`:'—';
+      const date=new Date(a.started_at).toLocaleDateString('en-IN',{day:'2-digit',month:'short'});
+      return `<div class="history-row"><span>${label} <span class="muted">· ${date}</span></span><span class="mono" style="font-weight:600">${ms}</span></div>`;
+    }).join('');
+  }catch(e){console.error(e);el.innerHTML='<span class="muted">Couldn\'t load history.</span>';}
+}
+
+async function loadLeaderboard(){
+  const el=document.getElementById('leaderboardList');if(!el)return;
+  try{
+    const res=await sb.from('leaderboard').select('*').limit(10);
+    if(res.error)throw res.error;
+    if(!res.data||res.data.length===0){el.innerHTML='<span class="muted">No scores yet — be the first!</span>';return;}
+    const medals=['🥇','🥈','🥉'];
+    el.innerHTML=res.data.map((r,i)=>{
+      const date=new Date(r.submitted_at).toLocaleDateString('en-IN',{day:'2-digit',month:'short'});
+      return `<div class="history-row"><span>${medals[i]||'#'+(i+1)} ${escapeHtml(r.display_name)} <span class="muted">· Set ${r.set_number} · ${date}</span></span><span class="mono" style="font-weight:600">${r.merit_pct}%</span></div>`;
+    }).join('');
+  }catch(e){console.error(e);el.innerHTML='<span class="muted">Leaderboard unavailable.</span>';}
+}
+
+/* ══════════════════════════════════════════
+   MAINS PICKERS
+══════════════════════════════════════════ */
+function setPills(cid,onPick){
+  const c=document.getElementById(cid);
+  c.innerHTML=AVAILABLE_SETS.map(n=>`<span class="set-pill" data-n="${n}">Set ${n}</span>`).join('');
+  c.querySelectorAll('.set-pill').forEach(el=>{
+    el.onclick=()=>{const n=parseInt(el.dataset.n);c.querySelectorAll('.set-pill').forEach(x=>x.classList.remove('active'));el.classList.add('active');onPick(n);};
+  });
+}
+
+function renderSectionPicker(){
+  let chosenSet=null,chosenPart=null;
+  app.innerHTML=`
+    <div class="card">
+      <h2 style="font-size:19px;margin-bottom:14px">Section-wise Practice</h2>
+      <p class="muted" style="margin-bottom:6px">1 · Pick a set</p>
+      <div class="set-row" id="setPills"></div>
+      <p class="muted" style="margin:18px 0 6px">2 · Pick a section</p>
+      <div class="grid2" id="partPills" style="grid-template-columns:repeat(3,1fr)"></div>
+      <div class="hr"></div>
+      <button class="btn maroon block" id="startBtn" disabled>Select a set and section to begin</button>
+    </div>
+    <button class="btn secondary" id="backBtn">← Back to Mains</button>`;
+  document.getElementById('backBtn').onclick=renderMainsHome;
+  setPills('setPills',(n)=>{chosenSet=n;tryEnable();});
+  const pw=document.getElementById('partPills');
+  const parts=[{n:1,label:'Language',sub:'30 Qs · Qualifying'},{n:2,label:'General Studies',sub:'40 Qs · Merit'},{n:3,label:'Computer Science',sub:'80 Qs · Merit'}];
+  pw.innerHTML=parts.map(p=>`<div class="mode-card" data-p="${p.n}" style="padding:14px"><h3 style="font-size:15.5px">${p.label}</h3><p style="font-size:12.5px">${p.sub}</p></div>`).join('');
+  pw.querySelectorAll('.mode-card').forEach(el=>{
+    el.onclick=()=>{chosenPart=parseInt(el.dataset.p);pw.querySelectorAll('.mode-card').forEach(x=>x.style.borderColor='var(--line)');el.style.borderColor='var(--maroon)';tryEnable();};
+  });
+  const startBtn=document.getElementById('startBtn');
+  function tryEnable(){if(chosenSet&&chosenPart){startBtn.disabled=false;startBtn.textContent=`Start ${parts.find(p=>p.n===chosenPart).label} · Set ${chosenSet} (${SECTION_MINUTES[chosenPart]} min)`;startBtn.onclick=()=>startQuiz({mode:'section',setNumber:chosenSet,part:chosenPart});}}
+}
+
+function renderFullPicker(){
+  let chosenSet=null;
+  app.innerHTML=`
+    <div class="card">
+      <h2 style="font-size:19px;margin-bottom:6px">Full-Length Mock Test</h2>
+      <p class="muted">150 questions · ${FULL_TEST_MINUTES}-minute countdown · auto-submits at time-up. Merit = Part II+III (120).</p>
+      <p class="muted" style="margin:18px 0 6px">Pick a set</p>
+      <div class="set-row" id="setPills"></div>
+      <div class="hr"></div>
+      <button class="btn maroon block" id="startBtn" disabled>Select a set to begin</button>
+    </div>
+    <button class="btn secondary" id="backBtn">← Back to Mains</button>`;
+  document.getElementById('backBtn').onclick=renderMainsHome;
+  const startBtn=document.getElementById('startBtn');
+  setPills('setPills',(n)=>{chosenSet=n;startBtn.disabled=false;startBtn.textContent=`Start Full Test · Set ${n}`;startBtn.onclick=()=>startQuiz({mode:'full',setNumber:n,part:null});});
+}
+
+/* ══════════════════════════════════════════
+   MAINS QUIZ (unchanged logic)
+══════════════════════════════════════════ */
+let timerInterval=null;
+function stopTimer(){if(timerInterval){clearInterval(timerInterval);timerInterval=null;}}
+
+async function startQuiz({mode,setNumber,part}){
+  if(!requireAuth())return;stopPTimer();
+  app.innerHTML=`<div class="loading">Preparing your paper…</div>`;
+  let q=sb.from('questions').select('*').eq('set_number',setNumber).order('part').order('q_no');
+  if(mode==='section')q=q.eq('part',part);
+  const{data:questions,error}=await q;
+  if(error||!questions||questions.length===0){app.innerHTML=`<div class="card">Could not load questions. <button class="btn secondary" onclick="location.reload()">Retry</button></div>`;return;}
+  const durationSec=mode==='full'?FULL_TEST_MINUTES*60:SECTION_MINUTES[part]*60;
+  const{data:attemptRow}=await sb.from('attempts').insert({mode,set_number:setNumber,part:mode==='section'?part:null,duration_seconds:durationSec,user_id:currentUser.id}).select().single();
+  state={mode,setNumber,part,questions,answers:{},idx:0,remaining:durationSec,attemptId:attemptRow?attemptRow.id:null};
+  renderQuiz();stopTimer();
+  timerInterval=setInterval(()=>{state.remaining--;updateTimerDisplay();if(state.remaining<=0){stopTimer();submitQuiz();}},1000);
+}
+
+function updateTimerDisplay(){const el=document.getElementById('timerDisplay');if(!el)return;el.textContent=fmtTime(Math.max(0,state.remaining));el.classList.toggle('low',state.remaining<=60);}
+
+function currentPartLabel(){if(state.mode==='section')return PART_NAMES[state.part];return PART_NAMES[state.questions[state.idx].part];}
+
+function renderQuiz(){
+  const q=state.questions[state.idx],total=state.questions.length,ac=Object.keys(state.answers).length;
+  app.innerHTML=`
+    <div class="quiz-top">
+      <div><div class="mono" style="font-size:12px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.06em">${currentPartLabel()}</div>
+      <div style="font-size:13px;color:var(--ink-soft)">${ac}/${total} answered</div></div>
+      <div id="timerDisplay" class="timer">${fmtTime(state.remaining)}</div>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" style="width:${ac/total*100}%"></div></div>
+    <div class="qcard" style="margin-top:18px">
+      <div class="qmeta"><span class="qnum">Q${state.idx+1} / ${total}</span><span class="qtopic">${q.topic}</span></div>
+      <div class="qtext">${escapeHtml(q.question)}</div>
+      <div id="optionsWrap"></div>
+      <div class="navrow">
+        <button class="btn secondary" id="prevBtn" ${state.idx===0?'disabled':''}>← Previous</button>
+        ${state.idx===total-1?`<button class="btn maroon" id="submitBtn">Submit Test</button>`:`<button class="btn" id="nextBtn">Next →</button>`}
       </div>
     </div>
-  </div>
-  <div class="footer">BPSC TRE 4.0 · Computer Science · Nitish Kumar · Patna, Bihar</div>
-</div>
+    <div class="card" style="margin-top:18px">
+      <div style="font-size:12.5px;color:var(--ink-soft);font-family:'IBM Plex Mono',monospace;margin-bottom:8px">QUESTION PALETTE — green=answered · click to jump</div>
+      <div class="palette" id="palette"></div>
+      <div class="navrow" style="margin-top:16px"><button class="btn secondary" id="submitBtn2">Submit ${state.mode==='full'?'Full Test':'Section'}</button></div>
+    </div>`;
+  updateTimerDisplay();
+  const opts=[{k:'A',v:q.option_a},{k:'B',v:q.option_b},{k:'C',v:q.option_c},{k:'D',v:q.option_d},{k:'E',v:"None of the above / I don't want to answer this"}];
+  const ow=document.getElementById('optionsWrap');
+  ow.innerHTML=opts.map(o=>`<div class="option ${state.answers[q.id]===o.k?'selected':''} ${o.k==='E'?'none':''}" data-k="${o.k}"><div class="bubble">${o.k}</div><div class="option-text">${escapeHtml(o.v)}</div></div>`).join('');
+  ow.querySelectorAll('.option').forEach(el=>{el.onclick=()=>{state.answers[q.id]=el.dataset.k;renderQuiz();};});
+  const prev=document.getElementById('prevBtn');if(prev)prev.onclick=()=>{state.idx--;renderQuiz();};
+  const next=document.getElementById('nextBtn');if(next)next.onclick=()=>{state.idx++;renderQuiz();};
+  const sb1=document.getElementById('submitBtn');if(sb1)sb1.onclick=confirmSubmit;
+  document.getElementById('submitBtn2').onclick=confirmSubmit;
+  const pal=document.getElementById('palette');
+  pal.innerHTML=state.questions.map((qq,i)=>{const ans=state.answers[qq.id];return`<div class="pnode ${ans==='E'?'none-ans':ans?'answered':''} ${i===state.idx?'current':''}" data-i="${i}">${i+1}</div>`;}).join('');
+  pal.querySelectorAll('.pnode').forEach(el=>{el.onclick=()=>{state.idx=parseInt(el.dataset.i);renderQuiz();};});
+}
 
-<!-- PRELIMS INFO -->
-<div id="s-pre-info" class="scr">
-  <div class="hdr">
-    <div class="hdr-ico">P</div>
-    <div><div class="hdr-t">BPSC Prelims</div><div class="hdr-s">GK · GS Practice Paper</div></div>
-    <button class="back" onclick="goHome()">✕ Home</button>
-  </div>
-  <div style="padding:18px 14px;max-width:500px;margin:0 auto;width:100%">
-    <div class="ibanner">📌 <strong>Pattern:</strong> BPSC CSE Prelims style · 150 questions · GK + General Studies · 120 minutes · No negative marking</div>
-    <div class="sec-title">Syllabus Coverage</div>
-    <div class="syl-item"><div><strong>Bihar GK &amp; History</strong><div style="font-size:12px;color:var(--muted)">History, Culture, Geography, Economy, Polity</div></div><div class="syl-num">~30 Qs</div></div>
-    <div class="syl-item"><div><strong>Indian History &amp; Freedom Movement</strong><div style="font-size:12px;color:var(--muted)">Ancient, Medieval, Modern, National Movement</div></div><div class="syl-num">~25 Qs</div></div>
-    <div class="syl-item"><div><strong>Indian Polity &amp; Constitution</strong><div style="font-size:12px;color:var(--muted)">Parliament, Rights, Governance, Articles</div></div><div class="syl-num">~25 Qs</div></div>
-    <div class="syl-item"><div><strong>Geography — India &amp; World</strong><div style="font-size:12px;color:var(--muted)">Physical, Political, Bihar Geography</div></div><div class="syl-num">~25 Qs</div></div>
-    <div class="syl-item"><div><strong>Science &amp; Technology</strong><div style="font-size:12px;color:var(--muted)">Physics, Chemistry, Biology, Environment</div></div><div class="syl-num">~25 Qs</div></div>
-    <div class="syl-item"><div><strong>Economy &amp; Current Affairs</strong><div style="font-size:12px;color:var(--muted)">Indian Economy, Bihar Economy, Events</div></div><div class="syl-num">~20 Qs</div></div>
-    <button class="abtn pri" onclick="startPre()" style="width:100%;margin-top:8px">🚀 Start Prelims Paper (120 min)</button>
-  </div>
-</div>
+function confirmSubmit(){
+  const total=state.questions.length,answered=Object.keys(state.answers).length,un=total-answered;
+  if(confirm(un>0?`You have ${un} unanswered question(s). Submit anyway?`:'Submit now?'))submitQuiz();
+}
 
-<!-- MAINS -->
-<div id="s-mains" class="scr">
-  <div class="hdr">
-    <div class="hdr-ico">M</div>
-    <div><div class="hdr-t">BPSC TRE Mains</div><div class="hdr-s">5 Full Practice Papers</div></div>
-    <button class="back" onclick="goHome()">✕ Home</button>
-  </div>
-  <div style="padding:14px;max-width:600px;margin:0 auto;width:100%">
-    <div class="ibanner">📌 Each paper = <strong>150 Questions</strong> · Part I: Language (30) + Part II: GS (40) + Part III: CS (80) · <strong>120 min</strong> · Fresh AI questions each attempt</div>
-    <div class="papers">
-      <div class="pcrd" onclick="startMains(1)">
-        <div class="pnum">1</div>
-        <div class="pinfo"><div class="ptitle">Paper I — Foundation Set</div><div class="ptopics">Computer Fundamentals · Number Systems · Boolean Algebra · Basic GS</div></div>
-        <div class="pmeta"><div class="pqs">150 Qs</div><div class="ptime">120 min</div></div>
-      </div>
-      <div class="pcrd" onclick="startMains(2)">
-        <div class="pnum">2</div>
-        <div class="pinfo"><div class="ptitle">Paper II — Data Structures</div><div class="ptopics">DS · Algorithms · Sorting · Searching · Complexity · GS</div></div>
-        <div class="pmeta"><div class="pqs">150 Qs</div><div class="ptime">120 min</div></div>
-      </div>
-      <div class="pcrd" onclick="startMains(3)">
-        <div class="pnum">3</div>
-        <div class="pinfo"><div class="ptitle">Paper III — Programming</div><div class="ptopics">C Language · C++ OOP · Output-based · Pointers · GS</div></div>
-        <div class="pmeta"><div class="pqs">150 Qs</div><div class="ptime">120 min</div></div>
-      </div>
-      <div class="pcrd" onclick="startMains(4)">
-        <div class="pnum">4</div>
-        <div class="pinfo"><div class="ptitle">Paper IV — DBMS &amp; Networks</div><div class="ptopics">DBMS · SQL · Normalization · Networks · OSI Model · GS</div></div>
-        <div class="pmeta"><div class="pqs">150 Qs</div><div class="ptime">120 min</div></div>
-      </div>
-      <div class="pcrd" onclick="startMains(5)">
-        <div class="pnum">5</div>
-        <div class="pinfo"><div class="ptitle">Paper V — Advanced Mixed</div><div class="ptopics">OS · Compiler Design · Architecture · Previous Year Pattern</div></div>
-        <div class="pmeta"><div class="pqs">150 Qs</div><div class="ptime">120 min</div></div>
-      </div>
+async function submitQuiz(){
+  stopTimer();
+  const q=state.questions;
+  let lc=0,lt=0,mc=0,mt=0;const ts={};
+  const rows=q.map(qq=>{
+    const sel=state.answers[qq.id]||null,isC=sel===qq.correct_option;
+    if(qq.part===1){lt++;if(isC)lc++;}else{mt++;if(isC)mc++;}
+    if(!ts[qq.topic])ts[qq.topic]={correct:0,total:0};
+    ts[qq.topic].total++;if(isC)ts[qq.topic].correct++;
+    return{attempt_id:state.attemptId,question_id:qq.id,selected_option:sel,is_correct:isC};
+  });
+  state.result={lc,lt,mc,mt,ts};
+  if(state.attemptId){
+    try{
+      await sb.from('attempts').update({submitted_at:new Date().toISOString(),merit_score:mt>0?mc:null,merit_total:mt>0?mt:null,language_score:lt>0?lc:null,language_total:lt>0?lt:null}).eq('id',state.attemptId);
+      if(rows.length)await sb.from('attempt_answers').insert(rows);
+    }catch(e){console.error('Save failed:',e);}
+  }
+  renderResults();
+}
+
+function renderResults(){
+  const{lc,lt,mc,mt,ts}=state.result;
+  const mp=mt?Math.round(mc/mt*100):null;
+  const verdict=mt>0?(mp>=82?'Comfortably above projected cut-off (~82–87%). Keep it up!':mp>=70?'Close to danger zone — push weak topics.':'Below safe target. Revisit and reattempt.'):'';
+  const sorted=Object.entries(ts).sort((a,b)=>(a[1].correct/a[1].total)-(b[1].correct/b[1].total));
+  const weak=sorted.filter(([,s])=>(s.correct/s.total)<0.6);
+  app.innerHTML=`
+    ${mt>0?`<div class="score-hero"><div class="big">${mc}<span style="font-size:26px;color:#B7BEC9">/${mt}</span></div><div class="lbl">Merit Score (Part II + III)</div><div class="verdict">${verdict}</div></div>`:''}
+    <div class="stat-row">
+      ${lt>0?`<div class="stat"><div class="num">${lc}/${lt}</div><div class="lbl">Language (Qualifying)</div></div>`:''}
+      ${mt>0?`<div class="stat"><div class="num">${mp}%</div><div class="lbl">Merit Accuracy</div></div>`:''}
+      <div class="stat"><div class="num">${Object.keys(state.answers).length}/${state.questions.length}</div><div class="lbl">Attempted</div></div>
     </div>
-  </div>
-</div>
-
-<!-- LOADING -->
-<div id="s-load" class="scr">
-  <div class="hdr"><div class="hdr-ico">⏳</div><div><div class="hdr-t">Generating Paper</div><div class="hdr-s">AI creating fresh questions…</div></div></div>
-  <div class="ld-body">
-    <div class="spin"></div>
-    <div class="ld-title" id="ld-title">Generating Questions</div>
-    <div class="ld-sub" id="ld-sub">Please wait…</div>
-    <div class="ld-bar-wrap"><div class="ld-bar" id="ld-bar"></div></div>
-    <div class="ld-cnt" id="ld-cnt">0 / 150 questions ready</div>
-  </div>
-</div>
-
-<!-- EXAM -->
-<div id="s-exam" class="scr">
-  <div class="ex-hdr">
-    <div><div class="ex-title" id="ex-title">BPSC Prelims</div><div class="ex-sub" id="ex-sub">0 / 150 answered</div></div>
-    <div class="timer" id="timer">2:00:00</div>
-  </div>
-  <div class="ex-prog"><div class="ex-prog-f" id="ex-pf" style="width:0%"></div></div>
-  <div class="ex-body">
-    <div class="qarea" id="qarea"></div>
-    <div class="qnav-panel" id="qnav">
-      <div class="np-title">Questions</div>
-      <div class="np-legend">
-        <div class="leg"><div class="leg-dot" style="background:var(--ok)"></div>Done</div>
-        <div class="leg"><div class="leg-dot" style="background:var(--warn)"></div>Review</div>
-        <div class="leg"><div class="leg-dot" style="background:var(--bg);border:1px solid var(--border)"></div>Pending</div>
-      </div>
-      <div class="qdots" id="qdots"></div>
-      <button class="sub-btn" onclick="submitExam()">Submit Paper</button>
+    <div class="card"><h2 style="font-size:16px;margin-bottom:14px">Topic-wise accuracy</h2>
+      ${sorted.map(([t,s])=>{const p=Math.round(s.correct/s.total*100);const c=p>=75?'var(--green)':p>=50?'var(--amber)':'var(--red)';return`<div class="topicbar-row"><div class="topicbar-label">${t}</div><div class="topicbar-track"><div class="topicbar-fill" style="width:${p}%;background:${c}"></div></div><div class="topicbar-pct">${p}%</div></div>`;}).join('')}
     </div>
-  </div>
-  <button class="mob-nav-btn" onclick="toggleNav()">☰</button>
-  <div class="nov" id="nov" onclick="closeNav(event)">
-    <div class="npanel">
-      <div class="nph"><div class="np-title" style="margin:0">Questions</div><button class="cls-panel" onclick="closeNav()">✕</button></div>
-      <div class="np-legend">
-        <div class="leg"><div class="leg-dot" style="background:var(--ok)"></div>Done</div>
-        <div class="leg"><div class="leg-dot" style="background:var(--warn)"></div>Review</div>
-        <div class="leg"><div class="leg-dot" style="background:var(--bg);border:1px solid var(--border)"></div>Pending</div>
-      </div>
-      <div class="qdots" id="qdots-m"></div>
-      <button class="sub-btn" style="margin-top:14px" onclick="submitExam()">Submit Paper</button>
-    </div>
-  </div>
-</div>
+    ${weak.length?`<div class="card weakbox"><h3>Weak areas (below 60%)</h3><ul>${weak.map(([t,s])=>`<li>${t} — ${Math.round(s.correct/s.total*100)}% (${s.correct}/${s.total})</li>`).join('')}</ul></div>`:''}
+    <div class="card"><h2 style="font-size:16px;margin-bottom:14px">Full Review</h2><div id="reviewList"></div></div>
+    <div class="navrow">
+      <button class="btn secondary" id="retakeBtn">↺ Retake</button>
+      <button class="btn secondary" onclick="renderMainsHome()">📘 Mains Home</button>
+      <button class="btn maroon" onclick="renderHome()">🏠 Main Menu</button>
+    </div>`;
+  document.getElementById('reviewList').innerHTML=state.questions.map((qq,i)=>{
+    const sel=state.answers[qq.id],isC=sel===qq.correct_option,st=!sel?'skipped':isC?'correct':'wrong';
+    const opts=[{k:'A',v:qq.option_a},{k:'B',v:qq.option_b},{k:'C',v:qq.option_c},{k:'D',v:qq.option_d},{k:'E',v:'None of the above'}];
+    return`<div class="review-q"><div class="qmeta"><span class="qnum">Q${i+1}</span><span class="rowbadge ${st}">${st}</span></div><div class="qtext">${escapeHtml(qq.question)}</div>${opts.map(o=>{let cls='';if(o.k===qq.correct_option)cls='correct-opt';else if(o.k===sel&&sel!==qq.correct_option)cls='wrong-opt';return`<div class="review-opt ${cls}"><div class="bubble" style="width:22px;height:22px;font-size:11px">${o.k}</div><span>${escapeHtml(o.v)}${o.k===qq.correct_option?' ✓':o.k===sel?' ✗ (your pick)':''}</span></div>`;}).join('')}<div class="review-explain"><strong>Why:</strong> ${escapeHtml(qq.explanation)}</div></div>`;
+  }).join('');
+  document.getElementById('retakeBtn').onclick=()=>startQuiz({mode:state.mode,setNumber:state.setNumber,part:state.part});
+}
 
-<!-- RESULTS -->
-<div id="s-res" class="scr">
-  <div class="hdr"><div class="hdr-ico">✓</div><div><div class="hdr-t">Result</div><div class="hdr-s" id="res-paper">Practice Paper</div></div><button class="back" onclick="goHome()">✕ Home</button></div>
-  <div class="res-body">
-    <div class="score-hero">
-      <div class="slbl">Your Score</div>
-      <div class="snum" id="snum">0</div>
-      <div class="stotal" id="stotal">/ 150</div>
-      <div class="spct" id="spct">0%</div>
-      <div class="smsg" id="smsg"></div>
-    </div>
-    <div class="stats" id="stats"></div>
-    <div class="sec-title">Answer Review</div>
-    <div class="rev-list" id="rev-list"></div>
-    <div class="acts">
-      <button class="abtn pri" onclick="goHome()">🏠 Back to Home</button>
-      <button class="abtn sec" id="retake-btn">🔄 Retake</button>
-    </div>
-  </div>
-</div>
-
-<script>
-// ===== 150 PRELIMS QUESTIONS =====
+/* ══════════════════════════════════════════
+   PRELIMS — 150 GK+GS QUESTIONS
+══════════════════════════════════════════ */
 const PQ=[
-// Bihar GK (30)
-{q:"Who was the first Chief Minister of Bihar after Indian Independence?",o:["Sri Krishna Sinha","Mahendra Prasad Sinha","Binodanand Jha","K.B. Sahay"],a:0,e:"Sri Krishna Sinha (S.K. Sinha) was Bihar's first Chief Minister, serving 1946–1961.",t:"Bihar GK"},
-{q:"Bihar Diwas (Bihar Day) is celebrated on:",o:["22 March","26 January","15 November","1 November"],a:0,e:"Bihar Day is 22 March — the day Bihar was separated from Bengal Presidency in 1912.",t:"Bihar GK"},
-{q:"The state animal of Bihar is:",o:["Royal Bengal Tiger","Gaur (Indian Bison)","Elephant","One-horned Rhinoceros"],a:1,e:"The Gaur (Bos gaurus), or Indian Bison, is Bihar's state animal.",t:"Bihar GK"},
-{q:"The state bird of Bihar is:",o:["Peacock","House Sparrow","Sarus Crane","Common Myna"],a:1,e:"The House Sparrow (Passer domesticus) is Bihar's state bird.",t:"Bihar GK"},
-{q:"Vikramshila University was located in present-day:",o:["Nalanda","Bhagalpur","Rajgir","Vaishali"],a:1,e:"Vikramshila was in Antichak village, Bhagalpur district — a great Buddhist learning center.",t:"Bihar GK"},
-{q:"The Sonepur Mela is held at the confluence of which rivers?",o:["Ganga and Sone","Ganga and Gandak","Ganga and Kosi","Ganga and Bagmati"],a:1,e:"Sonepur Mela (Asia's largest cattle fair) is at the Ganga–Gandak confluence near Sonepur.",t:"Bihar GK"},
-{q:"Which district of Bihar is known for Madhubani painting?",o:["Darbhanga","Madhubani","Sitamarhi","Muzaffarpur"],a:1,e:"Madhubani painting originates from Mithila region, particularly Madhubani district.",t:"Bihar GK"},
-{q:"Mahatma Gandhi's first Satyagraha in India was launched from:",o:["Bardoli, Gujarat","Champaran, Bihar","Kheda, Gujarat","Nagpur, Maharashtra"],a:1,e:"Champaran Satyagraha (1917) against indigo planters was Gandhi's first Satyagraha in India.",t:"Bihar GK"},
-{q:"Bihar's highest peak is in which district?",o:["Rohtas","West Champaran","Kaimur","Gaya"],a:1,e:"Bihar's highest point (≈880 m) is Someshwar Fort Hill in West Champaran.",t:"Bihar GK"},
-{q:"Pataliputra (ancient capital) was founded by:",o:["Ashoka","Chandragupta Maurya","Ajatashatru","Bimbisara"],a:2,e:"Pataliputra (modern Patna) was founded by Ajatashatru of the Haryanka dynasty ~490 BCE.",t:"Bihar GK"},
-{q:"Nalanda Mahavihara became a UNESCO World Heritage Site in:",o:["2010","2012","2016","2019"],a:2,e:"Nalanda Mahavihara was inscribed as a UNESCO World Heritage Site in 2016.",t:"Bihar GK"},
-{q:"Chhath Puja is primarily dedicated to:",o:["Lord Shiva","Sun God (Surya)","Lord Vishnu","Goddess Durga"],a:1,e:"Chhath is a folk festival dedicated to the Sun God (Surya), observed mainly in Bihar & Jharkhand.",t:"Bihar GK"},
-{q:"The Battle of Buxar (1764) was fought between British forces and:",o:["Siraj-ud-Daulah alone","Mir Qasim alone","Combined forces of Mir Qasim, Nawab of Awadh & Mughal Emperor","Hyder Ali"],a:2,e:"Battle of Buxar (1764) — British vs combined army of Mir Qasim + Shuja-ud-Daula + Shah Alam II.",t:"Bihar GK"},
-{q:"Vaishali is historically famous as the world's first:",o:["Kingdom","Republic","University","Buddhist monastery"],a:1,e:"Vaishali is considered the world's first republic (Vajjian Confederacy) and birthplace of Lord Mahavira.",t:"Bihar GK"},
-{q:"Which river is called the 'Sorrow of Bihar'?",o:["Ganga","Kosi","Gandak","Son"],a:1,e:"The Kosi river's frequent floods earn it the title 'Sorrow of Bihar'.",t:"Bihar GK"},
-{q:"Bihar state tree is:",o:["Peepal","Mango","Banyan","Ashoka"],a:0,e:"Peepal (Ficus religiosa) is Bihar's state tree — also sacred in Buddhism and Hinduism.",t:"Bihar GK"},
-{q:"Bihar's Legislative Assembly has how many seats?",o:["200","224","243","250"],a:2,e:"Bihar Vidhan Sabha has 243 seats.",t:"Bihar GK"},
-{q:"Hajipur, famous for bananas, is the headquarters of:",o:["Saran","Vaishali","Muzaffarpur","Samastipur"],a:1,e:"Hajipur is the district headquarters of Vaishali and famous for its bananas and Ananda Mela.",t:"Bihar GK"},
-{q:"Which state does NOT share a border with Bihar?",o:["Uttar Pradesh","Jharkhand","Odisha","West Bengal"],a:2,e:"Bihar borders UP (W), Jharkhand (S), West Bengal (E), Nepal (N). Odisha does NOT border Bihar.",t:"Bihar GK"},
-{q:"The first Bihar Chief Minister from backward classes was:",o:["Karpoori Thakur","Jagannath Mishra","Satyendra Narayan Sinha","Abdul Ghafoor"],a:0,e:"Karpoori Thakur was Bihar's first backward-class CM, serving twice (1970–71 and 1977–79).",t:"Bihar GK"},
-{q:"Pawapuri is important for followers of:",o:["Buddhism","Hinduism","Jainism","Sikhism"],a:2,e:"Pawapuri is where Lord Mahavira attained Nirvana — a major Jain pilgrimage site in Bihar.",t:"Bihar GK"},
-{q:"Which ancient university was situated near Rajgir in Bihar?",o:["Vikramshila","Nalanda","Taxila","Valabhi"],a:1,e:"Nalanda University, one of the world's greatest ancient learning centers, was near Rajgir in Bihar.",t:"Bihar GK"},
-{q:"Bihar shares its northern border with:",o:["Uttar Pradesh","Nepal","Jharkhand","West Bengal"],a:1,e:"Nepal forms Bihar's entire northern international border.",t:"Bihar GK"},
-{q:"Bodh Gaya, where Gautama Buddha attained enlightenment, is in which district?",o:["Nalanda","Patna","Gaya","Aurangabad"],a:2,e:"Bodh Gaya is in Gaya district — the site of the Bodhi tree where Buddha attained enlightenment.",t:"Bihar GK"},
-{q:"The Mahabodhi Temple at Bodh Gaya is inscribed as a UNESCO World Heritage Site since:",o:["1997","2000","2002","2005"],a:2,e:"The Mahabodhi Temple Complex at Bodh Gaya was inscribed as a UNESCO WHS in 2002.",t:"Bihar GK"},
-{q:"The 'Rajgir Mahotsav' (festival) is held in the month of:",o:["January","March","October–November","December"],a:2,e:"Rajgir Mahotsav is an annual cultural festival held during October–November in Rajgir, Bihar.",t:"Bihar GK"},
-{q:"Which famous hot spring is located in Rajgir?",o:["Brahma Kund","Vyas Kund","Saptadhara","Tapovan"],a:0,e:"Brahma Kund (Brahmakund) is the famous hot spring in Rajgir with great religious significance.",t:"Bihar GK"},
-{q:"Golghar granary in Patna was built in year:",o:["1786","1800","1820","1857"],a:0,e:"Golghar was built in 1786 by Captain John Garstin for the British army to store grain.",t:"Bihar GK"},
-{q:"The Patna Museum was established in:",o:["1905","1912","1917","1947"],a:2,e:"Patna Museum (Jadu Ghar) was established in 1917 and contains rich archaeological collections.",t:"Bihar GK"},
-{q:"Sanjay Gandhi Jaivik Udyan (Patna Zoo) is located on the banks of:",o:["Son","Punpun","Ganga","Gandak"],a:2,e:"Patna Zoo (Sanjay Gandhi Jaivik Udyan) is situated on the south bank of the Ganga river.",t:"Bihar GK"},
-
-// Indian History (25)
-{q:"The Battle of Plassey (1757) was fought between:",o:["British and Marathas","British vs Siraj-ud-Daulah","British vs Hyder Ali","British vs Tipu Sultan"],a:1,e:"Robert Clive's British forces defeated Siraj-ud-Daulah, Nawab of Bengal, at Plassey in 1757.",t:"Indian History"},
-{q:"The Indian National Congress was founded in:",o:["1880","1885","1890","1895"],a:1,e:"INC was founded on 28 December 1885 by A.O. Hume, Dadabhai Naoroji and Dinshaw Wacha.",t:"Indian History"},
-{q:"The Jallianwala Bagh massacre occurred on:",o:["13 April 1919","13 April 1920","13 March 1919","13 April 1918"],a:0,e:"General Dyer ordered firing on unarmed people at Jallianwala Bagh, Amritsar, on 13 April 1919.",t:"Indian History"},
-{q:"The Quit India Movement was launched in:",o:["1940","1941","1942","1943"],a:2,e:"Quit India Movement was launched by Gandhi on 8 August 1942 at Gowalia Tank, Bombay.",t:"Indian History"},
-{q:"The partition of Bengal was annulled in:",o:["1906","1909","1911","1914"],a:2,e:"Partition of Bengal (1905) was annulled in 1911, though Bengal was re-partitioned in 1947.",t:"Indian History"},
-{q:"Who gave the slogan 'Do or Die' (Karo ya Maro)?",o:["Subhas Chandra Bose","Bal Gangadhar Tilak","Mahatma Gandhi","Jawaharlal Nehru"],a:2,e:"Gandhi gave 'Do or Die' during the Quit India Movement (1942).",t:"Indian History"},
-{q:"The Dandi March started on:",o:["12 March 1930","6 April 1930","26 January 1930","1 January 1930"],a:0,e:"Gandhi started the Dandi March on 12 March 1930 from Sabarmati Ashram, reaching Dandi on 6 April.",t:"Indian History"},
-{q:"Who founded the Arya Samaj in 1875?",o:["Ram Mohan Roy","Vivekananda","Dayananda Saraswati","Gopal Krishna Gokhale"],a:2,e:"Arya Samaj was founded by Swami Dayananda Saraswati in 1875 in Bombay.",t:"Indian History"},
-{q:"Who wrote 'Discovery of India'?",o:["Mahatma Gandhi","B.R. Ambedkar","Jawaharlal Nehru","Subhas Chandra Bose"],a:2,e:"'Discovery of India' was written by Nehru while imprisoned in Ahmednagar Fort (1944).",t:"Indian History"},
-{q:"The Rowlatt Act (1919) allowed:",o:["Press freedom","Self-governance","Detention without trial","Free trade"],a:2,e:"The Rowlatt Act (Black Act) allowed indefinite detention without trial, sparking nationwide protests.",t:"Indian History"},
-{q:"The Lucknow Pact (1916) was an agreement between:",o:["Congress and Muslim League","Congress and British","Congress and Sikhs","British and Princely States"],a:0,e:"The Lucknow Pact (1916) was a historic agreement between INC and All India Muslim League.",t:"Indian History"},
-{q:"Who is called the 'Father of Indian Unrest'?",o:["Mahatma Gandhi","Bal Gangadhar Tilak","Gopal Krishna Gokhale","Lala Lajpat Rai"],a:1,e:"Bal Gangadhar Tilak was called 'Father of Indian Unrest' by British author Valentine Chirol.",t:"Indian History"},
-{q:"The First War of Indian Independence occurred in:",o:["1849","1857","1875","1885"],a:1,e:"The Sepoy Mutiny / First War of Independence started at Meerut on 10 May 1857.",t:"Indian History"},
-{q:"Cripps Mission came to India in:",o:["1940","1942","1944","1946"],a:1,e:"The Cripps Mission arrived in India in March 1942, offering post-war Dominion Status.",t:"Indian History"},
-{q:"The Cabinet Mission came to India in:",o:["1944","1945","1946","1947"],a:2,e:"The Cabinet Mission of 1946 proposed a federal constitution and a constituent assembly for India.",t:"Indian History"},
-{q:"The Lahore Resolution demanding Pakistan was passed in:",o:["1935","1937","1940","1942"],a:2,e:"The Lahore Resolution (Pakistan Resolution) was passed on 23 March 1940 by the Muslim League.",t:"Indian History"},
-{q:"Who founded the Indian National Army (INA / Azad Hind Fauj)?",o:["Bhagat Singh","Subhas Chandra Bose","Rash Behari Bose","Chandrashekhar Azad"],a:2,e:"Rash Behari Bose founded the INA in 1942; Subhas Chandra Bose then led it from 1943.",t:"Indian History"},
-{q:"The August Offer (1940) was made by Viceroy:",o:["Wavell","Linlithgow","Mountbatten","Irwin"],a:1,e:"Viceroy Linlithgow made the August Offer (1940) promising Dominion Status after WWII.",t:"Indian History"},
-{q:"'Swaraj is my birthright and I shall have it' was said by:",o:["Mahatma Gandhi","Bal Gangadhar Tilak","Jawaharlal Nehru","Subhas Chandra Bose"],a:1,e:"This famous declaration was made by Bal Gangadhar Tilak.",t:"Indian History"},
-{q:"The Non-Cooperation Movement was launched in:",o:["1918","1920","1922","1930"],a:1,e:"Gandhi launched the Non-Cooperation Movement in 1920; it was withdrawn after Chauri Chaura (1922).",t:"Indian History"},
-{q:"Who presided over the historic Lahore Session of INC (1929) demanding Purna Swaraj?",o:["Mahatma Gandhi","Motilal Nehru","Jawaharlal Nehru","Subhas Chandra Bose"],a:2,e:"Jawaharlal Nehru presided over the 1929 Lahore Session that passed the Purna Swaraj resolution.",t:"Indian History"},
-{q:"The Indian Independence Act was passed on:",o:["14 July 1947","18 July 1947","15 August 1947","26 January 1950"],a:1,e:"The Indian Independence Act was passed by British Parliament on 18 July 1947, effective 15 Aug 1947.",t:"Indian History"},
-{q:"Who was the first President of the Indian National Congress?",o:["Dadabhai Naoroji","W.C. Bonnerjee","A.O. Hume","Surendranath Banerjee"],a:1,e:"W.C. Bonnerjee (Womesh Chandra Bonnerjee) was the first President of INC at the Bombay session (1885).",t:"Indian History"},
-{q:"The Swadeshi Movement was triggered by:",o:["Partition of Bengal (1905)","Jallianwala Bagh (1919)","Simon Commission (1928)","Rowlatt Act (1919)"],a:0,e:"The Swadeshi Movement began as a protest against the Partition of Bengal in 1905.",t:"Indian History"},
-{q:"Poona Pact (1932) was signed between:",o:["Gandhi and Jinnah","Gandhi and Ambedkar","Gandhi and Nehru","Ambedkar and Nehru"],a:1,e:"The Poona Pact (1932) between Gandhi and Ambedkar gave reserved seats to depressed classes in general electorates.",t:"Indian History"},
-
-// Indian Polity (20)
-{q:"The Indian Constitution was adopted on:",o:["15 August 1947","26 January 1950","26 November 1949","30 January 1950"],a:2,e:"The Constitution was adopted on 26 November 1949 (Constitution Day); it came into force on 26 January 1950.",t:"Indian Polity"},
-{q:"How many Fundamental Rights does the Indian Constitution guarantee?",o:["5","6","7","8"],a:1,e:"There are 6 Fundamental Rights: Equality, Freedom, Against Exploitation, Religion, Cultural/Educational, Constitutional Remedies.",t:"Indian Polity"},
-{q:"The President of India is elected by:",o:["Lok Sabha only","Rajya Sabha only","Both Houses of Parliament only","Elected members of Parliament + State Assemblies"],a:3,e:"The President is elected by an Electoral College of elected MPs from both Houses + elected MLAs of all states.",t:"Indian Polity"},
-{q:"Which article of the Constitution abolishes untouchability?",o:["Article 14","Article 15","Article 17","Article 19"],a:2,e:"Article 17 abolishes untouchability and forbids its practice in any form.",t:"Indian Polity"},
-{q:"Constitutional amendments are provided under which Article?",o:["Article 352","Article 356","Article 368","Article 370"],a:2,e:"Article 368 provides the procedure for amendment of the Indian Constitution.",t:"Indian Polity"},
-{q:"The term 'Secular' was added to the Preamble by which Constitutional Amendment?",o:["42nd (1976)","44th (1978)","25th (1971)","52nd (1985)"],a:0,e:"The 42nd Amendment (1976) added 'Socialist', 'Secular', and 'Integrity' to the Preamble.",t:"Indian Polity"},
-{q:"Under which Article can the President declare a National Emergency?",o:["Article 352","Article 356","Article 360","Article 368"],a:0,e:"Article 352 — National Emergency (war/external aggression/armed rebellion); Article 356 — State Emergency (President's Rule).",t:"Indian Polity"},
-{q:"The Directive Principles of State Policy are in which Part of the Constitution?",o:["Part II","Part III","Part IV","Part V"],a:2,e:"DPSPs are in Part IV (Articles 36–51). They are non-justiciable but fundamental for governance.",t:"Indian Polity"},
-{q:"Right to Education (Article 21A) was added by which amendment?",o:["86th (2002)","91st (2003)","93rd (2005)","97th (2011)"],a:0,e:"86th Amendment (2002) added Article 21A — free and compulsory education for children 6–14 years.",t:"Indian Polity"},
-{q:"How many schedules does the Indian Constitution currently have?",o:["8","10","12","14"],a:2,e:"The Constitution originally had 8 schedules; it now has 12 schedules.",t:"Indian Polity"},
-{q:"The Finance Commission is constituted under Article:",o:["270","280","300","315"],a:1,e:"Article 280 provides for the Finance Commission to recommend Centre-State tax distribution.",t:"Indian Polity"},
-{q:"Retirement age of Supreme Court judges is:",o:["60","62","65","70"],a:2,e:"Supreme Court judges retire at 65; High Court judges retire at 62.",t:"Indian Polity"},
-{q:"Which list in the Constitution covers both Centre and State legislation?",o:["Union List","State List","Concurrent List","Residuary List"],a:2,e:"Concurrent List (List III, 7th Schedule) — both Parliament and State Legislatures can make laws.",t:"Indian Polity"},
-{q:"The Comptroller and Auditor General (CAG) is provided under Article:",o:["124","148","165","217"],a:1,e:"Article 148 provides for the Comptroller and Auditor General of India (CAG).",t:"Indian Polity"},
-{q:"Who appoints the Governor of a state?",o:["Chief Minister","Prime Minister","President","Chief Justice of India"],a:2,e:"The Governor of a state is appointed by the President of India.",t:"Indian Polity"},
-{q:"Money bills can be introduced only in:",o:["Rajya Sabha","Lok Sabha","Either House","Joint Session"],a:1,e:"A Money Bill can only be introduced in the Lok Sabha (Article 110 & 109).",t:"Indian Polity"},
-{q:"The Preamble's phrase 'We the People of India' was inspired by the constitution of:",o:["USA","UK","France","Canada"],a:0,e:"The phrase 'We the People' was inspired by the Preamble of the United States Constitution.",t:"Indian Polity"},
-{q:"Right to Privacy was declared a Fundamental Right by the Supreme Court in:",o:["2012","2014","2017","2019"],a:2,e:"In Justice K.S. Puttaswamy v. Union of India (2017), the SC unanimously held Privacy a Fundamental Right.",t:"Indian Polity"},
-{q:"The Parliament of India consists of:",o:["Lok Sabha only","Lok Sabha + Rajya Sabha","Lok Sabha + Rajya Sabha + President","Supreme Court + Parliament"],a:2,e:"Parliament = President + Rajya Sabha (Council of States) + Lok Sabha (House of the People).",t:"Indian Polity"},
-{q:"Under which article can the President impose President's Rule in a state?",o:["Article 352","Article 356","Article 360","Article 365"],a:1,e:"Article 356 — Constitutional emergency in a state (President's Rule / State Emergency).",t:"Indian Polity"},
-
-// Geography (20)
-{q:"The Tropic of Cancer passes through how many Indian states?",o:["6","8","10","12"],a:1,e:"Tropic of Cancer passes through 8 states: Gujarat, Rajasthan, MP, CG, Jharkhand, WB, Tripura, Mizoram.",t:"Geography"},
-{q:"India's largest state by area is:",o:["Uttar Pradesh","Rajasthan","Maharashtra","Madhya Pradesh"],a:1,e:"Rajasthan (342,239 km²) is India's largest state by area.",t:"Geography"},
-{q:"The Brahmaputra river is known as _____ in Tibet:",o:["Tsangpo","Jamuna","Dihang","Lohit"],a:0,e:"Brahmaputra originates in Tibet as Tsangpo, enters India as Dihang, called Brahmaputra in Assam.",t:"Geography"},
-{q:"Chilika Lake (India's largest coastal lagoon) is in:",o:["Andhra Pradesh","Karnataka","Odisha","Kerala"],a:2,e:"Chilika Lake in Odisha is India's largest brackish-water coastal lagoon and a Ramsar Wetland Site.",t:"Geography"},
-{q:"Nathu La Pass connects India with:",o:["China","Nepal","Bhutan","Myanmar"],a:0,e:"Nathu La Pass in Sikkim connects India with China's Tibet Autonomous Region.",t:"Geography"},
-{q:"India's highest peak entirely within Indian territory is:",o:["K2","Kangchenjunga","Nanda Devi","Karakoram"],a:1,e:"Kangchenjunga (8,586 m) in Sikkim is India's highest peak.",t:"Geography"},
-{q:"The Sundarbans delta is shared between India and:",o:["Nepal","Bangladesh","Myanmar","Sri Lanka"],a:1,e:"The Sundarbans mangrove delta is shared between India (West Bengal) and Bangladesh.",t:"Geography"},
-{q:"Which Indian state has the longest coastline?",o:["Maharashtra","Gujarat","Odisha","Andhra Pradesh"],a:1,e:"Gujarat has India's longest coastline (~1,600 km).",t:"Geography"},
-{q:"Loktak Lake (India's largest freshwater lake) is in:",o:["Assam","Meghalaya","Manipur","Mizoram"],a:2,e:"Loktak Lake in Manipur is India's largest freshwater lake, famous for floating phumdis.",t:"Geography"},
-{q:"The river Godavari originates from:",o:["Maharashtra","MP","Telangana","Karnataka"],a:0,e:"Godavari originates from Trimbakeshwar near Nashik, Maharashtra. It is called 'Dakshin Ganga'.",t:"Geography"},
-{q:"The Gulf of Mannar lies between India and:",o:["Bangladesh","Myanmar","Sri Lanka","Maldives"],a:2,e:"Gulf of Mannar lies between the southeastern coast of India (Tamil Nadu) and Sri Lanka.",t:"Geography"},
-{q:"Indira Point, India's southernmost point, is located in:",o:["Kerala","Lakshadweep","Andaman & Nicobar","Tamil Nadu"],a:2,e:"Indira Point is the southernmost tip of India, on Great Nicobar Island in Andaman & Nicobar Islands.",t:"Geography"},
-{q:"Kaziranga National Park (famous for one-horned rhinoceros) is in:",o:["West Bengal","Manipur","Assam","Arunachal Pradesh"],a:2,e:"Kaziranga NP in Assam is a UNESCO WHS known for its one-horned Indian rhinoceros.",t:"Geography"},
-{q:"Tapi river flows westward into:",o:["Arabian Sea (Gulf of Khambhat)","Bay of Bengal","Gulf of Mannar","Indian Ocean directly"],a:0,e:"Tapi (Tapti) flows westward and drains into the Gulf of Khambhat (Arabian Sea).",t:"Geography"},
-{q:"Western Disturbances bring winter rainfall mainly to:",o:["South India","Northeast India","Northwest India","Central India"],a:2,e:"Western Disturbances are extratropical cyclones that bring rain/snow to Northwest India in winter.",t:"Geography"},
-{q:"Which is the smallest state of India by area?",o:["Tripura","Goa","Meghalaya","Manipur"],a:1,e:"Goa (3,702 km²) is India's smallest state by area.",t:"Geography"},
-{q:"The river Yamuna originates from:",o:["Gangotri Glacier","Yamunotri Glacier","Siachen Glacier","Milam Glacier"],a:1,e:"Yamuna originates from Yamunotri Glacier in Uttarakhand.",t:"Geography"},
-{q:"Palk Strait lies between:",o:["India and Maldives","India and Sri Lanka","India and Bangladesh","India and Myanmar"],a:1,e:"Palk Strait separates Tamil Nadu (India) from Northern Sri Lanka.",t:"Geography"},
-{q:"Which river is known as the 'Ganga of South India'?",o:["Krishna","Mahanadi","Godavari","Kaveri"],a:2,e:"Godavari is called the 'Ganga of South India' or 'Dakshin Ganga' due to its religious importance.",t:"Geography"},
-{q:"The Deccan Trap is a large igneous province in which type of rock?",o:["Sedimentary","Metamorphic","Basaltic volcanic","Granite"],a:2,e:"Deccan Traps consist of flood basalts — one of Earth's largest volcanic features, covering ~500,000 km².",t:"Geography"},
-
-// Science (20)
-{q:"The speed of light in vacuum is approximately:",o:["3 × 10^6 m/s","3 × 10^8 m/s","3 × 10^10 m/s","3 × 10^4 m/s"],a:1,e:"Speed of light in vacuum = 3 × 10^8 m/s (299,792,458 m/s exactly).",t:"Science"},
-{q:"Which vitamin is essential for blood clotting?",o:["Vitamin A","Vitamin B12","Vitamin C","Vitamin K"],a:3,e:"Vitamin K is essential for synthesis of clotting factors. Deficiency causes prolonged bleeding.",t:"Science"},
-{q:"Newton's First Law is the Law of:",o:["Conservation","Inertia","Gravitation","Momentum"],a:1,e:"Newton's 1st Law (Inertia): A body stays at rest or in uniform motion unless acted on by an external force.",t:"Science"},
-{q:"The largest planet in our Solar System is:",o:["Saturn","Uranus","Jupiter","Neptune"],a:2,e:"Jupiter is the largest planet, with mass more than twice all other planets combined.",t:"Science"},
-{q:"DNA stands for:",o:["Deoxyribonucleic Acid","Diribonucleic Acid","Deoxyribose Nucleic Acid","Dinucleic Acid"],a:0,e:"DNA = Deoxyribonucleic Acid — the double-helix molecule carrying genetic information.",t:"Science"},
-{q:"The pH of pure water is:",o:["0","5","7","14"],a:2,e:"Pure water has pH = 7 (neutral). Acids < 7, Bases > 7.",t:"Science"},
-{q:"Which gas is most abundant in Earth's atmosphere?",o:["Oxygen","Carbon Dioxide","Nitrogen","Argon"],a:2,e:"Nitrogen (N₂) ≈ 78% of atmosphere; Oxygen ≈ 21%; rest is trace gases.",t:"Science"},
-{q:"Ozone layer is present in which atmospheric layer?",o:["Troposphere","Stratosphere","Mesosphere","Thermosphere"],a:1,e:"Ozone layer is in the stratosphere (15–35 km above Earth), protecting us from UV radiation.",t:"Science"},
-{q:"Insulin is secreted by:",o:["Thyroid gland","Pituitary gland","Pancreas","Liver"],a:2,e:"Insulin is secreted by beta cells of Islets of Langerhans in the pancreas; regulates blood glucose.",t:"Science"},
-{q:"Diamond is the hardest natural substance because:",o:["It is a metal","Its carbon atoms are in hexagonal layers","Its carbon atoms form a rigid tetrahedral lattice","It contains both carbon and nitrogen"],a:2,e:"Diamond's carbon atoms are in a covalent tetrahedral lattice — extremely rigid, hence hardest natural substance.",t:"Science"},
-{q:"India's first satellite was:",o:["Aryabhata","Bhaskara","Rohini","INSAT-1A"],a:0,e:"Aryabhata was India's first satellite, launched on 19 April 1975 from a Soviet Cosmodrome.",t:"Science"},
-{q:"Malaria is caused by which organism?",o:["Bacteria","Virus","Plasmodium (protozoan)","Fungus"],a:2,e:"Malaria is caused by Plasmodium parasites, transmitted by female Anopheles mosquito bites.",t:"Science"},
-{q:"Vitamin A deficiency causes:",o:["Scurvy","Rickets","Night blindness","Beriberi"],a:2,e:"Vitamin A deficiency causes night blindness and can lead to xerophthalmia (dry eyes).",t:"Science"},
-{q:"Ohm's Law states:",o:["P = IV","V = IR","F = ma","E = mc²"],a:1,e:"Ohm's Law: V = IR (Voltage = Current × Resistance) for conductors at constant temperature.",t:"Science"},
-{q:"The mitochondria is called the 'powerhouse of the cell' because:",o:["It stores DNA","It performs photosynthesis","It produces ATP via cellular respiration","It controls cell division"],a:2,e:"Mitochondria produce ATP through aerobic cellular respiration, supplying energy to the cell.",t:"Science"},
-{q:"The chemical formula for common salt (Sodium Chloride) is:",o:["NaOH","NaCl","Na₂CO₃","NaHCO₃"],a:1,e:"NaCl (Sodium Chloride) is common table salt. NaOH = Caustic soda; Na₂CO₃ = Washing soda.",t:"Science"},
-{q:"The process by which plants lose water through leaves is called:",o:["Transpiration","Respiration","Photosynthesis","Translocation"],a:0,e:"Transpiration is the loss of water vapour from plant leaves through stomata.",t:"Science"},
-{q:"Archimedes' Principle states that a body immersed in fluid experiences:",o:["A downward force equal to its weight","An upward force equal to the weight of fluid displaced","No force if fully submerged","A force equal to its own volume"],a:1,e:"Buoyant force = weight of fluid displaced by the object (Archimedes' Principle).",t:"Science"},
-{q:"Which element has the atomic symbol 'Fe'?",o:["Fluorine","Francium","Iron","Fermium"],a:2,e:"Fe comes from Latin 'Ferrum' = Iron. Atomic number 26.",t:"Science"},
-{q:"The SI unit of electric current is:",o:["Volt","Watt","Ampere","Ohm"],a:2,e:"The SI unit of electric current is the Ampere (A), named after André-Marie Ampère.",t:"Science"},
-
-// Economy (15)
-{q:"The Reserve Bank of India (RBI) was established in:",o:["1930","1932","1934","1935"],a:3,e:"RBI was established on 1 April 1935 under the Reserve Bank of India Act, 1934.",t:"Economy"},
-{q:"GST was implemented in India from:",o:["1 April 2017","1 July 2017","1 January 2018","1 March 2017"],a:1,e:"GST was implemented from 1 July 2017, replacing multiple indirect taxes.",t:"Economy"},
-{q:"NITI Aayog replaced:",o:["Finance Commission","Planning Commission","Economic Advisory Council","National Development Council"],a:1,e:"NITI Aayog replaced the Planning Commission on 1 January 2015.",t:"Economy"},
-{q:"Father of Green Revolution in India is:",o:["Norman Borlaug","M.S. Swaminathan","Verghese Kurien","C. Subramaniam"],a:1,e:"M.S. Swaminathan is called the Father of Green Revolution in India.",t:"Economy"},
-{q:"NABARD stands for:",o:["National Agriculture Budget and Rural Development","National Bank for Agriculture and Rural Development","National Board for Agriculture and Rural Development","None of these"],a:1,e:"NABARD = National Bank for Agriculture and Rural Development, established 1982.",t:"Economy"},
-{q:"Repo Rate is the rate at which:",o:["RBI borrows from commercial banks","Commercial banks borrow from RBI","Banks lend to each other","None of these"],a:1,e:"Repo Rate = rate at which commercial banks borrow from RBI against government securities.",t:"Economy"},
-{q:"Which was India's first Five-Year Plan period?",o:["1947–52","1951–56","1952–57","1950–55"],a:1,e:"India's First Five-Year Plan ran from 1951 to 1956, giving priority to agriculture.",t:"Economy"},
-{q:"GDP stands for:",o:["Gross Development Product","General Domestic Product","Gross Domestic Product","Government Development Plan"],a:2,e:"GDP = Gross Domestic Product — total monetary value of goods/services produced in a country in a year.",t:"Economy"},
-{q:"SEBI (Securities and Exchange Board of India) regulates:",o:["Banking sector","Insurance sector","Stock market / capital markets","Foreign exchange"],a:2,e:"SEBI regulates the securities (stock) market and protects investor interests. Established 1988, statutory 1992.",t:"Economy"},
-{q:"'Make in India' initiative was launched in:",o:["2013","2014","2015","2016"],a:1,e:"Make in India was launched by PM Narendra Modi on 25 September 2014 to boost manufacturing.",t:"Economy"},
-{q:"Pradhan Mantri Jan Dhan Yojana (PMJDY) aims at:",o:["Crop insurance","Financial inclusion / banking for all","Rural employment","Skill development"],a:1,e:"PMJDY (launched Aug 2014) ensures every household has a bank account — financial inclusion scheme.",t:"Economy"},
-{q:"MUDRA Bank provides loans up to:",o:["₹5 lakh","₹10 lakh","₹20 lakh","₹50 lakh"],a:1,e:"MUDRA (Micro Units Development & Refinance Agency) provides loans up to ₹10 lakh to small businesses.",t:"Economy"},
-{q:"White Revolution in India is associated with:",o:["Wheat production","Milk/Dairy production","Egg production","Fish production"],a:1,e:"White Revolution (Operation Flood) boosted milk production; associated with Verghese Kurien and AMUL.",t:"Economy"},
-{q:"Digital India initiative was launched in:",o:["2013","2014","2015","2016"],a:2,e:"Digital India was launched on 1 July 2015 to transform India into a digitally empowered society.",t:"Economy"},
-{q:"Inflation in India is primarily measured by:",o:["GDP Deflator","Consumer Price Index (CPI)","Wholesale Price Index (WPI)","Both CPI and WPI"],a:3,e:"India uses both CPI (headline inflation target for RBI) and WPI to measure inflation.",t:"Economy"},
-
-// Current Affairs / General (20)
-{q:"The headquarters of the United Nations is in:",o:["Geneva, Switzerland","New York, USA","Vienna, Austria","The Hague, Netherlands"],a:1,e:"UN Headquarters is in New York City. The UN Office at Geneva is the second largest.",t:"General"},
-{q:"Who wrote India's national anthem 'Jana Gana Mana'?",o:["Bankim Chandra Chatterjee","Rabindranath Tagore","Sarojini Naidu","Subramania Bharati"],a:1,e:"'Jana Gana Mana' was written by Rabindranath Tagore; officially adopted 24 January 1950.",t:"General"},
-{q:"National song 'Vande Mataram' was composed by:",o:["Rabindranath Tagore","Bankim Chandra Chatterjee","Subramanya Bharati","Jai Shankar Prasad"],a:1,e:"'Vande Mataram' was composed by Bankim Chandra Chatterjee and appears in his novel Anandamath (1882).",t:"General"},
-{q:"The first Indian to win the Nobel Prize was:",o:["Amartya Sen","C.V. Raman","Rabindranath Tagore","Mother Teresa"],a:2,e:"Rabindranath Tagore was the first Indian and first Asian to win a Nobel Prize — Literature, 1913.",t:"General"},
-{q:"Which is the largest ocean in the world?",o:["Atlantic","Indian","Pacific","Arctic"],a:2,e:"Pacific Ocean is the largest, covering ~30% of Earth's surface.",t:"General"},
-{q:"The first Indian woman to win an Olympic medal was:",o:["P.T. Usha","Karnam Malleswari","Mary Kom","Saina Nehwal"],a:1,e:"Karnam Malleswari won bronze in weightlifting at the 2000 Sydney Olympics — India's first female Olympic medalist.",t:"General"},
-{q:"The International Court of Justice is located in:",o:["New York","Geneva","The Hague","Vienna"],a:2,e:"ICJ is in The Hague, Netherlands — the principal judicial organ of the United Nations.",t:"General"},
-{q:"The Olympic Games are held every:",o:["2 years","4 years","6 years","8 years"],a:1,e:"Summer Olympics every 4 years; Winter Olympics also every 4 years (offset by 2 from Summer).",t:"General"},
-{q:"LCM of 12 and 18 is:",o:["18","24","36","72"],a:2,e:"12=2²×3, 18=2×3². LCM=2²×3²=36.",t:"Maths"},
-{q:"If a train travels 300 km in 5 hours, its average speed is:",o:["45 km/h","55 km/h","60 km/h","65 km/h"],a:2,e:"Speed=Distance/Time=300÷5=60 km/h.",t:"Maths"},
-{q:"The smallest prime number is:",o:["0","1","2","3"],a:2,e:"2 is the smallest (and only even) prime number. 0 and 1 are not prime by definition.",t:"Maths"},
-{q:"'Hornbill Festival' is associated with which state?",o:["Meghalaya","Manipur","Nagaland","Arunachal Pradesh"],a:2,e:"Hornbill Festival (first week of December) is the major cultural festival of Nagaland.",t:"General"},
-{q:"Which continent is the largest in the world?",o:["Africa","Europe","North America","Asia"],a:3,e:"Asia is the world's largest continent (~44.58 million km², about 30% of Earth's land).",t:"General"},
-{q:"C.V. Raman won the Nobel Prize in Physics for:",o:["Theory of Relativity","Raman Effect","Discovery of Electron","Quantum Mechanics"],a:1,e:"C.V. Raman won Nobel Prize (1930) for discovering the Raman Effect — inelastic scattering of light.",t:"General"},
-{q:"The full form of ISRO is:",o:["Indian Space Research Organisation","Indian Scientific Research Organisation","Indian Satellite Research Organisation","International Space Research Organisation"],a:0,e:"ISRO = Indian Space Research Organisation, headquartered in Bengaluru, founded 1969.",t:"General"},
-{q:"Article 21 of the Indian Constitution guarantees:",o:["Right to Equality","Right to Life and Personal Liberty","Right to Freedom of Speech","Right against Exploitation"],a:1,e:"Article 21: 'No person shall be deprived of his life or personal liberty except by procedure established by law.'",t:"Indian Polity"},
-{q:"50% of 250 is:",o:["100","125","150","175"],a:1,e:"50% of 250 = 250 × 0.5 = 125.",t:"Maths"},
-{q:"If A can do a work in 10 days and B in 20 days, together they finish in:",o:["5 days","6⅔ days","7 days","8 days"],a:1,e:"A's 1-day work=1/10; B's=1/20; Together=1/10+1/20=3/20. Days=20/3=6⅔ days.",t:"Maths"},
-{q:"Which planet is closest to the Sun?",o:["Venus","Mars","Mercury","Earth"],a:2,e:"Mercury is the closest planet to the Sun (~57.9 million km average distance).",t:"General"},
-{q:"The United Nations was founded in:",o:["1940","1945","1947","1950"],a:1,e:"The United Nations was founded on 24 October 1945, after World War II.",t:"General"}
+{q:"Who was the first Chief Minister of Bihar after Independence?",o:["Sri Krishna Sinha","Mahendra Prasad Sinha","Binodanand Jha","K.B. Sahay"],a:0,e:"Sri Krishna Sinha (S.K. Sinha) served as Bihar's first CM from 1946 to 1961.",t:"Bihar GK"},
+{q:"Bihar Diwas is celebrated on:",o:["22 March","26 January","15 November","1 November"],a:0,e:"Bihar Day = 22 March — day Bihar separated from Bengal Presidency in 1912.",t:"Bihar GK"},
+{q:"State animal of Bihar:",o:["Royal Bengal Tiger","Gaur (Indian Bison)","Elephant","One-horned Rhinoceros"],a:1,e:"Gaur (Bos gaurus) is Bihar's state animal.",t:"Bihar GK"},
+{q:"State bird of Bihar:",o:["Peacock","House Sparrow","Sarus Crane","Common Myna"],a:1,e:"House Sparrow (Passer domesticus) is Bihar's state bird.",t:"Bihar GK"},
+{q:"Vikramshila University was located in:",o:["Nalanda","Bhagalpur","Rajgir","Vaishali"],a:1,e:"Vikramshila was in Antichak village, Bhagalpur district.",t:"Bihar GK"},
+{q:"Sonepur Mela is at confluence of:",o:["Ganga and Sone","Ganga and Gandak","Ganga and Kosi","Ganga and Bagmati"],a:1,e:"Sonepur Mela (Asia's largest cattle fair) at Ganga–Gandak confluence.",t:"Bihar GK"},
+{q:"Which district is known for Madhubani painting?",o:["Darbhanga","Madhubani","Sitamarhi","Muzaffarpur"],a:1,e:"Madhubani painting from Madhubani district (Mithila region).",t:"Bihar GK"},
+{q:"Gandhi's first Satyagraha in India was at:",o:["Bardoli","Champaran","Kheda","Nagpur"],a:1,e:"Champaran Satyagraha 1917 — Gandhi's first Satyagraha in India.",t:"Bihar GK"},
+{q:"Bihar's highest peak is in which district?",o:["Rohtas","West Champaran","Kaimur","Gaya"],a:1,e:"Someshwar Fort Hill (~880 m) in West Champaran is Bihar's highest point.",t:"Bihar GK"},
+{q:"Pataliputra (ancient capital) was founded by:",o:["Ashoka","Chandragupta Maurya","Ajatashatru","Bimbisara"],a:2,e:"Pataliputra (modern Patna) founded by Ajatashatru ~490 BCE.",t:"Bihar GK"},
+{q:"Nalanda Mahavihara became UNESCO WHS in:",o:["2010","2012","2016","2019"],a:2,e:"Nalanda Mahavihara inscribed UNESCO WHS in 2016.",t:"Bihar GK"},
+{q:"Chhath Puja is dedicated to:",o:["Lord Shiva","Sun God (Surya)","Lord Vishnu","Durga"],a:1,e:"Chhath Puja dedicated to Sun God (Surya).",t:"Bihar GK"},
+{q:"Battle of Buxar 1764 — British vs:",o:["Siraj-ud-Daulah","Mir Qasim alone","Combined forces of Mir Qasim, Nawab of Awadh & Mughal Emperor","Hyder Ali"],a:2,e:"British vs Mir Qasim + Shuja-ud-Daula + Shah Alam II.",t:"Bihar GK"},
+{q:"Vaishali is famous as world's first:",o:["Kingdom","Republic","University","Buddhist monastery"],a:1,e:"Vaishali = world's first republic (Vajjian Confederacy) and birthplace of Mahavira.",t:"Bihar GK"},
+{q:"'Sorrow of Bihar' river:",o:["Ganga","Kosi","Gandak","Son"],a:1,e:"Kosi's frequent floods = 'Sorrow of Bihar'.",t:"Bihar GK"},
+{q:"Bihar state tree:",o:["Peepal","Mango","Banyan","Ashoka"],a:0,e:"Peepal (Ficus religiosa) is Bihar's state tree.",t:"Bihar GK"},
+{q:"Bihar Vidhan Sabha seats:",o:["200","224","243","250"],a:2,e:"Bihar Vidhan Sabha = 243 seats.",t:"Bihar GK"},
+{q:"Hajipur is HQ of which district?",o:["Saran","Vaishali","Muzaffarpur","Samastipur"],a:1,e:"Hajipur = HQ of Vaishali district, famous for bananas.",t:"Bihar GK"},
+{q:"Which state does NOT border Bihar?",o:["Uttar Pradesh","Jharkhand","Odisha","West Bengal"],a:2,e:"Bihar borders UP, Jharkhand, WB, Nepal. Odisha does NOT.",t:"Bihar GK"},
+{q:"First Bihar CM from backward classes:",o:["Karpoori Thakur","Jagannath Mishra","Satyendra Narayan Sinha","Abdul Ghafoor"],a:0,e:"Karpoori Thakur — first backward-class CM of Bihar (1970–71, 1977–79).",t:"Bihar GK"},
+{q:"Pawapuri is pilgrimage for:",o:["Buddhists","Hindus","Jains","Sikhs"],a:2,e:"Pawapuri — Lord Mahavira attained Nirvana here (major Jain site).",t:"Bihar GK"},
+{q:"Ancient university near Rajgir:",o:["Vikramshila","Nalanda","Taxila","Valabhi"],a:1,e:"Nalanda University near Rajgir — greatest ancient learning center.",t:"Bihar GK"},
+{q:"Bihar's northern border is with:",o:["Uttar Pradesh","Nepal","Jharkhand","West Bengal"],a:1,e:"Nepal forms Bihar's entire northern international border.",t:"Bihar GK"},
+{q:"Bodh Gaya is in which district?",o:["Nalanda","Patna","Gaya","Aurangabad"],a:2,e:"Bodh Gaya in Gaya district — site of the Bodhi tree.",t:"Bihar GK"},
+{q:"Mahabodhi Temple UNESCO WHS since:",o:["1997","2000","2002","2005"],a:2,e:"Mahabodhi Temple inscribed UNESCO WHS in 2002.",t:"Bihar GK"},
+{q:"Rajgir Mahotsav held during:",o:["January","March","October–November","December"],a:2,e:"Rajgir Mahotsav — annual cultural festival in October–November.",t:"Bihar GK"},
+{q:"Famous hot spring in Rajgir:",o:["Brahma Kund","Vyas Kund","Saptadhara","Tapovan"],a:0,e:"Brahma Kund is the famous hot spring in Rajgir.",t:"Bihar GK"},
+{q:"Golghar (Patna) was built in:",o:["1786","1800","1820","1857"],a:0,e:"Golghar built 1786 by Captain John Garstin for British army grain storage.",t:"Bihar GK"},
+{q:"Patna Museum established in:",o:["1905","1912","1917","1947"],a:2,e:"Patna Museum (Jadu Ghar) established 1917.",t:"Bihar GK"},
+{q:"Patna Zoo is on the bank of:",o:["Son","Punpun","Ganga","Gandak"],a:2,e:"Sanjay Gandhi Jaivik Udyan (Patna Zoo) on south bank of Ganga.",t:"Bihar GK"},
+{q:"Battle of Plassey 1757 — British defeated:",o:["Marathas","Siraj-ud-Daulah","Hyder Ali","Tipu Sultan"],a:1,e:"Robert Clive defeated Siraj-ud-Daulah, Nawab of Bengal.",t:"Indian History"},
+{q:"INC was founded in:",o:["1880","1885","1890","1895"],a:1,e:"INC founded 28 Dec 1885 by A.O. Hume, Dadabhai Naoroji, Dinshaw Wacha.",t:"Indian History"},
+{q:"Jallianwala Bagh massacre was on:",o:["13 April 1919","13 April 1920","13 March 1919","13 April 1918"],a:0,e:"General Dyer ordered firing at Jallianwala Bagh, Amritsar, 13 April 1919.",t:"Indian History"},
+{q:"Quit India Movement launched in:",o:["1940","1941","1942","1943"],a:2,e:"Quit India Movement — 8 August 1942, Gowalia Tank, Bombay.",t:"Indian History"},
+{q:"Partition of Bengal was annulled in:",o:["1906","1909","1911","1914"],a:2,e:"Partition of Bengal (1905) annulled in 1911.",t:"Indian History"},
+{q:"'Do or Die' was given by:",o:["Bose","Tilak","Gandhi","Nehru"],a:2,e:"Gandhi gave 'Do or Die' (Karo ya Maro) during Quit India 1942.",t:"Indian History"},
+{q:"Dandi March started on:",o:["12 March 1930","6 April 1930","26 January 1930","1 January 1930"],a:0,e:"Gandhi started Dandi March on 12 March 1930 from Sabarmati Ashram.",t:"Indian History"},
+{q:"Arya Samaj founded by:",o:["Ram Mohan Roy","Vivekananda","Dayananda Saraswati","Gokhale"],a:2,e:"Arya Samaj founded by Swami Dayananda Saraswati in 1875.",t:"Indian History"},
+{q:"'Discovery of India' written by:",o:["Gandhi","Ambedkar","Nehru","Bose"],a:2,e:"'Discovery of India' written by Nehru in Ahmednagar Fort (1944).",t:"Indian History"},
+{q:"Rowlatt Act (1919) allowed:",o:["Press freedom","Self-governance","Detention without trial","Free trade"],a:2,e:"Rowlatt Act = indefinite detention without trial.",t:"Indian History"},
+{q:"Lucknow Pact (1916) was between:",o:["Congress & Muslim League","Congress & British","Congress & Sikhs","British & Princes"],a:0,e:"Lucknow Pact — INC and All India Muslim League, 1916.",t:"Indian History"},
+{q:"'Father of Indian Unrest':",o:["Gandhi","Bal Gangadhar Tilak","Gokhale","Lajpat Rai"],a:1,e:"Tilak called 'Father of Indian Unrest' by Valentine Chirol.",t:"Indian History"},
+{q:"First War of Independence was in:",o:["1849","1857","1875","1885"],a:1,e:"Sepoy Mutiny / First War of Independence — Meerut, 10 May 1857.",t:"Indian History"},
+{q:"Cripps Mission came in:",o:["1940","1942","1944","1946"],a:1,e:"Cripps Mission March 1942, offering post-war Dominion Status.",t:"Indian History"},
+{q:"Cabinet Mission came in:",o:["1944","1945","1946","1947"],a:2,e:"Cabinet Mission 1946 proposed constituent assembly for India.",t:"Indian History"},
+{q:"Lahore Resolution (Pakistan) passed in:",o:["1935","1937","1940","1942"],a:2,e:"Lahore Resolution passed 23 March 1940 by Muslim League.",t:"Indian History"},
+{q:"INA founded by:",o:["Bhagat Singh","Subhas Bose","Rash Behari Bose","Chandrashekhar Azad"],a:2,e:"Rash Behari Bose founded INA 1942; Subhas Bose led from 1943.",t:"Indian History"},
+{q:"Non-Cooperation Movement launched in:",o:["1918","1920","1922","1930"],a:1,e:"Non-Cooperation Movement 1920, withdrawn after Chauri Chaura 1922.",t:"Indian History"},
+{q:"Purna Swaraj resolution (Lahore 1929) presided by:",o:["Gandhi","Motilal Nehru","Jawaharlal Nehru","Bose"],a:2,e:"Jawaharlal Nehru presided over Lahore Session 1929.",t:"Indian History"},
+{q:"Indian Independence Act passed on:",o:["14 July 1947","18 July 1947","15 Aug 1947","26 Jan 1950"],a:1,e:"Indian Independence Act passed 18 July 1947, effective 15 Aug 1947.",t:"Indian History"},
+{q:"First President of INC:",o:["Dadabhai Naoroji","W.C. Bonnerjee","A.O. Hume","Surendranath Banerjee"],a:1,e:"W.C. Bonnerjee — first INC President, Bombay session 1885.",t:"Indian History"},
+{q:"Swadeshi Movement triggered by:",o:["Partition of Bengal 1905","Jallianwala Bagh","Simon Commission","Rowlatt Act"],a:0,e:"Swadeshi Movement began as protest against Partition of Bengal 1905.",t:"Indian History"},
+{q:"Poona Pact (1932) was between:",o:["Gandhi & Jinnah","Gandhi & Ambedkar","Gandhi & Nehru","Ambedkar & Nehru"],a:1,e:"Poona Pact — Gandhi and Ambedkar, reserved seats for depressed classes.",t:"Indian History"},
+{q:"'Swaraj is my birthright' was said by:",o:["Gandhi","Bal Gangadhar Tilak","Nehru","Bose"],a:1,e:"Famous declaration by Bal Gangadhar Tilak.",t:"Indian History"},
+{q:"August Offer 1940 made by Viceroy:",o:["Wavell","Linlithgow","Mountbatten","Irwin"],a:1,e:"Viceroy Linlithgow made August Offer 1940 promising Dominion Status.",t:"Indian History"},
+{q:"Indian Constitution adopted on:",o:["15 Aug 1947","26 Jan 1950","26 Nov 1949","30 Jan 1950"],a:2,e:"Constitution adopted 26 Nov 1949; came into force 26 Jan 1950.",t:"Indian Polity"},
+{q:"Number of Fundamental Rights:",o:["5","6","7","8"],a:1,e:"6 Fundamental Rights: Equality, Freedom, Against Exploitation, Religion, Cultural/Educational, Remedies.",t:"Indian Polity"},
+{q:"President elected by:",o:["Lok Sabha only","Rajya Sabha only","Both Houses only","Elected MPs + State MLAs"],a:3,e:"Electoral College = elected MPs (both houses) + elected MLAs of all states.",t:"Indian Polity"},
+{q:"Article that abolishes untouchability:",o:["Article 14","Article 15","Article 17","Article 19"],a:2,e:"Article 17 abolishes untouchability.",t:"Indian Polity"},
+{q:"Constitutional amendments under Article:",o:["352","356","368","370"],a:2,e:"Article 368 — procedure for Constitutional amendment.",t:"Indian Polity"},
+{q:"'Secular' added to Preamble by:",o:["42nd (1976)","44th (1978)","25th (1971)","52nd (1985)"],a:0,e:"42nd Amendment 1976 added Socialist, Secular, Integrity to Preamble.",t:"Indian Polity"},
+{q:"National Emergency under Article:",o:["352","356","360","368"],a:0,e:"Article 352 — National Emergency.",t:"Indian Polity"},
+{q:"DPSPs are in Part:",o:["Part II","Part III","Part IV","Part V"],a:2,e:"DPSPs in Part IV (Articles 36–51).",t:"Indian Polity"},
+{q:"Right to Education (Art 21A) by which amendment?",o:["86th (2002)","91st (2003)","93rd (2005)","97th (2011)"],a:0,e:"86th Amendment 2002 — free education for children 6–14 years.",t:"Indian Polity"},
+{q:"Indian Constitution has how many Schedules?",o:["8","10","12","14"],a:2,e:"Constitution has 12 Schedules.",t:"Indian Polity"},
+{q:"Finance Commission under Article:",o:["270","280","300","315"],a:1,e:"Article 280 — Finance Commission.",t:"Indian Polity"},
+{q:"Retirement age of SC judges:",o:["60","62","65","70"],a:2,e:"SC judges retire at 65; HC judges at 62.",t:"Indian Polity"},
+{q:"Concurrent List — both Centre and State legislate:",o:["Union List","State List","Concurrent List","Residuary"],a:2,e:"Concurrent List (List III, 7th Schedule).",t:"Indian Polity"},
+{q:"CAG under Article:",o:["124","148","165","217"],a:1,e:"Article 148 — CAG of India.",t:"Indian Polity"},
+{q:"Governor appointed by:",o:["CM","PM","President","CJI"],a:2,e:"Governor appointed by President of India.",t:"Indian Polity"},
+{q:"Money Bills introduced only in:",o:["Rajya Sabha","Lok Sabha","Either House","Joint Session"],a:1,e:"Money Bill only in Lok Sabha (Articles 110 & 109).",t:"Indian Polity"},
+{q:"'We the People' in Preamble inspired by:",o:["USA","UK","France","Canada"],a:0,e:"Inspired by the US Constitution's Preamble.",t:"Indian Polity"},
+{q:"Right to Privacy declared FR in:",o:["2012","2014","2017","2019"],a:2,e:"Puttaswamy judgment 2017 — SC held Privacy a Fundamental Right.",t:"Indian Polity"},
+{q:"Parliament = President +",o:["Lok Sabha only","Lok Sabha + Rajya Sabha","SC + Parliament","Cabinet"],a:1,e:"Parliament = President + Rajya Sabha + Lok Sabha.",t:"Indian Polity"},
+{q:"President's Rule under Article:",o:["352","356","360","365"],a:1,e:"Article 356 — President's Rule / State Emergency.",t:"Indian Polity"},
+{q:"Tropic of Cancer passes through how many Indian states?",o:["6","8","10","12"],a:1,e:"8 states: Gujarat, Rajasthan, MP, CG, Jharkhand, WB, Tripura, Mizoram.",t:"Geography"},
+{q:"India's largest state by area:",o:["Uttar Pradesh","Rajasthan","Maharashtra","Madhya Pradesh"],a:1,e:"Rajasthan (342,239 km²) — India's largest state.",t:"Geography"},
+{q:"Brahmaputra is called _____ in Tibet:",o:["Tsangpo","Jamuna","Dihang","Lohit"],a:0,e:"Brahmaputra originates in Tibet as Tsangpo.",t:"Geography"},
+{q:"Chilika Lake is in:",o:["Andhra Pradesh","Karnataka","Odisha","Kerala"],a:2,e:"Chilika Lake, Odisha — India's largest brackish coastal lagoon.",t:"Geography"},
+{q:"Nathu La Pass connects India with:",o:["China","Nepal","Bhutan","Myanmar"],a:0,e:"Nathu La Pass (Sikkim) connects India with Tibet (China).",t:"Geography"},
+{q:"India's highest peak (within India):",o:["K2","Kangchenjunga","Nanda Devi","Karakoram"],a:1,e:"Kangchenjunga (8,586 m) in Sikkim — India's highest peak.",t:"Geography"},
+{q:"Sundarbans delta is shared with:",o:["Nepal","Bangladesh","Myanmar","Sri Lanka"],a:1,e:"Sundarbans shared between India (WB) and Bangladesh.",t:"Geography"},
+{q:"State with longest coastline:",o:["Maharashtra","Gujarat","Odisha","Andhra Pradesh"],a:1,e:"Gujarat (~1,600 km) has India's longest coastline.",t:"Geography"},
+{q:"Loktak Lake is in:",o:["Assam","Meghalaya","Manipur","Mizoram"],a:2,e:"Loktak Lake, Manipur — India's largest freshwater lake.",t:"Geography"},
+{q:"Godavari originates from:",o:["Maharashtra","MP","Telangana","Karnataka"],a:0,e:"Godavari originates from Trimbakeshwar near Nashik, Maharashtra.",t:"Geography"},
+{q:"Gulf of Mannar between India and:",o:["Bangladesh","Myanmar","Sri Lanka","Maldives"],a:2,e:"Gulf of Mannar between Tamil Nadu and Sri Lanka.",t:"Geography"},
+{q:"Indira Point (southernmost India) is in:",o:["Kerala","Lakshadweep","Andaman & Nicobar","Tamil Nadu"],a:2,e:"Indira Point — Great Nicobar Island, Andaman & Nicobar.",t:"Geography"},
+{q:"Kaziranga NP is in:",o:["West Bengal","Manipur","Assam","Arunachal Pradesh"],a:2,e:"Kaziranga NP, Assam — UNESCO WHS for one-horned rhinoceros.",t:"Geography"},
+{q:"Tapi river drains into:",o:["Arabian Sea (Gulf of Khambhat)","Bay of Bengal","Gulf of Mannar","Indian Ocean"],a:0,e:"Tapi flows westward into Gulf of Khambhat (Arabian Sea).",t:"Geography"},
+{q:"Western Disturbances bring winter rain to:",o:["South India","Northeast India","Northwest India","Central India"],a:2,e:"Western Disturbances bring rain/snow to Northwest India in winter.",t:"Geography"},
+{q:"Smallest state of India by area:",o:["Tripura","Goa","Meghalaya","Manipur"],a:1,e:"Goa (3,702 km²) — India's smallest state.",t:"Geography"},
+{q:"Yamuna originates from:",o:["Gangotri Glacier","Yamunotri Glacier","Siachen Glacier","Milam Glacier"],a:1,e:"Yamuna originates from Yamunotri Glacier, Uttarakhand.",t:"Geography"},
+{q:"Palk Strait separates India from:",o:["Maldives","Sri Lanka","Bangladesh","Myanmar"],a:1,e:"Palk Strait separates Tamil Nadu from Northern Sri Lanka.",t:"Geography"},
+{q:"'Ganga of South India':",o:["Krishna","Mahanadi","Godavari","Kaveri"],a:2,e:"Godavari called 'Dakshin Ganga'.",t:"Geography"},
+{q:"Deccan Trap is primarily:",o:["Sedimentary","Metamorphic","Basaltic volcanic","Granite"],a:2,e:"Deccan Traps = flood basalts, one of Earth's largest volcanic features.",t:"Geography"},
+{q:"Speed of light in vacuum:",o:["3×10^6 m/s","3×10^8 m/s","3×10^10 m/s","3×10^4 m/s"],a:1,e:"Speed of light = 3×10^8 m/s.",t:"Science"},
+{q:"Vitamin essential for blood clotting:",o:["Vitamin A","Vitamin B12","Vitamin C","Vitamin K"],a:3,e:"Vitamin K essential for blood clotting factor synthesis.",t:"Science"},
+{q:"Newton's First Law is Law of:",o:["Conservation","Inertia","Gravitation","Momentum"],a:1,e:"Law of Inertia — body stays at rest/motion unless external force acts.",t:"Science"},
+{q:"Largest planet in Solar System:",o:["Saturn","Uranus","Jupiter","Neptune"],a:2,e:"Jupiter is the largest planet.",t:"Science"},
+{q:"DNA stands for:",o:["Deoxyribonucleic Acid","Diribonucleic Acid","Deoxyribose Nucleic Acid","Dinucleic Acid"],a:0,e:"DNA = Deoxyribonucleic Acid — genetic double-helix molecule.",t:"Science"},
+{q:"pH of pure water:",o:["0","5","7","14"],a:2,e:"Pure water pH = 7 (neutral).",t:"Science"},
+{q:"Most abundant gas in Earth's atmosphere:",o:["Oxygen","Carbon Dioxide","Nitrogen","Argon"],a:2,e:"Nitrogen (N2) approximately 78% of atmosphere.",t:"Science"},
+{q:"Ozone layer is in:",o:["Troposphere","Stratosphere","Mesosphere","Thermosphere"],a:1,e:"Ozone layer in stratosphere (15–35 km above Earth).",t:"Science"},
+{q:"Insulin secreted by:",o:["Thyroid","Pituitary","Pancreas","Liver"],a:2,e:"Insulin from beta cells of Islets of Langerhans in pancreas.",t:"Science"},
+{q:"Diamond is hardest because:",o:["It is a metal","Carbon in hexagonal layers","Carbon in rigid tetrahedral lattice","Contains N and C"],a:2,e:"Diamond's covalent tetrahedral lattice makes it hardest natural substance.",t:"Science"},
+{q:"India's first satellite:",o:["Aryabhata","Bhaskara","Rohini","INSAT-1A"],a:0,e:"Aryabhata — India's first satellite, launched 19 April 1975.",t:"Science"},
+{q:"Malaria caused by:",o:["Bacteria","Virus","Plasmodium (protozoan)","Fungus"],a:2,e:"Malaria caused by Plasmodium via female Anopheles mosquito.",t:"Science"},
+{q:"Vitamin A deficiency causes:",o:["Scurvy","Rickets","Night blindness","Beriberi"],a:2,e:"Vitamin A deficiency causes night blindness.",t:"Science"},
+{q:"Ohm's Law:",o:["P=IV","V=IR","F=ma","E=mc2"],a:1,e:"V=IR (Voltage = Current x Resistance).",t:"Science"},
+{q:"Mitochondria produces:",o:["DNA","Photosynthesis","ATP via cellular respiration","Controls division"],a:2,e:"Mitochondria produce ATP via aerobic cellular respiration.",t:"Science"},
+{q:"Formula of common salt:",o:["NaOH","NaCl","Na2CO3","NaHCO3"],a:1,e:"NaCl = Sodium Chloride = common table salt.",t:"Science"},
+{q:"Water loss from plant leaves:",o:["Transpiration","Respiration","Photosynthesis","Translocation"],a:0,e:"Transpiration = water vapour loss from leaves via stomata.",t:"Science"},
+{q:"Archimedes' Principle — immersed body experiences:",o:["Downward force = weight","Upward force = weight of fluid displaced","No force","Force = its volume"],a:1,e:"Buoyant force = weight of fluid displaced.",t:"Science"},
+{q:"Atomic symbol 'Fe' is:",o:["Fluorine","Francium","Iron","Fermium"],a:2,e:"Fe from Latin 'Ferrum' = Iron, atomic number 26.",t:"Science"},
+{q:"SI unit of electric current:",o:["Volt","Watt","Ampere","Ohm"],a:2,e:"Ampere (A) — SI unit of electric current.",t:"Science"},
+{q:"RBI established in:",o:["1930","1932","1934","1935"],a:3,e:"RBI established 1 April 1935 under RBI Act 1934.",t:"Economy"},
+{q:"GST implemented from:",o:["1 April 2017","1 July 2017","1 Jan 2018","1 March 2017"],a:1,e:"GST implemented 1 July 2017.",t:"Economy"},
+{q:"NITI Aayog replaced:",o:["Finance Commission","Planning Commission","Economic Advisory Council","NDC"],a:1,e:"NITI Aayog replaced Planning Commission on 1 January 2015.",t:"Economy"},
+{q:"Father of Green Revolution in India:",o:["Norman Borlaug","M.S. Swaminathan","Verghese Kurien","C. Subramaniam"],a:1,e:"M.S. Swaminathan = Father of Green Revolution in India.",t:"Economy"},
+{q:"NABARD full form:",o:["National Agriculture Budget and Rural Dev","National Bank for Agriculture and Rural Development","National Board for Agriculture","None"],a:1,e:"NABARD = National Bank for Agriculture and Rural Development (1982).",t:"Economy"},
+{q:"Repo Rate — banks borrow from:",o:["Each other","RBI","World Bank","Government"],a:1,e:"Repo Rate = rate at which banks borrow from RBI against govt securities.",t:"Economy"},
+{q:"First Five-Year Plan period:",o:["1947–52","1951–56","1952–57","1950–55"],a:1,e:"First Five-Year Plan: 1951–1956, priority to agriculture.",t:"Economy"},
+{q:"GDP stands for:",o:["Gross Development Product","General Domestic Product","Gross Domestic Product","Government Dev Plan"],a:2,e:"GDP = Gross Domestic Product.",t:"Economy"},
+{q:"SEBI regulates:",o:["Banking","Insurance","Stock market","Foreign exchange"],a:2,e:"SEBI regulates the securities/stock market.",t:"Economy"},
+{q:"'Make in India' launched in:",o:["2013","2014","2015","2016"],a:1,e:"Make in India launched 25 September 2014.",t:"Economy"},
+{q:"PMJDY aims at:",o:["Crop insurance","Financial inclusion","Rural employment","Skill development"],a:1,e:"PMJDY ensures every household has a bank account.",t:"Economy"},
+{q:"MUDRA loans up to:",o:["5 lakh","10 lakh","20 lakh","50 lakh"],a:1,e:"MUDRA provides loans up to Rs 10 lakh.",t:"Economy"},
+{q:"White Revolution is related to:",o:["Wheat","Milk/Dairy","Eggs","Fish"],a:1,e:"White Revolution (Operation Flood) boosted milk production.",t:"Economy"},
+{q:"Digital India launched in:",o:["2013","2014","2015","2016"],a:2,e:"Digital India launched 1 July 2015.",t:"Economy"},
+{q:"Inflation measured by:",o:["GDP Deflator","CPI only","WPI only","Both CPI and WPI"],a:3,e:"India uses both CPI and WPI to measure inflation.",t:"Economy"},
+{q:"UN headquarters is in:",o:["Geneva","New York","Vienna","The Hague"],a:1,e:"UN HQ in New York City.",t:"General"},
+{q:"'Jana Gana Mana' written by:",o:["Bankim Chandra","Rabindranath Tagore","Sarojini Naidu","Subramania Bharati"],a:1,e:"'Jana Gana Mana' by Rabindranath Tagore, adopted 24 Jan 1950.",t:"General"},
+{q:"'Vande Mataram' composed by:",o:["Rabindranath Tagore","Bankim Chandra Chatterjee","Subramanya Bharati","Jai Shankar Prasad"],a:1,e:"'Vande Mataram' by Bankim Chandra Chatterjee in Anandamath (1882).",t:"General"},
+{q:"First Indian to win Nobel Prize:",o:["Amartya Sen","C.V. Raman","Rabindranath Tagore","Mother Teresa"],a:2,e:"Rabindranath Tagore — Nobel Prize in Literature, 1913.",t:"General"},
+{q:"Largest ocean in the world:",o:["Atlantic","Indian","Pacific","Arctic"],a:2,e:"Pacific Ocean covers ~30% of Earth's surface.",t:"General"},
+{q:"First Indian woman Olympic medalist:",o:["P.T. Usha","Karnam Malleswari","Mary Kom","Saina Nehwal"],a:1,e:"Karnam Malleswari — bronze, weightlifting, 2000 Sydney Olympics.",t:"General"},
+{q:"ICJ is located in:",o:["New York","Geneva","The Hague","Vienna"],a:2,e:"ICJ in The Hague, Netherlands.",t:"General"},
+{q:"Olympics held every:",o:["2 years","4 years","6 years","8 years"],a:1,e:"Summer Olympics every 4 years.",t:"General"},
+{q:"LCM of 12 and 18:",o:["18","24","36","72"],a:2,e:"LCM(12,18) = 36.",t:"Maths"},
+{q:"Train 300 km in 5 hrs — speed:",o:["45 km/h","55 km/h","60 km/h","65 km/h"],a:2,e:"Speed = 300/5 = 60 km/h.",t:"Maths"},
+{q:"Smallest prime number:",o:["0","1","2","3"],a:2,e:"2 is the smallest prime number.",t:"Maths"},
+{q:"Hornbill Festival is of:",o:["Meghalaya","Manipur","Nagaland","Arunachal Pradesh"],a:2,e:"Hornbill Festival — Nagaland's major cultural festival.",t:"General"},
+{q:"Largest continent:",o:["Africa","Europe","North America","Asia"],a:3,e:"Asia — world's largest continent (~44.58 million km2).",t:"General"},
+{q:"C.V. Raman won Nobel for:",o:["Theory of Relativity","Raman Effect","Discovery of Electron","Quantum Mechanics"],a:1,e:"Raman Effect — inelastic scattering of light. Nobel 1930.",t:"General"},
+{q:"ISRO stands for:",o:["Indian Space Research Organisation","Indian Scientific Research Organisation","Indian Satellite Research Organisation","International Space Research Organisation"],a:0,e:"ISRO = Indian Space Research Organisation, Bengaluru, founded 1969.",t:"General"},
+{q:"Article 21 guarantees:",o:["Right to Equality","Right to Life and Personal Liberty","Freedom of Speech","Right against Exploitation"],a:1,e:"Article 21 = Right to Life and Personal Liberty.",t:"Indian Polity"},
+{q:"50% of 250:",o:["100","125","150","175"],a:1,e:"50% of 250 = 125.",t:"Maths"},
+{q:"A works in 10 days, B in 20 days, together in:",o:["5 days","6.67 days","7 days","8 days"],a:1,e:"Together = 1/10+1/20 = 3/20 per day => 20/3 = 6.67 days.",t:"Maths"},
+{q:"Planet closest to Sun:",o:["Venus","Mars","Mercury","Earth"],a:2,e:"Mercury is closest to the Sun.",t:"General"},
+{q:"United Nations founded in:",o:["1940","1945","1947","1950"],a:1,e:"UN founded 24 October 1945.",t:"General"}
 ];
 
-// ===== MAINS PAPER CONFIG =====
-const MP={
-  1:{name:"Paper I — Foundation Set",parts:[
-    {pt:1,nm:"Language",cnt:30,tp:"BPSC TRE language paper: English grammar (tenses, prepositions, articles, synonyms, antonyms, one-word substitution, error detection) and Hindi grammar (sandhi, samas, karak, ras, alankar, muhavare). Include 15 English and 15 Hindi questions matching exact BPSC TRE pattern."},
-    {pt:2,nm:"General Studies",cnt:40,tp:"BPSC TRE General Studies: Bihar history and geography (10 Qs), Indian history and freedom movement (8 Qs), Indian geography (7 Qs), Indian polity and constitution (7 Qs), basic science and environment (8 Qs). Medium difficulty matching actual BPSC TRE GS section."},
-    {pt:3,nm:"Computer Science",cnt:80,tp:"BPSC TRE CS Paper I: Computer fundamentals (CPU, ALU, memory hierarchy, I/O devices, generations 1st-5th, 15 Qs), number systems (binary, octal, hex, BCD conversions and arithmetic, 20 Qs), Boolean algebra (logic gates AND/OR/NOT/NAND/NOR/XOR, De Morgan's theorem, SOP/POS, K-map, 25 Qs), computer architecture (registers, cache, pipeline, von Neumann, Harvard, RISC/CISC, 20 Qs). Include output/calculation-based questions."}
-  ]},
-  2:{name:"Paper II — Data Structures",parts:[
-    {pt:1,nm:"Language",cnt:30,tp:"BPSC TRE language: English grammar (fill-in-blanks, error correction, vocabulary, comprehension) and Hindi grammar (vyakaran, muhavare, lokoktiyan). 15 English + 15 Hindi questions. Moderate difficulty."},
-    {pt:2,nm:"General Studies",cnt:40,tp:"BPSC TRE GS: Bihar GK (festivals, rivers, districts, economy), Indian geography (rivers, mountains, soils, climate), polity (fundamental rights, DPSPs, emergency), environment and ecology, mathematical reasoning. 40 questions medium difficulty."},
-    {pt:3,nm:"Computer Science",cnt:80,tp:"BPSC TRE CS Paper II — Data Structures focus: arrays (operations, 2D arrays), linked lists (singly, doubly, circular, operations), stacks (LIFO, push/pop, applications, infix/postfix conversion, 15 Qs), queues (FIFO, circular queue, deque, priority queue, 15 Qs), trees (binary tree, BST, AVL, traversals in/pre/post, 20 Qs), graphs (BFS, DFS, adjacency matrix/list, spanning tree, 10 Qs), sorting algorithms (bubble, insertion, selection, merge, quick, heap — time complexities, 10 Qs), searching (linear, binary — analysis, 5 Qs), Big-O notation and complexity analysis (5 Qs)."}
-  ]},
-  3:{name:"Paper III — Programming",parts:[
-    {pt:1,nm:"Language",cnt:30,tp:"BPSC TRE language: English (active/passive voice, direct/indirect speech, vocabulary, comprehension passage) and Hindi (sandhi, samas, vakya shuddhi, muhavare, alankar). 15+15 questions."},
-    {pt:2,nm:"General Studies",cnt:40,tp:"BPSC TRE GS: Indian freedom movement (Gandhi, Non-cooperation, Quit India), Bihar culture and history, world geography (continents, oceans, mountain ranges), Indian economy (GDP, Five-Year Plans, banking), science (physics, chemistry basics). 40 medium-difficulty questions."},
-    {pt:3,nm:"Computer Science",cnt:80,tp:"BPSC TRE CS Paper III — Programming: C language (data types, operators, control flow, arrays, pointers and pointer arithmetic, functions, recursion, structures, unions, file I/O, output-based questions, 40 Qs), C++ OOP (classes and objects, constructors and destructors, inheritance — single/multiple/multilevel, polymorphism — compile-time/runtime, virtual functions, function overloading, operator overloading, encapsulation, abstraction, templates basics, output-based C++ questions, 40 Qs). Mix output-based and conceptual questions."}
-  ]},
-  4:{name:"Paper IV — DBMS & Networks",parts:[
-    {pt:1,nm:"Language",cnt:30,tp:"BPSC TRE language: English (tenses, voice, narration, vocabulary, one-word substitution, error spotting) and Hindi (karak, kal, vachan, ling, sandhi-viched, muhavare). 15+15 questions."},
-    {pt:2,nm:"General Studies",cnt:40,tp:"BPSC TRE GS: Indian constitution (fundamental rights, DPSP, emergency, Parliament, judiciary), Bihar economy and current events, Indian freedom struggle, physical geography (landforms, soils, climate zones), basic mathematics and reasoning (ratio, percentage, simple interest). 40 questions."},
-    {pt:3,nm:"Computer Science",cnt:80,tp:"BPSC TRE CS Paper IV: DBMS section (40 Qs) — ER model (entities, relationships, attributes), relational model, keys (primary, foreign, candidate, super, composite), normalization (1NF, 2NF, 3NF, BCNF with examples), SQL (DDL: CREATE/ALTER/DROP; DML: SELECT/INSERT/UPDATE/DELETE; joins: inner, left, right, full; aggregate functions, GROUP BY, HAVING; subqueries; views), transactions (ACID properties, serializability), concurrency; Computer Networks section (40 Qs) — OSI 7-layer model (each layer's function and protocols), TCP/IP model, IP addressing (IPv4, IPv6, classes A/B/C/D/E), subnetting and CIDR, routing protocols (RIP, OSPF, BGP), network devices (hub, switch, router, bridge, gateway), LAN/WAN/MAN, wireless protocols, DNS, HTTP, FTP, SMTP, error detection (parity, CRC, checksum)."}
-  ]},
-  5:{name:"Paper V — Advanced Mixed",parts:[
-    {pt:1,nm:"Language",cnt:30,tp:"BPSC TRE language (advanced): English (reading comprehension passage with 5 Qs, grammar — advanced level, phrasal verbs, idioms) and Hindi (advanced grammar — nibandh terms, poetic devices, difficult muhavare, lokoktiyan). 15+15 questions."},
-    {pt:2,nm:"General Studies",cnt:40,tp:"BPSC TRE GS (current focus): Current affairs India and world (government schemes, awards, sports, science news), Bihar government schemes and policies, Indian geography (national parks, biosphere reserves, rivers), economy (Budget terminology, banking news, SEBI), science and technology (ISRO missions, biotech, nanotechnology basics). 40 questions."},
-    {pt:3,nm:"Computer Science",cnt:80,tp:"BPSC TRE CS Paper V — Advanced: Operating Systems (20 Qs) — process states, scheduling algorithms (FCFS, SJF, Round Robin, Priority), deadlock (conditions, prevention, Banker's algorithm), memory management (paging, segmentation, virtual memory, page replacement algorithms LRU/FIFO/Optimal), file systems; Compiler Design (15 Qs) — lexical analysis (tokens, lexemes), parsing (top-down, bottom-up, LL, LR), syntax/semantic analysis, symbol table, code generation, code optimization; System Software (10 Qs) — assembler (pass1/pass2), linker, loader, macros; Software Engineering (10 Qs) — SDLC (Waterfall, Agile, Spiral), testing (unit, integration, black-box, white-box), metrics; Computer Architecture (15 Qs) — pipelining, instruction sets, cache coherence, DMA, interrupts, RISC vs CISC; Cyber Security basics (10 Qs) — encryption, viruses, firewalls, phishing, digital signatures."}
-  ]}
-};
+let pState={},pTimerIv=null;
+function stopPTimer(){if(pTimerIv){clearInterval(pTimerIv);pTimerIv=null;}}
 
-// ===== STATE =====
-let E={type:null,pn:null,qs:[],ans:{},mrk:new Set(),cur:0,tmax:0,tleft:0,iv:null,done:false};
-
-// ===== SCREENS =====
-function show(id){document.querySelectorAll('.scr').forEach(s=>s.classList.remove('on'));document.getElementById(id).classList.add('on');window.scrollTo(0,0);}
-function goHome(){clearIv();E={type:null,pn:null,qs:[],ans:{},mrk:new Set(),cur:0,tmax:0,tleft:0,iv:null,done:false};show('s-home');}
-function openPre(){show('s-pre-info');}
-
-// ===== PRELIMS =====
-function startPre(){
-  E.type='pre';E.qs=shuffle([...PQ]);E.ans={};E.mrk=new Set();E.cur=0;E.tmax=7200;E.tleft=7200;E.done=false;
-  initExam('BPSC Prelims · GK + GS');show('s-exam');renderQ();startTimer();
-}
-
-// ===== MAINS =====
-async function startMains(n){
-  E.type='main';E.pn=n;E.qs=[];E.ans={};E.mrk=new Set();E.cur=0;E.done=false;
-  const p=MP[n];
-  show('s-load');
-  setLd(`Generating ${p.name}`,'AI creating fresh questions for all 3 parts…',0,150,0);
-  try{
-    let all=[];
-    for(let i=0;i<p.parts.length;i++){
-      const part=p.parts[i];
-      setLd(`Generating ${p.name}`,`Part ${part.pt} — ${part.nm}: creating ${part.cnt} questions…`,all.length,150,all.length);
-      const qs=await genPart(part,n);
-      all.push(...qs);
-      setLd(`Generating ${p.name}`,`Part ${part.pt} — ${part.nm}: ✓ ${qs.length} questions ready`,all.length,150,all.length);
-    }
-    E.qs=all;E.tmax=7200;E.tleft=7200;
-    initExam(p.name);show('s-exam');renderQ();startTimer();
-  }catch(err){
-    document.getElementById('ld-title').textContent='Generation Failed';
-    document.getElementById('ld-sub').textContent='API error — please check connection and try again.';
-  }
-}
-
-function setLd(title,sub,done,total,cnt){
-  document.getElementById('ld-title').textContent=title;
-  document.getElementById('ld-sub').textContent=sub;
-  document.getElementById('ld-bar').style.width=Math.min(95,Math.round(done/total*100))+'%';
-  document.getElementById('ld-cnt').textContent=`${cnt} / ${total} questions ready`;
-}
-
-async function genPart(part,pn){
-  const pnames=['','Part I — Language (English + Hindi Grammar)','Part II — General Studies','Part III — Computer Science'];
-  const batches=[];
-  const bs=15;
-  let remain=part.cnt;
-  let b=1;
-  while(remain>0){const n=Math.min(bs,remain);batches.push({n,b});remain-=n;b++;}
-
-  let all=[];
-  for(const {n,b} of batches){
-    const prompt=`You are a BPSC TRE (Bihar Public Service Commission Teacher Recruitment Exam 4.0) expert question generator.
-
-Generate exactly ${n} high-quality MCQ questions for ${pnames[part.pt]}.
-
-Topic focus: ${part.tp}
-
-Paper number: ${pn}, Batch: ${b}/${batches.length}
-
-STRICT RULES:
-1. Difficulty: Medium to Hard, matching actual BPSC TRE exam standard
-2. For CS questions: include output-based Qs, formula-based Qs, and concept-based Qs
-3. For Language: include realistic grammar Qs in both English and Hindi
-4. Distribute correct answers evenly among options (not always option A or B)
-5. Explanations must be concise and accurate (1-2 sentences)
-6. No duplicate or repeated questions
-
-Return ONLY a valid JSON array — NO markdown, NO backticks, NO explanation text outside the array:
-[{"q":"Question text here?","o":["Option A","Option B","Option C","Option D"],"a":0,"e":"Brief explanation."}]
-
-Where "a" is the 0-indexed position of the correct answer (0=A, 1=B, 2=C, 3=D).`;
-
-    try{
-      const res=await fetch("https://api.anthropic.com/v1/messages",{
-        method:"POST",
-        headers:{"Content-Type":"application/json"},
-        body:JSON.stringify({
-          model:"claude-sonnet-4-6",
-          max_tokens:4096,
-          messages:[{role:"user",content:prompt}]
-        })
-      });
-      const data=await res.json();
-      const txt=(data.content||[]).map(c=>c.text||'').join('');
-      const start=txt.indexOf('[');const end=txt.lastIndexOf(']');
-      if(start===-1||end===-1)throw new Error('No JSON');
-      const parsed=JSON.parse(txt.slice(start,end+1));
-      const tagged=parsed.slice(0,n).map(q=>({...q,pt:part.pt}));
-      all.push(...tagged);
-    }catch(e){
-      const fb=fallback(n,part.pt);all.push(...fb);
-    }
-  }
-  return all;
-}
-
-function fallback(n,pt){
-  const samples={
-    1:[{q:"Which of the following is a preposition?",o:["Run","Quickly","At","Beautiful"],a:2,e:"'At' is a preposition indicating position or time.",pt:1}],
-    2:[{q:"Bihar was separated from Bengal Presidency in:",o:["1908","1910","1912","1920"],a:2,e:"Bihar was separated from Bengal Presidency on 22 March 1912.",pt:2}],
-    3:[{q:"Which data structure follows LIFO principle?",o:["Queue","Stack","Array","Tree"],a:1,e:"Stack follows Last In, First Out (LIFO) principle.",pt:3}]
-  };
-  const base=samples[pt]||samples[3];
-  return Array(n).fill(null).map((_,i)=>({...base[0],q:base[0].q+(i>0?` (${i+1})`:''),pt}));
-}
-
-// ===== EXAM INIT =====
-function initExam(title){
-  document.getElementById('ex-title').textContent=title;
-  buildDots('qdots');buildDots('qdots-m');
-}
-
-function buildDots(id){
-  const g=document.getElementById(id);if(!g)return;g.innerHTML='';
-  E.qs.forEach((_,i)=>{
-    const d=document.createElement('div');
-    d.className='qdot'+(i===0?' cur':'');
-    d.textContent=i+1;
-    d.onclick=()=>{gotoQ(i);closeNav();};
-    g.appendChild(d);
-  });
-}
-
-// ===== RENDER QUESTION =====
-function renderQ(){
-  const i=E.cur,q=E.qs[i];if(!q)return;
-  const pcls=['','pt1','pt2','pt3'];
-  const pnm=['','Part I · Language','Part II · GS','Part III · CS'];
-  const partLabel=q.pt?pnm[q.pt]:(q.t||'General');
-  const partCls=q.pt?pcls[q.pt]:'pt2';
-
-  document.getElementById('qarea').innerHTML=`
-    <div class="qctr">Question ${i+1} of ${E.qs.length}</div>
-    <div class="qpart ${partCls}">${partLabel}</div>
-    <div class="qtext">${q.q}</div>
-    <div class="opts" id="opts"></div>
-    <div class="qnav">
-      <button class="nbtn prev" onclick="prevQ()" ${i===0?'disabled':''}>← Prev</button>
-      <button class="nbtn mark" onclick="toggleMrk(${i})">${E.mrk.has(i)?'⭐ Marked':'☆ Mark'}</button>
-      ${i<E.qs.length-1?`<button class="nbtn next" onclick="nextQ()">Next →</button>`:`<button class="nbtn next" onclick="submitExam()">Submit</button>`}
+function renderPrelimsInfo(){
+  stopTimer();stopPTimer();
+  app.innerHTML=`
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px">
+        <h2 style="font-size:19px">📋 Prelims — GK + GS</h2>
+        <button class="btn secondary" onclick="renderHome()" style="font-size:12.5px;padding:8px 14px">← Main Menu</button>
+      </div>
+      <p class="muted" style="margin-bottom:16px"><strong>Pattern:</strong> BPSC CSE Prelims style · 150 questions · GK + General Studies · 120 minutes · No negative marking · Questions shuffle every attempt</p>
+      ${[['Bihar GK & History','History, Culture, Geography, Economy, Polity','~30 Qs'],
+         ['Indian History & Freedom Movement','Ancient, Medieval, Modern, National Movement','~25 Qs'],
+         ['Indian Polity & Constitution','Parliament, Rights, Governance, Articles','~25 Qs'],
+         ['Geography — India & World','Physical, Political, Bihar Geography','~20 Qs'],
+         ['Science & Technology','Physics, Chemistry, Biology, Environment','~20 Qs'],
+         ['Economy, Maths & Current Affairs','Indian Economy, Bihar Economy, Reasoning','~30 Qs']
+        ].map(([t,s,n])=>`<div class="syl-row"><div><strong>${t}</strong><div class="muted" style="font-size:12px;margin-top:2px">${s}</div></div><span class="mono" style="color:var(--maroon);font-weight:700">${n}</span></div>`).join('')}
+      <button class="btn gradient block" style="margin-top:8px" onclick="startPrelims()">🚀 Start Prelims Paper (120 min)</button>
     </div>`;
+}
 
-  const ol=document.getElementById('opts');
-  q.o.forEach((opt,oi)=>{
-    const b=document.createElement('button');
-    b.className='opt'+(E.ans[i]===oi?' sel':'');
-    b.innerHTML=`<div class="olbl">${'ABCD'[oi]}</div><div class="otxt">${opt}</div>`;
-    b.onclick=()=>selAns(i,oi);
-    ol.appendChild(b);
+function startPrelims(){
+  pState={questions:shuffle([...PQ]),answers:{},idx:0,remaining:120*60,done:false};
+  renderPrelimsQ();stopPTimer();
+  pTimerIv=setInterval(()=>{pState.remaining--;updatePTimer();if(pState.remaining<=0){stopPTimer();submitPrelims();}},1000);
+}
+
+function updatePTimer(){
+  const el=document.getElementById('timerDisplay');if(!el)return;
+  el.textContent=fmtTime(Math.max(0,pState.remaining));el.classList.toggle('low',pState.remaining<=300);
+}
+
+function renderPrelimsQ(){
+  const i=pState.idx,q=pState.questions[i],total=pState.questions.length,ac=Object.keys(pState.answers).length;
+  const OK=['A','B','C','D'];
+  app.innerHTML=`
+    <div class="quiz-top">
+      <div><div class="mono" style="font-size:12px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.06em">Prelims · ${q.t}</div>
+      <div style="font-size:13px;color:var(--ink-soft)">${ac}/${total} answered</div></div>
+      <div id="timerDisplay" class="timer">${fmtTime(pState.remaining)}</div>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" style="width:${ac/total*100}%"></div></div>
+    <div class="qcard" style="margin-top:18px">
+      <div class="qmeta"><span class="qnum">Q${i+1} / ${total}</span><span class="qtopic">${q.t}</span></div>
+      <div class="qtext">${escapeHtml(q.q)}</div>
+      <div id="optionsWrap">
+        ${q.o.map((opt,oi)=>`<div class="option ${pState.answers[i]===OK[oi]?'selected':''}" data-k="${OK[oi]}" data-qi="${i}"><div class="bubble">${OK[oi]}</div><div class="option-text">${escapeHtml(opt)}</div></div>`).join('')}
+      </div>
+      <div class="navrow">
+        <button class="btn secondary" id="prevBtn" ${i===0?'disabled':''}>← Previous</button>
+        ${i===total-1?`<button class="btn maroon" id="subBtn">Submit Prelims</button>`:`<button class="btn" id="nextBtn">Next →</button>`}
+      </div>
+    </div>
+    <div class="card" style="margin-top:18px">
+      <div style="font-size:12.5px;color:var(--ink-soft);font-family:'IBM Plex Mono',monospace;margin-bottom:8px">QUESTION PALETTE — green=answered · click to jump</div>
+      <div class="palette" id="palette"></div>
+      <div class="navrow" style="margin-top:16px"><button class="btn secondary" id="subBtn2">Submit Prelims Paper</button></div>
+    </div>`;
+  document.getElementById('optionsWrap').querySelectorAll('.option').forEach(el=>{
+    el.onclick=()=>{pState.answers[parseInt(el.dataset.qi)]=el.dataset.k;renderPrelimsQ();};
   });
-
-  updProg();window.scrollTo(0,0);
+  const prev=document.getElementById('prevBtn');if(prev)prev.onclick=()=>{pState.idx--;renderPrelimsQ();};
+  const next=document.getElementById('nextBtn');if(next)next.onclick=()=>{pState.idx++;renderPrelimsQ();};
+  const sb1=document.getElementById('subBtn');if(sb1)sb1.onclick=confirmSubmitPrelims;
+  document.getElementById('subBtn2').onclick=confirmSubmitPrelims;
+  const pal=document.getElementById('palette');
+  pal.innerHTML=pState.questions.map((_,pi)=>`<div class="pnode ${pState.answers[pi]?'answered':''} ${pi===i?'current':''}" data-pi="${pi}">${pi+1}</div>`).join('');
+  pal.querySelectorAll('.pnode').forEach(el=>{el.onclick=()=>{pState.idx=parseInt(el.dataset.pi);renderPrelimsQ();};});
+  updatePTimer();
 }
 
-function selAns(qi,oi){E.ans[qi]=oi;renderQ();updDots();}
-
-function updDots(){
-  ['qdots','qdots-m'].forEach(id=>{
-    const g=document.getElementById(id);if(!g)return;
-    Array.from(g.children).forEach((d,n)=>{
-      d.className='qdot';
-      if(n===E.cur)d.classList.add('cur');
-      if(E.ans[n]!==undefined)d.classList.add('done');
-      if(E.mrk.has(n))d.classList.add('mrk');
-    });
-  });
+function confirmSubmitPrelims(){
+  const total=pState.questions.length,answered=Object.keys(pState.answers).length,un=total-answered;
+  if(confirm(un>0?`${un} question(s) unanswered. Submit anyway?`:'Submit Prelims paper now?'))submitPrelims();
 }
 
-function updProg(){
-  const done=Object.keys(E.ans).length,tot=E.qs.length;
-  document.getElementById('ex-sub').textContent=`${done} / ${tot} answered`;
-  document.getElementById('ex-pf').style.width=`${tot?done/tot*100:0}%`;
-  updDots();
-}
+function submitPrelims(){stopPTimer();pState.done=true;renderPrelimsResults();}
 
-function prevQ(){if(E.cur>0){E.cur--;renderQ();}}
-function nextQ(){if(E.cur<E.qs.length-1){E.cur++;renderQ();}}
-function gotoQ(i){E.cur=i;renderQ();}
-function toggleMrk(i){if(E.mrk.has(i))E.mrk.delete(i);else E.mrk.add(i);renderQ();updDots();}
-
-// ===== TIMER =====
-function startTimer(){
-  clearIv();
-  E.iv=setInterval(()=>{
-    E.tleft--;updTimer();
-    if(E.tleft<=0){clearIv();submitExam(true);}
-  },1000);
-}
-function clearIv(){if(E.iv){clearInterval(E.iv);E.iv=null;}}
-function updTimer(){
-  const t=E.tleft;const h=Math.floor(t/3600);const m=Math.floor(t%3600/60);const s=t%60;
-  const str=h>0?`${h}:${pad(m)}:${pad(s)}`:`${m}:${pad(s)}`;
-  const el=document.getElementById('timer');
-  el.textContent=str;el.className='timer'+(t<=300?' urg':'');
-}
-function pad(n){return n<10?'0'+n:n;}
-
-// ===== SUBMIT =====
-function submitExam(auto=false){
-  if(E.done)return;
-  const tot=E.qs.length,done=Object.keys(E.ans).length;
-  if(!auto&&done<tot){if(!confirm(`${tot-done} question${tot-done>1?'s':''} unanswered. Submit anyway?`))return;}
-  clearIv();E.done=true;showRes();
-}
-
-// ===== RESULTS =====
-function showRes(){
-  const qs=E.qs,ans=E.ans;
-  let correct=0,wrong=0,skip=0;
+function renderPrelimsResults(){
+  const qs=pState.questions,ans=pState.answers;
+  let correct=0,wrong=0,skip=0;const ts={};
   qs.forEach((q,i)=>{
-    if(ans[i]===undefined)skip++;
-    else if(ans[i]===q.a)correct++;
-    else wrong++;
+    const uk=ans[i],ck=['A','B','C','D'][q.a];
+    const isOk=uk===ck,isSk=!uk;
+    if(isSk)skip++;else if(isOk)correct++;else wrong++;
+    if(!ts[q.t])ts[q.t]={correct:0,total:0};ts[q.t].total++;if(isOk)ts[q.t].correct++;
   });
-  const total=qs.length,score=correct;
-  const pct=Math.round(score/total*100);
-
-  document.getElementById('snum').textContent=score;
-  document.getElementById('stotal').textContent='/ '+total;
-  document.getElementById('spct').textContent=pct+'%';
-
-  const msgs=[[90,'🏆 Exceptional! TRE 4.0 ready!'],[80,'⭐ Excellent! Above cut-off zone.'],[70,'👍 Good! Just needs more polish.'],[60,'📚 Fair — focus on weak areas.'],[0,'💪 Keep practicing — you can do it!']];
-  document.getElementById('smsg').textContent=(msgs.find(([p])=>pct>=p)||msgs[msgs.length-1])[1];
-
-  document.getElementById('stats').innerHTML=`
-    <div class="scard cv"><div class="sv">${correct}</div><div class="sk">✅ Correct</div></div>
-    <div class="scard wv"><div class="sv">${wrong}</div><div class="sk">❌ Wrong</div></div>
-    <div class="scard"><div class="sv">${skip}</div><div class="sk">⬜ Skipped</div></div>`;
-
-  // Mains merit score
-  if(E.type==='main'){
-    let p2=0,p2c=0,p3=0,p3c=0;
-    qs.forEach((q,i)=>{
-      if(q.pt===2){p2++;if(ans[i]===q.a)p2c++;}
-      if(q.pt===3){p3++;if(ans[i]===q.a)p3c++;}
-    });
-    const merit=p2c+p3c;
-    document.getElementById('stats').innerHTML+=`
-      <div class="scard" style="grid-column:1/-1;margin-top:4px;border-top:2px solid var(--P)">
-        <div class="sv" style="color:var(--P)">${merit}<span style="font-size:14px;font-weight:400;color:var(--muted)"> / ${p2+p3}</span></div>
-        <div class="sk">🎯 Merit Score (GS+CS) — cut-off basis</div>
-      </div>`;
-  }
-
-  const revList=document.getElementById('rev-list');revList.innerHTML='';
-  qs.forEach((q,i)=>{
-    const ua=ans[i];const isOk=ua===q.a;const isSk=ua===undefined;
-    const div=document.createElement('div');
-    div.className=`ritem ${isOk?'ok-i':isSk?'sk-i':'no-i'}`;
-    div.innerHTML=`
-      <div class="rnum">Q${i+1} · ${isOk?'✅ Correct':isSk?'⬜ Skipped':'❌ Wrong'}</div>
-      <div class="rq">${q.q}</div>
-      ${!isSk?`<div class="rans">Your answer: <span class="${isOk?'ok-t':'no-t'}">${q.o[ua]}</span></div>`:''}
-      ${!isOk?`<div class="rans">Correct: <span class="ok-t">${q.o[q.a]}</span></div>`:''}
-      ${q.e?`<div class="rexpl">💡 ${q.e}</div>`:''}`;
-    revList.appendChild(div);
-  });
-
-  const rp=E.type==='pre'?'Prelims — GK+GS':MP[E.pn].name;
-  document.getElementById('res-paper').textContent=rp;
-  const rb=document.getElementById('retake-btn');
-  if(E.type==='pre'){rb.textContent='🔄 Retake Prelims';rb.onclick=startPre;}
-  else{rb.textContent=`🔄 Retake Paper ${E.pn}`;rb.onclick=()=>startMains(E.pn);}
-  show('s-res');
+  const total=qs.length,pct=Math.round(correct/total*100);
+  const verdict=pct>=80?'Excellent! Well above safe cut-off.':pct>=65?'Good. Focus on weak topics.':pct>=50?'Fair — more practice needed.':'Keep going — revision will get you there.';
+  const sorted=Object.entries(ts).sort((a,b)=>(a[1].correct/a[1].total)-(b[1].correct/b[1].total));
+  const weak=sorted.filter(([,s])=>(s.correct/s.total)<0.6);
+  app.innerHTML=`
+    <div class="score-hero">
+      <div class="big">${correct}<span style="font-size:26px;color:#B7BEC9">/${total}</span></div>
+      <div class="lbl">Prelims Score — GK + GS</div>
+      <div class="verdict">${pct}% · ${verdict}</div>
+    </div>
+    <div class="stat-row">
+      <div class="stat"><div class="num" style="color:var(--green)">${correct}</div><div class="lbl">Correct</div></div>
+      <div class="stat"><div class="num" style="color:var(--red)">${wrong}</div><div class="lbl">Wrong</div></div>
+      <div class="stat"><div class="num" style="color:var(--amber)">${skip}</div><div class="lbl">Skipped</div></div>
+    </div>
+    <div class="card"><h2 style="font-size:16px;margin-bottom:14px">Topic-wise accuracy</h2>
+      ${sorted.map(([t,s])=>{const p=Math.round(s.correct/s.total*100);const c=p>=75?'var(--green)':p>=50?'var(--amber)':'var(--red)';return`<div class="topicbar-row"><div class="topicbar-label">${t}</div><div class="topicbar-track"><div class="topicbar-fill" style="width:${p}%;background:${c}"></div></div><div class="topicbar-pct">${p}%</div></div>`;}).join('')}
+    </div>
+    ${weak.length?`<div class="card weakbox"><h3>Weak areas (below 60%)</h3><ul>${weak.map(([t,s])=>`<li>${t} — ${Math.round(s.correct/s.total*100)}% (${s.correct}/${s.total})</li>`).join('')}</ul></div>`:''}
+    <div class="card"><h2 style="font-size:16px;margin-bottom:14px">Full Review — answer explanations</h2><div id="prelims-review"></div></div>
+    <div class="navrow">
+      <button class="btn secondary" onclick="startPrelims()">Retake Prelims</button>
+      <button class="btn maroon" onclick="renderHome()">Main Menu</button>
+    </div>`;
+  const OKS=['A','B','C','D'];
+  document.getElementById('prelims-review').innerHTML=qs.map((q,i)=>{
+    const uk=ans[i],ck=OKS[q.a];const isOk=uk===ck,isSk=!uk;const st=isSk?'skipped':isOk?'correct':'wrong';
+    return`<div class="review-q"><div class="qmeta"><span class="qnum">Q${i+1}</span><span class="rowbadge ${st}">${st}</span></div><div class="qtext">${escapeHtml(q.q)}</div>${q.o.map((opt,oi)=>{const k=OKS[oi];let cls='';if(k===ck)cls='correct-opt';else if(k===uk&&!isOk)cls='wrong-opt';return`<div class="review-opt ${cls}"><div class="bubble" style="width:22px;height:22px;font-size:11px">${k}</div><span>${escapeHtml(opt)}${k===ck?' ✓':k===uk?' ✗ (your pick)':''}</span></div>`;}).join('')}<div class="review-explain"><strong>Why:</strong> ${escapeHtml(q.e)}</div></div>`;
+  }).join('');
 }
 
-// ===== MOBILE NAV =====
-function toggleNav(){document.getElementById('nov').classList.toggle('open');}
-function closeNav(e){if(!e||e.target===document.getElementById('nov'))document.getElementById('nov').classList.remove('open');}
-
-// ===== UTILS =====
+/* ══════════════════════════════════════════
+   UTILS
+══════════════════════════════════════════ */
+function fmtTime(sec){const m=Math.floor(sec/60),s=sec%60;return String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');}
+function escapeHtml(str){if(!str)return'';const d=document.createElement('div');d.textContent=str;return d.innerHTML;}
 function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+window.renderHome=renderHome;
+window.renderMainsHome=renderMainsHome;
+window.renderPrelimsInfo=renderPrelimsInfo;
+window.startPrelims=startPrelims;
+window.confirmSubmitPrelims=confirmSubmitPrelims;
+window.submitPrelims=submitPrelims;
 </script>
 </body>
 </html>
